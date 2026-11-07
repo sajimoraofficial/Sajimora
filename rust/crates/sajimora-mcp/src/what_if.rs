@@ -157,7 +157,7 @@ pub fn run_what_if(
             "latencyMicros": elapsed_micros,
             "telemetry": compute_savings_telemetry(affected.len().max(1), elapsed_micros),
             "verdict": if affected.is_empty() { "COMPATIBLE" } else { "CONSUMERS_OBSERVED" },
-            "affectedConsumers": consumer_preview(&affected)
+            "affectedConsumers": consumer_preview(&affected, None, None, None)
         })
         .to_string());
     }
@@ -207,7 +207,7 @@ pub fn run_what_if(
                 "telemetry": compute_savings_telemetry(affected_files.len().max(1), elapsed_micros),
                 "breakingConsumersCount": consumers.len(),
                 "affectedFiles": affected_files.into_iter().collect::<Vec<_>>(),
-                "affectedConsumers": consumer_preview(&consumers),
+                "affectedConsumers": consumer_preview(&consumers, None, None, Some("DELETE_ENDPOINT")),
                 "message": if consumers.is_empty() {
                     "No sealed consumer contract calls this route; removing it has no observed consumer impact."
                 } else {
@@ -343,17 +343,108 @@ pub fn run_what_if(
             affected_files.insert(tm.file.clone());
         }
 
-        let mut all_affected_consumers = consumer_preview(&consumers);
+        let mut all_affected_consumers = consumer_preview(&consumers, Some(target_dto), Some(field), Some(&action));
         for tm in &template_matches {
+            let mut patch_recipe = serde_json::Map::new();
+            if action == "RENAME_FIELD" && !rename_to.is_empty() {
+                let replacement_token = tm.matched_token.replace(field, rename_to);
+                patch_recipe.insert("action".to_string(), serde_json::json!("REPLACE_TOKEN"));
+                patch_recipe.insert("file".to_string(), serde_json::json!(tm.file));
+                patch_recipe.insert("line".to_string(), serde_json::json!(tm.line));
+                patch_recipe.insert("target".to_string(), serde_json::json!(tm.matched_token));
+                patch_recipe.insert("replacement".to_string(), serde_json::json!(replacement_token));
+            } else if action == "REMOVE_FIELD" {
+                patch_recipe.insert("action".to_string(), serde_json::json!("REMOVE_OR_FALLBACK"));
+                patch_recipe.insert("file".to_string(), serde_json::json!(tm.file));
+                patch_recipe.insert("line".to_string(), serde_json::json!(tm.line));
+                patch_recipe.insert("target".to_string(), serde_json::json!(tm.matched_token));
+                patch_recipe.insert("guidance".to_string(), serde_json::json!(format!("Property '{}' will be undefined; remove binding or provide fallback", field)));
+            }
+
             all_affected_consumers.push(serde_json::json!({
                 "file": tm.file,
                 "line": tm.line,
                 "kind": tm.kind,
                 "expression": tm.expression,
+                "matchedToken": tm.matched_token,
+                "rootCause": format!(
+                    "Template binding accesses property '{}' on object matching DTO '{}'; property will evaluate to undefined at runtime.",
+                    field, target_dto
+                ),
+                "causalChain": [
+                    format!("1. Backend DTO: '{}' wire field '{}' undergoes {}", target_dto, field, action),
+                    format!("2. Component Layer: Angular component passes wire model '{}' into template view", target_dto),
+                    format!("3. Template View: '{}' (line {}) dynamically evaluates '{}'", tm.file, tm.line, tm.expression)
+                ],
+                "patchRecipe": patch_recipe
             }));
         }
 
+        let mut automated_patches = Vec::new();
+        // 1. Client model patch from matched_type_refs
+        for tr in &matched_type_refs {
+            if tr.starts_with("ts:") {
+                let stripped = tr.trim_start_matches("ts:");
+                let file_part = stripped.split('#').next().unwrap_or(stripped);
+                if action == "RENAME_FIELD" && !rename_to.is_empty() {
+                    automated_patches.push(serde_json::json!({
+                        "file": file_part,
+                        "type": "RENAME_MODEL_PROPERTY",
+                        "target": field,
+                        "replacement": rename_to,
+                        "description": format!("Rename property '{}' to '{}' in client TypeScript interface", field, rename_to)
+                    }));
+                } else if action == "REMOVE_FIELD" {
+                    automated_patches.push(serde_json::json!({
+                        "file": file_part,
+                        "type": "REMOVE_MODEL_PROPERTY",
+                        "target": field,
+                        "description": format!("Remove property '{}' from client TypeScript interface", field)
+                    }));
+                }
+            }
+        }
+
+        // 2. Template patches
+        for tm in &template_matches {
+            if action == "RENAME_FIELD" && !rename_to.is_empty() {
+                let replacement_token = tm.matched_token.replace(field, rename_to);
+                automated_patches.push(serde_json::json!({
+                    "file": tm.file,
+                    "line": tm.line,
+                    "type": "REPLACE_TEMPLATE_EXPRESSION",
+                    "target": tm.matched_token,
+                    "replacement": replacement_token,
+                    "contextExpression": tm.expression,
+                    "description": format!("Update template binding from '{}' to '{}'", tm.matched_token, replacement_token)
+                }));
+            } else if action == "REMOVE_FIELD" {
+                automated_patches.push(serde_json::json!({
+                    "file": tm.file,
+                    "line": tm.line,
+                    "type": "AUDIT_TEMPLATE_BINDING",
+                    "target": tm.matched_token,
+                    "contextExpression": tm.expression,
+                    "description": format!("Property '{}' removed; update template binding or fallback", tm.matched_token)
+                }));
+            }
+        }
+
         let total_breaking = consumers.len() + template_matches.len();
+
+        let root_cause_summary = match action.as_str() {
+            "RENAME_FIELD" => format!(
+                "Java field '{field}' on DTO '{target_dto}' was renamed to '{rename_to}' without Jackson @JsonProperty(\"{field}\"). Wire key changes from '{field}' to '{rename_to}', breaking client deserialization and UI bindings."
+            ),
+            "REMOVE_FIELD" => format!(
+                "Java field '{field}' on DTO '{target_dto}' was removed. Wire payload will no longer contain '{field}', causing undefined reads across {} active frontend consumers.",
+                total_breaking
+            ),
+            "CHANGE_TYPE" => format!(
+                "Java field '{field}' on DTO '{target_dto}' type changed to '{new_type}'. Incompatible payload serialization breaks frontend consumers expecting previous shape."
+            ),
+            _ => format!("Mutation '{action}' on '{target_dto}.{field}' introduces breaking wire changes.")
+        };
 
         let suggested_fix = match action.as_str() {
             "RENAME_FIELD" => format!("@JsonProperty(\"{}\") on the renamed field", field),
@@ -363,7 +454,7 @@ pub fn run_what_if(
             _ => format!("Keep the wire field '{field}' (or mark the change as a breaking API change)"),
         };
         return Ok(serde_json::json!({
-            "schemaVersion": "SAJIMORA_WHAT_IF_V1",
+            "schemaVersion": "SAJIMORA_WHAT_IF_V2",
             "simulationMode": "symbolic",
             "action": action,
             "targetDto": target_dto,
@@ -375,9 +466,11 @@ pub fn run_what_if(
             "verdict": "BREAKING_CHANGE",
             "latencyMicros": elapsed_micros,
             "telemetry": compute_savings_telemetry(affected_files.len().max(1), elapsed_micros),
+            "rootCause": root_cause_summary,
             "breakingConsumersCount": total_breaking,
             "affectedFiles": affected_files.into_iter().collect::<Vec<_>>(),
             "affectedConsumers": all_affected_consumers,
+            "automatedPatches": automated_patches,
             "suggestedFix": suggested_fix,
             "recommendation": format!("Apply '{suggested_fix}' on {target_dto}.{field} to preserve the REST contract.")
         })
@@ -449,17 +542,35 @@ fn dedupe_consumers(consumers: &mut Vec<ConsumerMatch>) {
     });
 }
 
-fn consumer_preview(consumers: &[ConsumerMatch]) -> Vec<serde_json::Value> {
+fn consumer_preview(
+    consumers: &[ConsumerMatch],
+    target_dto: Option<&str>,
+    field: Option<&str>,
+    action: Option<&str>,
+) -> Vec<serde_json::Value> {
     consumers
         .iter()
         .take(100)
         .map(|consumer| {
-            serde_json::json!({
+            let mut val = serde_json::json!({
                 "file": consumer.source_file,
                 "line": consumer.source_line,
                 "method": consumer.http_method,
                 "route": consumer.normalized_route,
-            })
+                "kind": "HTTP_SERVICE_CONSUMER",
+            });
+            if let (Some(dto), Some(fld), Some(act)) = (target_dto, field, action) {
+                val["rootCause"] = serde_json::json!(format!(
+                    "Service endpoint '{} {}' returns payload mapped to DTO '{}' where wire field '{}' is affected by {}.",
+                    consumer.http_method, consumer.normalized_route, dto, fld, act
+                ));
+                val["causalChain"] = serde_json::json!([
+                    format!("1. Backend DTO: '{}' wire field '{}' undergoes {}", dto, fld, act),
+                    format!("2. Wire Transport: Spring Boot endpoint '{} {}' returns DTO '{}'", consumer.http_method, consumer.normalized_route, dto),
+                    format!("3. Client Service: '{}' (line {}) invokes endpoint expecting wire field '{}'", consumer.source_file, consumer.source_line, fld)
+                ]);
+            }
+            val
         })
         .collect()
 }

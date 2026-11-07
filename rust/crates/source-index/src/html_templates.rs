@@ -12,6 +12,7 @@ pub struct TemplateConsumerMatch {
     pub file: String,
     pub line: usize,
     pub expression: String,
+    pub matched_token: String,
     pub kind: String,
 }
 
@@ -121,11 +122,12 @@ pub fn scan_html_templates(
                     let expr_text = m.as_str().trim();
                     // Strip quoted literals so `'user.email-required'` is not mistaken for a property access
                     let stripped = string_lit_re.replace_all(expr_text, "");
-                    if member_re.is_match(&stripped) {
+                    if let Some(mat) = member_re.find(&stripped) {
                         matches.push(TemplateConsumerMatch {
                             file: rel_path.clone(),
                             line: line_idx + 1,
                             expression: expr_text.to_string(),
+                            matched_token: mat.as_str().to_string(),
                             kind: "ANGULAR_TEMPLATE_BINDING".to_string(),
                         });
                     }
