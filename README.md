@@ -66,9 +66,61 @@ If your team already uses npm/pnpm/yarn:
 npx sajimora init --apply
 ```
 
-### Basic Usage
+### CI Runner / GitHub Action
 
-#### 1. Analyze Latest Commit
+Add 3 lines to your `.github/workflows/contract-verify.yml`:
+
+```yaml
+- name: Verify API Contracts
+  uses: Jagadeesh-Budda/Sajimora-v0.10@main
+  with:
+    fail-on-violation: true
+```
+
+---
+
+## AI IDE & Agent Integration (Cursor, Windsurf, Claude Desktop, Roo Code)
+
+Sajimora includes a native **Model Context Protocol (MCP)** server that starts in sub-10ms, allowing AI agents to simulate API changes and check contract compatibility in real-time.
+
+Add this to `.cursor/mcp.json` or `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "sajimora": {
+      "command": "sajimora-mcp",
+      "args": ["--trusted-local", "--allowed-root", "."]
+    }
+  }
+}
+```
+
+---
+
+## Key CLI Commands
+
+### 1. One-Command Contract Verification (`sajimora verify`)
+
+Verifies your local Git working tree against the project's contract baseline in milliseconds:
+
+```bash
+# Advisory check (outputs affected call sites, exit code 0)
+sajimora verify
+
+# CI enforcement (blocks with exit code 1 on breaking changes)
+sajimora verify --fail-on-violation
+```
+
+### 2. Zero-False-Alarm What-If Simulation (`sajimora what-if`)
+
+Predicts exactly which frontend files, methods, and HTML templates break if you rename, delete, or change a backend field—with causal chains and automated patch recipes:
+
+```bash
+sajimora what-if --target Device --field label --action rename --new-name deviceLabel
+```
+
+### 3. Analyze Latest Commit
 
 ```bash
 # Analyzes changes between HEAD~1 and HEAD in the current repository

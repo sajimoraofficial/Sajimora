@@ -8,12 +8,12 @@ sajimora-verify:
   stage: contract-test
   image: ubuntu:latest
   variables:
-    SAJIMORA_VERSION: "32.9.0"
+    SAJIMORA_VERSION: "0.10.0"
   before_script:
     - apt-get update && apt-get install -y curl tar ca-certificates
-    - curl -sSL "https://github.com/sajimora/sajimora/releases/download/v${SAJIMORA_VERSION}/sajimora-linux-x86_64.tar.gz" | tar -xz -C /usr/local/bin
+    - curl -sSL "https://github.com/Jagadeesh-Budda/Sajimora-v0.10/releases/download/v${SAJIMORA_VERSION}/sajimora-v${SAJIMORA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" | tar -xz -C /usr/local/bin
   script:
-    - sajimora ci
+    - sajimora verify
   artifacts:
     when: always
     paths:

@@ -6,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 Write-Host "=== Installing Sajimora Native API Gatekeeper ===" -ForegroundColor Cyan
 
 $repo = "Jagadeesh-Budda/Sajimora-v0.10"
-$tag = "v0.1.0"
+$tag = "v0.10.0"
 
 try {
     $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases/latest" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
@@ -28,17 +28,11 @@ $tempZip = Join-Path $env:TEMP $zipName
 
 Write-Host "[*] Downloading Sajimora $tag for Windows x64..." -ForegroundColor Gray
 try {
-    Invoke-WebRequest -Uri $zipUrl -OutFile $tempZip -UseBasicParsing -TimeoutSec 5
+    Invoke-WebRequest -Uri $zipUrl -OutFile $tempZip -UseBasicParsing -TimeoutSec 15
     Expand-Archive -Path $tempZip -DestinationPath $installDir -Force
     Remove-Item $tempZip -Force
 } catch {
-    $localDist = "e:\sajimora-v32\dist\sajimora-v0.1.0-windows-x86_64.zip"
-    if (Test-Path $localDist) {
-        Write-Host "    Using pre-built local distribution bundle..." -ForegroundColor Yellow
-        Expand-Archive -Path $localDist -DestinationPath $installDir -Force
-    } else {
-        throw "Failed to download $zipUrl and no local package was found."
-    }
+    throw "Failed to download $zipUrl. Please check your internet connection or download manually from https://github.com/$repo/releases"
 }
 
 $userPath = [System.Environment]::GetEnvironmentVariable("Path", "User")

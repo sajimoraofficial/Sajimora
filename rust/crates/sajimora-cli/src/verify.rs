@@ -81,7 +81,7 @@ pub fn run(args: VerifyArgs) -> i32 {
     match run_inner(args) {
         Ok(code) => code,
         Err(e) => {
-            eprintln!("\n❌ Verification failed: {}\n", e);
+            eprintln!("\n❌ Verification failed: {:#}\n", e);
             1
         }
     }

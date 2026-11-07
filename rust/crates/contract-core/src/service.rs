@@ -543,8 +543,9 @@ fn open_confined(path: &Path) -> Result<fs::File> {
     #[cfg(target_os = "linux")]
     {
         use std::os::unix::fs::OpenOptionsExt;
-        // O_NOFOLLOW: the generic-linux value, identical across architectures.
-        options.custom_flags(0o40000);
+        // O_NOFOLLOW: Linux flag 0o400000 (0x20000) prevents following symlinks on open.
+        // Note: 0o40000 is O_DIRECT which causes EINVAL on unaligned reads.
+        options.custom_flags(0o400000);
     }
     #[cfg(target_os = "macos")]
     {

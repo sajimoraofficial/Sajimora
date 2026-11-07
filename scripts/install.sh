@@ -8,7 +8,7 @@ REPO="Jagadeesh-Budda/Sajimora-v0.10"
 LATEST_TAG=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
 if [ -z "$LATEST_TAG" ]; then
-  LATEST_TAG="v0.1.0"
+  LATEST_TAG="v0.10.0"
 fi
 
 OS="$(uname -s)"
