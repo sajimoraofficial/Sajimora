@@ -334,8 +334,27 @@ pub fn run_what_if(
             .to_string());
         }
 
-        let affected_files: BTreeSet<&str> =
-            consumers.iter().map(|c| c.source_file.as_str()).collect();
+        let template_matches = source_index::html_templates::scan_html_templates(&repo_root, target_dto, field)
+            .unwrap_or_default();
+
+        let mut affected_files: BTreeSet<String> =
+            consumers.iter().map(|c| c.source_file.clone()).collect();
+        for tm in &template_matches {
+            affected_files.insert(tm.file.clone());
+        }
+
+        let mut all_affected_consumers = consumer_preview(&consumers);
+        for tm in &template_matches {
+            all_affected_consumers.push(serde_json::json!({
+                "file": tm.file,
+                "line": tm.line,
+                "kind": tm.kind,
+                "expression": tm.expression,
+            }));
+        }
+
+        let total_breaking = consumers.len() + template_matches.len();
+
         let suggested_fix = match action.as_str() {
             "RENAME_FIELD" => format!("@JsonProperty(\"{}\") on the renamed field", field),
             "CHANGE_TYPE" => format!(
@@ -356,9 +375,9 @@ pub fn run_what_if(
             "verdict": "BREAKING_CHANGE",
             "latencyMicros": elapsed_micros,
             "telemetry": compute_savings_telemetry(affected_files.len().max(1), elapsed_micros),
-            "breakingConsumersCount": consumers.len(),
+            "breakingConsumersCount": total_breaking,
             "affectedFiles": affected_files.into_iter().collect::<Vec<_>>(),
-            "affectedConsumers": consumer_preview(&consumers),
+            "affectedConsumers": all_affected_consumers,
             "suggestedFix": suggested_fix,
             "recommendation": format!("Apply '{suggested_fix}' on {target_dto}.{field} to preserve the REST contract.")
         })

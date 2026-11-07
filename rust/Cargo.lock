@@ -1257,6 +1257,7 @@ dependencies = [
  "contract-core",
  "hex",
  "rayon",
+ "regex",
  "rusqlite",
  "serde",
  "serde_json",

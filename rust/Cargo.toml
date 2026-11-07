@@ -32,6 +32,7 @@ anyhow = "1.0"
 thiserror = "2.0"
 quick-xml = "=0.36.0"
 uuid = { version = "1.10", features = ["v4", "serde"] }
+regex = "1.10"
 
 contract-core = { path = "crates/contract-core" }
 telemetry-core = { path = "crates/telemetry-core" }

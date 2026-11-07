@@ -8,6 +8,7 @@ pub mod discovery;
 pub mod endpoint_impact;
 pub mod express_routes;
 pub mod file_system_routes;
+pub mod html_templates;
 /// Bounded Git plumbing (`git --no-replace-objects`, env-scrubbed, record-framed).
 /// Public so the MCP adapter can read staged and tree revisions without a second,
 /// weaker implementation of the same stream handling.
