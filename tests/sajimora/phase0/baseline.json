@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "SAJIMORA_PHASE_0_BASELINE_V1",
+  "implementationSha": "70df309b84b1e2242f2ab5a1042d9ce0dccdd6b8",
+  "remoteRef": "origin/main",
+  "worktreeAtCapture": "CLEAN",
+  "capturedOn": "2026-09-12",
+  "toolchain": {
+    "node": "22.19.0",
+    "npm": "10.9.3",
+    "typescript": "5.9.3"
+  },
+  "cliSchemaVersion": "V32.9-TS-cli-v1",
+  "scopedGate": "npm run test:phase0",
+  "semanticPolicy": "This baseline records V32.9 behavior and introduces no new verdict semantics."
+}

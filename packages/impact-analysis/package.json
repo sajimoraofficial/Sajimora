@@ -1,0 +1,15 @@
+{
+  "name": "@sajimora/impact-analysis",
+  "version": "0.1.0",
+  "description": "Sajimora Offline Impact Analysis and Blast Radius Engine",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "tsx tests/impact_engine.test.ts && tsx tests/target_resolver.test.ts && tsx tests/dependency_graph.test.ts && tsx tests/polyglot_impact.test.ts && tsx tests/determinism.test.ts && tsx tests/v32_integration.test.ts && tsx tests/correctness_hardening.test.ts && tsx tests/java_extractor_j1.test.ts && tsx tests/java_type_ir_j2.test.ts",
+    "benchmark": "tsx scripts/run_gate_h.ts"
+  },
+  "dependencies": {
+    "@sajimora/core": "*",
+    "@sajimora/analysis": "*"
+  }
+}

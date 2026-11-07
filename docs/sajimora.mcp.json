@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "sajimora": {
+      "command": "node",
+      "args": [
+        "./scripts/sajimora/mcpServer.cjs",
+        "--allowed-root",
+        "./artifacts",
+        "--trusted-local"
+      ]
+    }
+  }
+}

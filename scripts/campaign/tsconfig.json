@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "typeRoots": ["../../node_modules/@types"]
+  },
+  "include": [
+    "runner_cold_start.ts",
+    "runner_single_case.ts",
+    "certified_campaign_case.ts",
+    "CaseBInputPreparation.ts",
+    "CaseBInputPreparation.test.ts",
+    "run_campaign_50.ts",
+    "run_campaign_50.test.ts",
+    "scan_typescript_caseb_candidates.ts",
+    "realDiffObligationAdapter.ts"
+    ,"run_typescript_caseb_coverage_campaign.ts"
+    ,"RepositoryWideConsumerInventory.ts"
+    ,"RepositoryWideConsumerInventory.test.ts"
+    ,"run_repository_wide_direct_inventory.ts"
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0.0",
+  "milestone": "M0",
+  "generated_at": "2026-11-03T17:52:00Z",
+  "workspace_summary": {
+    "total_crates": 17,
+    "total_rust_source_files": 254,
+    "total_bytes": 5291417,
+    "edition": "2021",
+    "rustc_channel": "stable"
+  },
+  "crates": [
+    {
+      "name": "sajimora-syntax",
+      "tier": "Compiler Core",
+      "path": "crates/compiler/sajimora-syntax",
+      "role": "Lossless Rowan syntax tree definition, Logos lexer tokens, syntax kinds",
+      "key_types": ["SyntaxKind", "SyntaxNode", "SyntaxToken", "SyntaxElement"],
+      "dependencies": ["rowan", "logos"],
+      "migration_target": "sajimora.syntax"
+    },
+    {
+      "name": "sajimora-parser",
+      "tier": "Compiler Core",
+      "path": "crates/compiler/sajimora-parser",
+      "role": "Recursive descent resilient parser with error-recovery tokens",
+      "key_types": ["Parser", "ParseError", "parse_source_file"],
+      "dependencies": ["sajimora-syntax", "rowan", "miette"],
+      "migration_target": "sajimora.parser"
+    },
+    {
+      "name": "sajimora-types",
+      "tier": "Compiler Core",
+      "path": "crates/compiler/sajimora-types",
+      "role": "Bidirectional nominal and structural type system, subtyping, and bounds",
+      "key_types": ["Type", "TypeId", "TypeEnv", "SubtypeRelation", "CapabilitySet"],
+      "dependencies": ["sajimora-syntax", "serde"],
+      "migration_target": "sajimora.types"
+    },
+    {
+      "name": "sajimora-hir",
+      "tier": "Compiler Core",
+      "path": "crates/compiler/sajimora-hir",
+      "role": "High-level intermediate representation with Salsa query memoization",
+      "key_types": ["Database", "HirSymbolTable", "lower_hir_query", "SourceFile"],
+      "dependencies": ["sajimora-syntax", "sajimora-parser", "sajimora-types", "salsa"],
+      "migration_target": "sajimora.hir"
+    },
+    {
+      "name": "sajimora-codegen",
+      "tier": "Compiler Backend",
+      "path": "crates/compiler/sajimora-codegen",
+      "role": "Cranelift IR code generation, JIT execution module, and AOT object emission",
+      "key_types": ["CodegenBackend", "JitEngine", "AotCompiler"],
+      "dependencies": ["sajimora-hir", "cranelift", "cranelift-jit", "cranelift-module"],
+      "migration_target": "sajimora.codegen"
+    },
+    {
+      "name": "sajimora-runtime",
+      "tier": "Runtime System",
+      "path": "crates/compiler/sajimora-runtime",
+      "role": "Memory management, linear capability governor, allocator bindings",
+      "key_types": ["RuntimeContext", "CapabilityToken", "MemoryArena"],
+      "dependencies": ["sajimora-types", "sajimora-contract"],
+      "migration_target": "sajimora.runtime"
+    },
+    {
+      "name": "sajimora-contract",
+      "tier": "Compiler Contract Authority",
+      "path": "crates/compiler/sajimora-contract",
+      "role": "Canonical JSON serialization, SHA-256 digest sealing, and Ed25519 signing",
+      "key_types": ["ContractArtifactEnvelope", "VerdictAuthority", "canonical_json", "sign_envelope"],
+      "dependencies": ["sajimora-hir", "sajimora-types", "sha2", "ed25519-dalek"],
+      "migration_target": "sajimora.contract"
+    },
+    {
+      "name": "sajimora-ai",
+      "tier": "Compiler Intent System",
+      "path": "crates/compiler/sajimora-ai",
+      "role": "Compile-time intent gating, slot tagging, and macro-free syntax expansion",
+      "key_types": ["GroundingEngine", "IntentGating", "SlotTagger", "SyntaxExpander"],
+      "dependencies": ["sajimora-syntax", "sajimora-hir", "sajimora-contract"],
+      "migration_target": "sajimora.ai"
+    },
+    {
+      "name": "sajimora-ffi",
+      "tier": "Interop Layer",
+      "path": "crates/compiler/sajimora-ffi",
+      "role": "Standard C-ABI header generation and foreign function bindings",
+      "key_types": ["CAbiBridge", "FfiExporter"],
+      "dependencies": ["sajimora-types", "sajimora-runtime"],
+      "migration_target": "sajimora.ffi"
+    },
+    {
+      "name": "sajimora-lsp",
+      "tier": "Tooling",
+      "path": "crates/compiler/sajimora-lsp",
+      "role": "Language Server Protocol engine for Sajimora IDE integration",
+      "key_types": ["LspServer", "DiagnosticEmitter", "CompletionProvider"],
+      "dependencies": ["sajimora-syntax", "sajimora-parser", "sajimora-hir"],
+      "migration_target": "sajimora.lsp"
+    },
+    {
+      "name": "contract-core",
+      "tier": "Platform Engine",
+      "path": "crates/platform/contract-core",
+      "role": "Cross-language contract admission, route normalization, deep comparison",
+      "key_types": ["EndpointContract", "ComparisonVerdict", "WireType", "AdmissionEngine"],
+      "dependencies": ["sha2", "ed25519-dalek", "serde", "ryu-js"],
+      "migration_target": "sajimora.platform.contract_core"
+    },
+    {
+      "name": "source-index",
+      "tier": "Platform Engine",
+      "path": "crates/platform/source-index",
+      "role": "Tree-sitter AST extraction, SQLite index, def-use analysis, git object capture",
+      "key_types": ["SourceIndexer", "SqliteIndex", "CallSiteExtractor"],
+      "dependencies": ["contract-core", "tree-sitter", "tree-sitter-java", "tree-sitter-typescript", "rusqlite"],
+      "migration_target": "sajimora.platform.source_index"
+    },
+    {
+      "name": "verifier",
+      "tier": "Platform Engine & Migration Authority",
+      "path": "crates/platform/verifier",
+      "role": "Formal bisimulation, Presburger SMT solver, invariant synthesis, anti-circular verifier",
+      "key_types": ["Tier1Solver", "BehaviorVerdict", "IncompatibilityWitness", "BisimulationEngine"],
+      "dependencies": ["contract-core", "tree-sitter", "sha2"],
+      "migration_target": "sajimora.platform.verifier"
+    },
+    {
+      "name": "telemetry-core",
+      "tier": "Platform Telemetry",
+      "path": "crates/platform/telemetry-core",
+      "role": "Structured diagnostic events, metric collectors, execution traces",
+      "key_types": ["TelemetrySink", "MetricEvent"],
+      "dependencies": ["contract-core", "tokio"],
+      "migration_target": "sajimora.platform.telemetry"
+    },
+    {
+      "name": "sajimora-mcp",
+      "tier": "Platform Interop",
+      "path": "crates/platform/sajimora-mcp",
+      "role": "Model Context Protocol language server exposing 10 formal tools",
+      "key_types": ["SajimoraMcpServer", "ToolHandler"],
+      "dependencies": ["rmcp", "contract-core", "verifier", "tokio"],
+      "migration_target": "sajimora.platform.mcp"
+    },
+    {
+      "name": "sjm-cli",
+      "tier": "CLI Binary",
+      "path": "crates/cli/sjm-cli",
+      "role": "The primary language CLI (sjm check, build, run, lock, serve)",
+      "key_types": ["Cli", "Commands", "CheckReport"],
+      "dependencies": ["sajimora-parser", "sajimora-hir", "sajimora-codegen", "sajimora-contract", "clap"],
+      "migration_target": "sjm"
+    },
+    {
+      "name": "sajimora-cli",
+      "tier": "CLI Binary",
+      "path": "crates/cli/sajimora-cli",
+      "role": "The platform CLI (sajimora scan, verify, diff, report)",
+      "key_types": ["PlatformCli", "Subcommand"],
+      "dependencies": ["contract-core", "verifier", "source-index", "clap"],
+      "migration_target": "sajimora"
+    }
+  ]
+}
+

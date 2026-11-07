@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+      "@sajimora/core": [
+        "packages/core/src"
+      ],
+      "@sajimora/core/*": [
+        "packages/core/src/*"
+      ],
+      "@sajimora/analysis": [
+        "packages/analysis/src"
+      ],
+      "@sajimora/analysis/*": [
+        "packages/analysis/src/*"
+      ],
+      "@sajimora/change-intelligence": [
+        "packages/change-intelligence/src"
+      ],
+      "@sajimora/change-intelligence/*": [
+        "packages/change-intelligence/src/*"
+      ],
+      "@sajimora/database": [
+        "packages/database/src"
+      ],
+      "@sajimora/database/*": [
+        "packages/database/src/*"
+      ],
+      "@sajimora/impact-analysis": [
+        "packages/impact-analysis/src"
+      ],
+      "@sajimora/impact-analysis/*": [
+        "packages/impact-analysis/src/*"
+      ]
+    }
+  }
+}

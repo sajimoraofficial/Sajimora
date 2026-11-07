@@ -1,0 +1,39 @@
+[package]
+name = "sajimora-platform-cli"
+description = "Sajimora native CLI -- artifact checking without Node"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+publish = false
+
+[[bin]]
+name = "sajimora"
+path = "src/main.rs"
+
+[[bin]]
+name = "sajimora-source-pilot"
+path = "src/source_pilot.rs"
+
+[dependencies]
+source-index.workspace = true
+sajimora-mcp.workspace = true
+contract-core.workspace = true
+telemetry-core.workspace = true
+verifier.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+ed25519-dalek.workspace = true
+getrandom.workspace = true
+sha2.workspace = true
+hex.workspace = true
+quick-xml.workspace = true
+tree-sitter = "=0.26.7"
+tree-sitter-java = "=0.23.5"
+
+[dev-dependencies]
+serde_json.workspace = true
+rusqlite = { version = "=0.40.2", features = ["bundled"] }
+sajimora-mcp.workspace = true

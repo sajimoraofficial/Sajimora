@@ -1,0 +1,104 @@
+name: 'Sajimora Contract Verification'
+description: 'Verify cross-language API contracts (Java Spring Boot <-> TypeScript) in sub-100ms with differential ratchets and fail-closed security.'
+author: 'Sajimora'
+
+inputs:
+  version:
+    description: 'Version of Sajimora CLI to install and use'
+    required: false
+    default: '32.9.0'
+  repo-path:
+    description: 'Path to repository root'
+    required: false
+    default: '.'
+  fail-on-violation:
+    description: 'Fail the GitHub workflow step if cross-language API violations are detected'
+    required: false
+    default: 'true'
+  trust-policy:
+    description: 'Optional path to Ed25519 trust policy JSON for artifact admission'
+    required: false
+  comment-pr:
+    description: 'Whether to post a PR comment summarizing breaking API changes'
+    required: false
+    default: 'true'
+  github-token:
+    description: 'GitHub token for posting PR comments'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  verdict:
+    description: 'Verification outcome (LIKELY_PRESERVED, LIKELY_VIOLATED, INCONCLUSIVE, or ANALYSIS_ERROR)'
+    value: ${{ steps.verify.outputs.verdict }}
+  findings-count:
+    description: 'Total number of detected cross-language contract violations'
+    value: ${{ steps.verify.outputs.findings-count }}
+  report-path:
+    description: 'Path to the generated cross-language impact report JSON'
+    value: ${{ steps.verify.outputs.report-path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Sajimora Native Binary
+      shell: bash
+      run: |
+        echo "Installing Sajimora CLI v${{ inputs.version }}..."
+        if ! command -v sajimora &> /dev/null; then
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            curl -sSL "https://github.com/sajimora/sajimora/releases/download/v${{ inputs.version }}/sajimora-linux-x86_64.tar.gz" | tar -xz -C /usr/local/bin
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            curl -sSL "https://github.com/sajimora/sajimora/releases/download/v${{ inputs.version }}/sajimora-macos-arm64.tar.gz" | tar -xz -C /usr/local/bin
+          fi
+        fi
+        echo "Sajimora binary ready: $(command -v sajimora || echo 'local')"
+
+    - name: Run Sajimora Differential Contract Verification
+      id: verify
+      shell: bash
+      run: |
+        cd "${{ inputs.repo-path }}"
+        REPORT_OUT=".sajimora/latest-report.json"
+        mkdir -p .sajimora
+
+        ARGS="verify --out $REPORT_OUT"
+        if [ -n "${{ inputs.trust-policy }}" ]; then
+          ARGS="$ARGS --trust-policy ${{ inputs.trust-policy }}"
+        else
+          ARGS="$ARGS --trusted-local"
+        fi
+
+        EXIT_CODE=0
+        sajimora $ARGS || EXIT_CODE=$?
+
+        VERDICT="ANALYSIS_ERROR"
+        FINDINGS_COUNT="0"
+
+        if [ -f "$REPORT_OUT" ]; then
+          VERDICT=$(node -e "const r = JSON.parse(require('fs').readFileSync('$REPORT_OUT')); console.log(r.verdict || 'ANALYSIS_ERROR');" 2>/dev/null || echo "UNKNOWN")
+          FINDINGS_COUNT=$(node -e "const r = JSON.parse(require('fs').readFileSync('$REPORT_OUT')); console.log(r.findings ? r.findings.length : 0);" 2>/dev/null || echo "0")
+        fi
+
+        echo "verdict=$VERDICT" >> $GITHUB_OUTPUT
+        echo "findings-count=$FINDINGS_COUNT" >> $GITHUB_OUTPUT
+        echo "report-path=$REPORT_OUT" >> $GITHUB_OUTPUT
+
+        echo "=========================================================="
+        echo "Sajimora Contract Verification Verdict: $VERDICT"
+        echo "Contract Violations Detected: $FINDINGS_COUNT"
+        echo "=========================================================="
+
+        if [ "${{ inputs.fail-on-violation }}" = "true" ] && [ "$VERDICT" = "LIKELY_VIOLATED" ]; then
+          echo "::error title=Cross-Language API Violation Detected::Sajimora detected breaking contract violations between backend and frontend clients."
+          exit 1
+        fi
+
+        if [ "$EXIT_CODE" -ne 0 ] && [ "${{ inputs.fail-on-violation }}" = "true" ]; then
+          echo "::error title=Sajimora Verification Failed::Verification exited with code $EXIT_CODE"
+          exit $EXIT_CODE
+        fi
+
+branding:
+  icon: 'shield'
+  color: 'blue'

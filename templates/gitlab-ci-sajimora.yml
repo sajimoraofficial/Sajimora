@@ -1,0 +1,25 @@
+# Sajimora GitLab CI Reference Pipeline
+# Include this template in your .gitlab-ci.yml to protect production APIs from breaking changes.
+
+stages:
+  - contract-test
+
+sajimora-verify:
+  stage: contract-test
+  image: ubuntu:latest
+  variables:
+    SAJIMORA_VERSION: "32.9.0"
+  before_script:
+    - apt-get update && apt-get install -y curl tar ca-certificates
+    - curl -sSL "https://github.com/sajimora/sajimora/releases/download/v${SAJIMORA_VERSION}/sajimora-linux-x86_64.tar.gz" | tar -xz -C /usr/local/bin
+  script:
+    - sajimora ci
+  artifacts:
+    when: always
+    paths:
+      - .sajimora/gitlab-report.json
+    reports:
+      junit: .sajimora/junit-report.xml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

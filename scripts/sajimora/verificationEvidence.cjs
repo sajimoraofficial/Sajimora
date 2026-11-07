@@ -1,0 +1,56 @@
+'use strict';
+const crypto=require('node:crypto'),assert=require('node:assert/strict'),{z}=require('zod');
+const digest=z.string().regex(/^[a-f0-9]{64}$/),label=z.string().min(1).max(1000);
+const siteSchema=z.object({file:label,line:z.number().int().positive(),sourceSha256:digest,usage:label}).strict();
+const caseSchema=z.object({id:label,inputHash:digest}).strict();
+const obligationSchema=z.object({id:label,changeId:label,endpointId:label,site:siteSchema,cases:z.array(caseSchema).min(1).max(100)}).strict();
+const planSchema=z.object({version:z.literal('SAJIMORA_VERIFICATION_PLAN_V1'),proofKey:digest,producerRevision:label,consumerRevision:label,environmentId:label,testHarnessSha256:digest,obligations:z.array(obligationSchema).min(1).max(500),planId:digest}).strict();
+const contextSchema=z.object({proofKey:digest,producerRevision:label,consumerRevision:label,environmentId:label,testHarnessSha256:digest}).strict();
+const assertionSchema=z.object({target:z.enum(['RETURN','INPUT_AFTER']),expected:z.unknown()}).strict();
+const observationSchema=z.object({obligationId:label,caseId:label,testId:label,site:siteSchema,inputHash:digest,operationOutcome:z.enum(['RETURNED','THREW','NOT_EXECUTED']),assertionOutcome:z.enum(['PASSED','FAILED','NOT_RUN']),assertionCount:z.number().int().min(0).max(100),oracleHash:digest.optional(),errorName:z.string().max(200).optional()}).strict();
+const runSchema=z.object({version:z.literal('SAJIMORA_VERIFICATION_RUN_V1'),planId:digest,producerRevision:label,consumerRevision:label,environmentId:label,testHarnessSha256:digest,runId:label,completedAt:label,observations:z.array(observationSchema).max(50000),integrity:digest}).strict();
+function canonical(value,depth=0,seen=new Set()){if(depth>64)throw Error('Evidence depth bound exceeded');if(typeof value==='number'&&!Number.isFinite(value))throw Error('Finite JSON evidence required');if(value!==null&&typeof value==='object'){if(seen.has(value))throw Error('Cyclic evidence');if(!Array.isArray(value)&&![Object.prototype,null].includes(Object.getPrototypeOf(value)))throw Error('Plain JSON evidence required');if(Object.values(Object.getOwnPropertyDescriptors(value)).some(d=>d.get||d.set))throw Error('Evidence accessors not admitted');const next=new Set(seen);next.add(value);if(Array.isArray(value))return '['+Array.from(value,v=>canonical(v,depth+1,next)).join(',')+']';return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+canonical(value[k],depth+1,next)).join(',')+'}';}const s=JSON.stringify(value);if(s===undefined)throw Error('Finite JSON evidence required');return s;}
+const hash=value=>crypto.createHash('sha256').update(canonical(value)).digest('hex');
+const hashBytes=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
+function identity(value,key){const {[key]:omitted,...rest}=value;return hash(rest);}
+function checkPlan(plan){plan=planSchema.parse(plan);assert.equal(plan.planId,identity(plan,'planId'),'Verification plan integrity mismatch');assert.equal(new Set(plan.obligations.map(o=>o.id)).size,plan.obligations.length,'Duplicate obligation');for(const o of plan.obligations)assert.equal(new Set(o.cases.map(c=>c.id)).size,o.cases.length,'Duplicate case');return plan;}
+function createPlan(input){const facts={...input,version:'SAJIMORA_VERIFICATION_PLAN_V1'};return checkPlan({...facts,planId:hash(facts)});}
+/** Select one captured scoped obligation; no new extraction or assurance upgrade. */
+function planFromAssessment(report,obligationId,context,cases){
+ const scoped=report.scopedChanges||report,assessment=scoped.assessments?.find(a=>a.obligationId===obligationId);assert.ok(assessment,'Captured obligation not found');assert.ok(scoped.proofKey,'Captured proof generation required');
+ const sites=(assessment.consumers||[]).filter(c=>c.sourceSha256&&c.line&&c.usage&&c.operation);assert.ok(sites.length,'A source-bound consumer operation is required');
+ return createPlan({...context,proofKey:scoped.proofKey,obligations:sites.map((c,i)=>({id:obligationId+':consumer:'+i,changeId:assessment.changeId,endpointId:assessment.endpointId,site:{file:c.file,line:c.line,sourceSha256:c.sourceSha256,usage:c.usage},cases:cases.map(c=>({id:c.id,inputHash:hash(c.input)}))}))});
+}
+/** Explicit local test adapter. Records actual callback execution and built-in
+ * equality assertions; callers remain responsible for faithful harness wiring.
+ * Replayed/injected inputs are not observations of a deployed producer. */
+function createRecorder(rawPlan,runId){
+ const plan=checkPlan(rawPlan),observations=[];
+ return {async record({obligationId,caseId,testId,input,sourceBytes,invoke,assertions=[]}){
+  const o=plan.obligations.find(o=>o.id===obligationId),c=o?.cases.find(c=>c.id===caseId);assert.ok(o&&c,'Unknown obligation/case');assert.equal(typeof invoke,'function','Test callback required');assert.equal(hashBytes(sourceBytes),o.site.sourceSha256,'Consumer source differs from plan');assert.ok(o.site.line<=sourceBytes.toString('utf8').split(/\r?\n/).length,'Consumer line is outside captured source');assert.equal(hash(input),c.inputHash,'Injected input differs from planned case');assertions=z.array(assertionSchema).max(100).parse(assertions);
+  // Reject non-JSON payloads/oracles before executing the user's callback.
+  const inputJson=canonical(input),oracleJson=canonical(assertions);assert.ok(Buffer.byteLength(inputJson)<=1024*1024&&Buffer.byteLength(oracleJson)<=1024*1024,'Test payload/oracle exceeds 1 MiB');JSON.parse(inputJson);JSON.parse(oracleJson);
+  let output,error,threw=false,assertionOutcome='NOT_RUN';try{output=await invoke(input);}catch(e){error=e;threw=true;}
+  if(!threw&&assertions.length){try{for(const a of assertions)assert.deepStrictEqual(a.target==='RETURN'?output:input,a.expected);assertionOutcome='PASSED';}catch{assertionOutcome='FAILED';}}
+  const errorName=error&&['Error','TypeError','RangeError','ReferenceError','SyntaxError','URIError','EvalError','AggregateError'].includes(error.name)?error.name:'ThrownValue';
+  const row=observationSchema.parse({obligationId,caseId,testId,site:o.site,inputHash:c.inputHash,operationOutcome:threw?'THREW':'RETURNED',assertionOutcome,assertionCount:assertions.length,...(assertions.length?{oracleHash:hash(assertions)}:{}),...(threw?{errorName}:{})});observations.push(row);return row;
+ },finish(){const facts={version:'SAJIMORA_VERIFICATION_RUN_V1',planId:plan.planId,producerRevision:plan.producerRevision,consumerRevision:plan.consumerRevision,environmentId:plan.environmentId,testHarnessSha256:plan.testHarnessSha256,runId,completedAt:new Date().toISOString(),observations:[...observations]};return runSchema.parse({...facts,integrity:hash(facts)});}};
+}
+function assessVerification(rawPlan,rawRuns,currentContext){
+ const context=contextSchema.parse(currentContext);
+ const plan=checkPlan(rawPlan),runs=rawRuns.map(r=>{r=runSchema.parse(r);assert.equal(r.integrity,identity(r,'integrity'),'Test-run integrity mismatch');assert.ok(Number.isFinite(Date.parse(r.completedAt)),'Invalid completion timestamp');for(const e of r.observations){assert.ok(e.operationOutcome==='RETURNED'||e.assertionOutcome==='NOT_RUN','Assertions cannot pass without returned operation');if(e.assertionOutcome!=='NOT_RUN')assert.ok(e.assertionCount>0&&e.oracleHash,'Behavioral assertion record required');if(e.operationOutcome==='THREW')assert.ok(e.errorName,'Thrown outcome requires error class');}return r;});
+ const planCurrent=Object.keys(context).every(k=>context[k]===plan[k]);
+ const stale=runs.filter(r=>!planCurrent||r.planId!==plan.planId||['producerRevision','consumerRevision','environmentId','testHarnessSha256'].some(k=>r[k]!==plan[k]));
+ const current=runs.filter(r=>!stale.includes(r));
+ const obligations=new Map(plan.obligations.map(o=>[o.id,o])),index=new Map();
+ for(const r of current)for(const e of r.observations){const o=obligations.get(e.obligationId),c=o?.cases.find(c=>c.id===e.caseId);assert.ok(c&&e.inputHash===c.inputHash&&canonical(e.site)===canonical(o.site),'Current run contains unknown or mismatched consumer/input evidence');const key=canonical([e.obligationId,e.caseId]),rows=index.get(key)||[];rows.push({runId:r.runId,...e});index.set(key,rows);}
+ const cases=plan.obligations.flatMap(o=>o.cases.map(c=>{
+  const supplied=index.get(canonical([o.id,c.id]))||[],matching=supplied.filter(e=>e.inputHash===c.inputHash&&canonical(e.site)===canonical(o.site));
+  if(matching.length!==supplied.length)throw Error('Current run contains mismatched consumer/input evidence');
+  const failures=matching.filter(e=>e.operationOutcome==='THREW'||e.assertionOutcome==='FAILED'),passes=matching.filter(e=>e.operationOutcome==='RETURNED'&&e.assertionOutcome==='PASSED'&&e.assertionCount>0&&e.oracleHash);
+  const status=!planCurrent?'STALE_PLAN':failures.length&&passes.length?'CONFLICTING_OBSERVATIONS':failures.length?'OBSERVED_FAILURE':passes.length?'OBSERVED_ASSERTION_PASS':matching.some(e=>e.operationOutcome==='RETURNED')?'EXERCISED_WITHOUT_ASSERTION':'NO_MATCHING_EXECUTION';
+  return {obligationId:o.id,changeId:o.changeId,endpointId:o.endpointId,caseId:c.id,consumer:o.site,status,runIds:[...new Set(matching.map(e=>e.runId))],failureEvidence:failures.slice(0,3).map(e=>({runId:e.runId,testId:e.testId,kind:e.operationOutcome==='THREW'?'OPERATION_THROW':'ASSERTION_FAILURE',...(e.operationOutcome==='THREW'?{errorName:e.errorName}:{oracleHash:e.oracleHash})})),missingEvidence:status==='STALE_PLAN'?['Plan identities do not match the supplied current review. Regenerate the plan before running its checks.']:status==='NO_MATCHING_EXECUTION'?['No current, matching test execution was supplied. This does not establish that no test exists.']:status==='EXERCISED_WITHOUT_ASSERTION'?['Operation executed, but no passing behavioral assertion was recorded.']:status==='CONFLICTING_OBSERVATIONS'?['Current matching runs disagree; investigate harness/environment or nondeterminism.']:[],nextCheck:status==='STALE_PLAN'?'Regenerate the verification plan from the current source-contract assessment and review identities.':status==='NO_MATCHING_EXECUTION'?`Execute case ${c.id} at ${o.site.file}:${o.site.line} using the planned input, and record an explicit behavioral assertion.`:status==='EXERCISED_WITHOUT_ASSERTION'?`Assert the observed return value or post-operation input for case ${c.id}.`:null};
+ }));
+ return {version:'SAJIMORA_VERIFICATION_GAPS_V1',planId:plan.planId,planCurrent,universalCompatibility:false,scope:'Only supplied finite test cases, source identities and the configured local harness. Assertion relevance and full test-suite coverage are not proved.',trust:'Locally admitted test evidence; hashes establish integrity/binding, not execution authenticity. Current review identities are supplied by the caller.',coverage:{plannedCases:cases.length,observedAssertionPasses:cases.filter(c=>c.status==='OBSERVED_ASSERTION_PASS').length,observedFailures:cases.filter(c=>c.status==='OBSERVED_FAILURE').length,unverified:cases.filter(c=>!['OBSERVED_ASSERTION_PASS','OBSERVED_FAILURE'].includes(c.status)).length,staleRuns:stale.length},cases,staleRunIds:stale.map(r=>r.runId)};
+}
+module.exports={hash,hashBytes,createPlan,planFromAssessment,createRecorder,assessVerification,checkPlan,contextSchema};

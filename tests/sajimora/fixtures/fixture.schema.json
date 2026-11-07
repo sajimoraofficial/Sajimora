@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SAJIMORA_FIXTURE_V1",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "id", "toolchain", "evidence"],
+  "properties": {
+    "schemaVersion": { "const": "SAJIMORA_FIXTURE_V1" },
+    "kind": { "enum": ["SYNTHETIC", "HISTORICAL", "DIAGNOSTIC"] },
+    "id": { "type": "string" },
+    "toolchain": { "type": "object" },
+    "evidence": { "type": "object" },
+    "expectedAuthorityDecision": { "type": "object" },
+    "independentOracle": { "type": "object" },
+    "correctnessLabel": false
+  },
+  "additionalProperties": false
+}

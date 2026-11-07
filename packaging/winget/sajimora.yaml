@@ -1,0 +1,20 @@
+PackageIdentifier: Sajimora.Sajimora
+PackageVersion: 0.1.0
+PackageName: Sajimora
+Publisher: Sajimora
+License: Apache-2.0
+ShortDescription: High-performance native cross-language API contract gatekeeper
+Installers:
+  - Architecture: x64
+    InstallerType: zip
+    InstallerUrl: https://github.com/Jagadeesh-Budda/Sajimora-v0.10/releases/download/v0.1.0/sajimora-v0.1.0-x86_64-pc-windows-msvc.zip
+    NestedInstallerType: portable
+    NestedInstallerFiles:
+      - RelativeFilePath: sajimora.exe
+        PortableCommandAlias: sajimora
+      - RelativeFilePath: sajimora-mcp.exe
+        PortableCommandAlias: sajimora-mcp
+      - RelativeFilePath: sajimora-source-pilot.exe
+        PortableCommandAlias: sajimora-source-pilot
+ManifestType: singleton
+ManifestVersion: 1.6.0

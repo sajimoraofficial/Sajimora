@@ -1,0 +1,22 @@
+import * as assert from 'node:assert/strict';
+import { CanonicalReferenceOccurrence, CanonicalSymbolIdentity } from '@sajimora/core';
+import { TypeScriptConsumerIdentityMapper, TypeScriptTargetIdentityMapper } from '@sajimora/analysis';
+
+const symbol = (id: string, file: string, name: string, fingerprint = 'a'.repeat(64), ordinal = 0): CanonicalSymbolIdentity => ({ identityId: id.padEnd(64, '0'), projectId: 'tsconfig.json', moduleIdentity: file, ownerChain: [], localName: name, declarationKind: 'FunctionDeclaration', declarationOrdinal: ordinal, sourceSpan: { start: 0, end: 10, line: 1, column: 1, endLine: 1, endColumn: 11 }, exportPaths: [`${file}#${name}`], parameterShape: 'string', astFingerprint: fingerprint });
+const occurrence = (id: string, signature: string, declaration = 'target'): CanonicalReferenceOccurrence => ({ occurrenceId: id, sourceFile: 'src/consumer.ts', sourceSpan: { start: 1, end: 2, line: 1, column: 1 }, syntaxKind: 80, semanticRole: 'VALUE', usageRole: 'CALL_SITE', referencedSymbol: 'target', declarationSymbol: declaration, signatureAnchor: signature, resolutionStatus: declaration === '<different-or-unresolved>' ? 'UNRESOLVED' : 'RESOLVED', enumerationStatus: 'COMPLETE', provenance: [] });
+const diff = (parentPath: string | null, candidatePath: string | null, status: 'ADDED'|'DELETED'|'MODIFIED'|'RENAMED') => ({ parentPath, candidatePath, status, similarity: status === 'RENAMED' ? 100 : null, hunks: [{ parentStart: 1, parentLines: 1, candidateStart: 1, candidateLines: 1 }] });
+const targets = new TypeScriptTargetIdentityMapper();
+assert.equal(targets.map([symbol('p','src/a.ts','f')],[symbol('c','src/a.ts','f','b'.repeat(64))],[diff('src/a.ts','src/a.ts','MODIFIED')]).targetMappings[0].status,'SAME_DECLARATION');
+assert.equal(targets.map([symbol('p','src/a.ts','f')],[symbol('c','src/b.ts','f')],[diff('src/a.ts','src/b.ts','RENAMED')]).targetMappings[0].status,'MOVED_DECLARATION');
+assert.equal(targets.map([symbol('p','src/a.ts','old')],[symbol('c','src/a.ts','new')],[diff('src/a.ts','src/a.ts','MODIFIED')]).targetMappings[0].status,'RENAMED_DECLARATION');
+assert.equal(targets.map([symbol('p','src/a.ts','old')],[symbol('c','src/a.ts','x'),symbol('d','src/a.ts','y')],[diff('src/a.ts','src/a.ts','MODIFIED')]).targetMappings.find(m=>m.parent)?.status,'AMBIGUOUS');
+assert.equal(targets.map([symbol('p','src/a.ts','f')],[],[diff('src/a.ts',null,'DELETED')]).targetMappings[0].status,'REMOVED_DECLARATION');
+assert.equal(targets.map([],[symbol('c','src/a.ts','f')],[diff(null,'src/a.ts','ADDED')]).targetMappings[0].status,'ADDED_DECLARATION');
+const consumers = new TypeScriptConsumerIdentityMapper();
+assert.equal(consumers.map([occurrence('x','same')],[occurrence('x','same')])[0].lifecycle,'STABLE_UNCHANGED');
+assert.equal(consumers.map([occurrence('x','before')],[occurrence('x','after')])[0].lifecycle,'STABLE_CHANGED_SAME_COMMIT');
+assert.equal(consumers.map([occurrence('x','same')],[])[0].lifecycle,'REMOVED_IN_CANDIDATE');
+assert.equal(consumers.map([occurrence('x','same')],[occurrence('x','same','<different-or-unresolved>')])[0].lifecycle,'BINDING_REMOVED_IN_CANDIDATE');
+assert.equal(consumers.map([],[occurrence('x','same')])[0].lifecycle,'ADDED_IN_CANDIDATE');
+assert.equal(consumers.map([occurrence('x','same')],[occurrence('x','a'),occurrence('x','b')]).find(m=>m.parentOccurrenceId)?.lifecycle,'AMBIGUOUS_ACROSS_VERSIONS');
+console.log('Phase 3 matrix tests: 12/12');

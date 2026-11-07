@@ -1,0 +1,342 @@
+{
+  "schemaVersion": "V33_ABLATION_SEALED_FIXTURES_V1",
+  "status": "SEALED_BYTES_AND_INTEGRITY_METADATA",
+  "cases": [
+    {
+      "id": "CASE-1A",
+      "expected": "PRESERVED",
+      "parent": {
+        "revision": "CASE-1A-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 73,
+            "sha256": "9a29f1a4f2c8afaba95a59b93195acc727dc7a8d1df0b4d5b57ae1d8da81ee33",
+            "bytes": "export function target(data: string): boolean { return data.length > 0; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 77,
+            "sha256": "a768eb8e64d8bf2ec6cdb46a13d70f56e58512a85310fbc9d3a9102dffb5a21a",
+            "bytes": "import { target } from \"./provider.ts\"; const result: boolean = target(\"ok\");"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-1A-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 80,
+            "sha256": "86e792a39cac304a1c11d5024d22ff16bbe484a973e9b575b4972071388be15a",
+            "bytes": "export function target(data: string): boolean { return data.trim().length > 0; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 77,
+            "sha256": "a768eb8e64d8bf2ec6cdb46a13d70f56e58512a85310fbc9d3a9102dffb5a21a",
+            "bytes": "import { target } from \"./provider.ts\"; const result: boolean = target(\"ok\");"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    },
+    {
+      "id": "CASE-1B",
+      "expected": "VIOLATED",
+      "parent": {
+        "revision": "CASE-1B-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 73,
+            "sha256": "9a29f1a4f2c8afaba95a59b93195acc727dc7a8d1df0b4d5b57ae1d8da81ee33",
+            "bytes": "export function target(data: string): boolean { return data.length > 0; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 77,
+            "sha256": "a768eb8e64d8bf2ec6cdb46a13d70f56e58512a85310fbc9d3a9102dffb5a21a",
+            "bytes": "import { target } from \"./provider.ts\"; const result: boolean = target(\"ok\");"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-1B-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 100,
+            "sha256": "c2003359684a80099814f4d871e7fe15f90f81199de41d8a58278640a6faecbe",
+            "bytes": "export function target(data: string, strict: boolean): boolean { return strict && data.length > 0; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 77,
+            "sha256": "a768eb8e64d8bf2ec6cdb46a13d70f56e58512a85310fbc9d3a9102dffb5a21a",
+            "bytes": "import { target } from \"./provider.ts\"; const result: boolean = target(\"ok\");"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    },
+    {
+      "id": "CASE-2A",
+      "expected": "PRESERVED",
+      "parent": {
+        "revision": "CASE-2A-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 70,
+            "sha256": "36bdf9c6121b7d86376e8d2067497dc6dab8afac9c607d2dd805688e1a40ea34",
+            "bytes": "export function target(files: string): number { return files.length; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 79,
+            "sha256": "d54639cd299c4e3eda02156149914951c078d451ea09a5d21e8ed2f4298820ae",
+            "bytes": "import { target } from \"./provider.ts\"; const result: number = target(\"files\");"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-2A-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 77,
+            "sha256": "205281b38d5a00bc537d13df7381452b6fa41e456717b9225bd6e115f6db0f92",
+            "bytes": "export function target(files: string): number { return files.trim().length; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 79,
+            "sha256": "d54639cd299c4e3eda02156149914951c078d451ea09a5d21e8ed2f4298820ae",
+            "bytes": "import { target } from \"./provider.ts\"; const result: number = target(\"files\");"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    },
+    {
+      "id": "CASE-2B",
+      "expected": "VIOLATED",
+      "parent": {
+        "revision": "CASE-2B-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 70,
+            "sha256": "36bdf9c6121b7d86376e8d2067497dc6dab8afac9c607d2dd805688e1a40ea34",
+            "bytes": "export function target(files: string): number { return files.length; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 79,
+            "sha256": "d54639cd299c4e3eda02156149914951c078d451ea09a5d21e8ed2f4298820ae",
+            "bytes": "import { target } from \"./provider.ts\"; const result: number = target(\"files\");"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-2B-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 78,
+            "sha256": "db2cb7a635de7d65f408350152596e94e998eb42f2134351dea37c15285fdf8d",
+            "bytes": "export function target(files: string): string { return String(files.length); }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 79,
+            "sha256": "d54639cd299c4e3eda02156149914951c078d451ea09a5d21e8ed2f4298820ae",
+            "bytes": "import { target } from \"./provider.ts\"; const result: number = target(\"files\");"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    },
+    {
+      "id": "CASE-3A",
+      "expected": "PRESERVED",
+      "parent": {
+        "revision": "CASE-3A-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 61,
+            "sha256": "37e94ccdc589c80a0370e41661c255cbd64c56828f1126415951bbb1679b5534",
+            "bytes": "export function target(lang: string): string { return lang; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 76,
+            "sha256": "000710f55d6001d17b2823431fdcef711dab43bd956cd3b415ed22c9c04e0f50",
+            "bytes": "import { target } from \"./provider.ts\"; const result: string = target(\"en\");"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-3A-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 75,
+            "sha256": "633097f81b2ef952e1b7aa55f0efdb04bab3f43e2ed9cbf879020612dab38948",
+            "bytes": "export function target(lang: string): string { return lang.toLowerCase(); }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 76,
+            "sha256": "000710f55d6001d17b2823431fdcef711dab43bd956cd3b415ed22c9c04e0f50",
+            "bytes": "import { target } from \"./provider.ts\"; const result: string = target(\"en\");"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    },
+    {
+      "id": "CASE-3B",
+      "expected": "VIOLATED",
+      "parent": {
+        "revision": "CASE-3B-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 61,
+            "sha256": "37e94ccdc589c80a0370e41661c255cbd64c56828f1126415951bbb1679b5534",
+            "bytes": "export function target(lang: string): string { return lang; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 111,
+            "sha256": "b5c3c51124b2aa1800d1e38c523b4edb38ea28854686620bc978e0346a51e5bc",
+            "bytes": "import { target } from \"./provider.ts\"; const language: string = \"de\"; const result: string = target(language);"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-3B-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 66,
+            "sha256": "1cf35bfe3639beeb1c7757fc6efb897d81e1254e0afb933679510aa3e3408e89",
+            "bytes": "export function target(lang: \"en\" | \"fr\"): string { return lang; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 111,
+            "sha256": "b5c3c51124b2aa1800d1e38c523b4edb38ea28854686620bc978e0346a51e5bc",
+            "bytes": "import { target } from \"./provider.ts\"; const language: string = \"de\"; const result: string = target(language);"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    },
+    {
+      "id": "CASE-4A",
+      "expected": "PRESERVED",
+      "parent": {
+        "revision": "CASE-4A-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 61,
+            "sha256": "6f33bd76987b6958f81662db71d99eaecfa231714ff03e6222bff70e42060d91",
+            "bytes": "export function target(root: string): string { return root; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 78,
+            "sha256": "8c1fdc053a906a1aac1144f0668c53b70fc702ed01d5eee4a0bfaffda69029b1",
+            "bytes": "import { target } from \"./provider.ts\"; const result: string = target(\"root\");"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-4A-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 68,
+            "sha256": "ddf9d9cec5dc28f4bbb37835e21345300d1ab765a821b21e092455296f7cf06e",
+            "bytes": "export function target(root: string): string { return root.trim(); }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 78,
+            "sha256": "8c1fdc053a906a1aac1144f0668c53b70fc702ed01d5eee4a0bfaffda69029b1",
+            "bytes": "import { target } from \"./provider.ts\"; const result: string = target(\"root\");"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    },
+    {
+      "id": "CASE-4B",
+      "expected": "VIOLATED",
+      "parent": {
+        "revision": "CASE-4B-parent",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 61,
+            "sha256": "6f33bd76987b6958f81662db71d99eaecfa231714ff03e6222bff70e42060d91",
+            "bytes": "export function target(root: string): string { return root; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 78,
+            "sha256": "8c1fdc053a906a1aac1144f0668c53b70fc702ed01d5eee4a0bfaffda69029b1",
+            "bytes": "import { target } from \"./provider.ts\"; const result: string = target(\"root\");"
+          }
+        ]
+      },
+      "candidate": {
+        "revision": "CASE-4B-candidate",
+        "files": [
+          {
+            "path": "provider.ts",
+            "byteLength": 73,
+            "sha256": "2239957285bf7dafcb1097291880b2127c1b3bdf9fac0be10d59b0075d73b34e",
+            "bytes": "export function target(root: string): boolean { return root.length > 0; }"
+          },
+          {
+            "path": "consumer.ts",
+            "byteLength": 78,
+            "sha256": "8c1fdc053a906a1aac1144f0668c53b70fc702ed01d5eee4a0bfaffda69029b1",
+            "bytes": "import { target } from \"./provider.ts\"; const result: string = target(\"root\");"
+          }
+        ]
+      },
+      "invariants": {
+        "consumerUnchanged": true,
+        "providerChanged": true
+      }
+    }
+  ]
+}

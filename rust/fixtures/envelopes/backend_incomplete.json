@@ -1,0 +1,41 @@
+{
+  "envelopeVersion": "SAJIMORA_CONTRACT_ARTIFACT_V1",
+  "reportSchemaVersion": "SAJIMORA_CROSS_LANGUAGE_IMPACT_V1",
+  "kind": "BACKEND_CONTRACT",
+  "snapshot": {
+    "repositoryId": "github.com/example/monorepo",
+    "serviceId": "user-service",
+    "apiVersion": "v1",
+    "parentCommit": "abc1234def5678901234567890123456789abcde",
+    "candidateSnapshot": "sha:inc000000005555"
+  },
+  "profile": {
+    "toolVersion": "0.1.0-test",
+    "frameworkProfile": "SPRING_MVC",
+    "codecProfile": "JACKSON_DEFAULT_V1",
+    "configFingerprint": null
+  },
+  "completeness": {
+    "complete": false,
+    "unresolvedEndpoints": [
+      "/api/users"
+    ],
+    "blockers": [
+      {
+        "code": "AMBIGUOUS_ENDPOINT",
+        "message": "Cannot resolve overloaded /api/users",
+        "file": "UserController.java"
+      }
+    ]
+  },
+  "integrity": {
+    "sha256": "e6092914b4ad22cef07300f60e437e0cd2d0ff30fa70a970954993e138fd490f"
+  },
+  "payload": {
+    "baseUrls": [
+      "http://user-service.internal"
+    ],
+    "proxyPrefixes": [],
+    "endpoints": []
+  }
+}

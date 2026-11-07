@@ -1,0 +1,30 @@
+{
+  "schema_version": "V32.9-TS-real-change-benchmark-v1",
+  "case_schema": {
+    "case_id": "string",
+    "schema_version": "string",
+    "repository": "string",
+    "parent_sha": "immutable git SHA",
+    "candidate_sha": "immutable git SHA",
+    "actual_diff": "canonical git diff",
+    "target": {
+      "path": "repository-relative path",
+      "symbol": "string",
+      "kind": "Sajimora SymbolKind",
+      "identity": "reproducible identity",
+      "location": "source location"
+    },
+    "mutation": { "before": "repository evidence", "after": "repository evidence", "type": "diff-derived classification" },
+    "external_oracle": { "source": "independent source", "evidence": "reviewable evidence", "expected_behavior": "observable behavior" },
+    "benchmarkability": "BENCHMARKABLE | NOT_BENCHMARKABLE",
+    "ground_truth": { "verdict": "PRESERVED | VIOLATED | NOT_APPLICABLE | UNKNOWN | UNRESOLVED", "rationale": "independent rationale" }
+  },
+  "acceptance_rules": [
+    "Target, identity, before state, after state, and mutation must be reproducible from the parent-to-candidate diff.",
+    "External-oracle evidence must establish the relevant observable behavior without Sajimora.",
+    "Sajimora output is prohibited until the case and ground truth are frozen.",
+    "A non-benchmarkable candidate is retained as such; it is never repaired by substitution."
+  ],
+  "determinism": { "canonical_order": "case_id", "forbidden_fields": ["timestamps", "absolute_paths", "process_ids", "temporary_paths"] },
+  "disagreement_policy": "Preserve evidence; investigate without changing the case or Sajimora."
+}

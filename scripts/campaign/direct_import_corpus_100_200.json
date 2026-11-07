@@ -1,0 +1,3915 @@
+{
+  "schemaVersion": "V33_DIRECT_IMPORT_CORPUS_V1",
+  "metrics": {
+    "scannedCommitPairs": 317,
+    "apiRelevantCandidates": 200,
+    "eligibleDirectImportCases": 108,
+    "eligibilityRate": 0.54,
+    "repositoryCounts": {
+      "automation-playwright-nexus-docs": 35,
+      "grocery_fullstack_enhanced": 0,
+      "zod": 35,
+      "TypeScript-Website": 18,
+      "turborepo": 20
+    },
+    "expectedOutcomeCounts": {
+      "PRESERVED": 103,
+      "VIOLATED": 0,
+      "UNKNOWN": 5
+    },
+    "mutationKindCounts": {
+      "INTERNAL_BODY_ONLY": 103,
+      "SIGNATURE_MUTATED": 5
+    }
+  },
+  "cases": [
+    {
+      "queryId": "Q001",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "3cda133877b90ac73c370d4ed9aee1b8c89c20d7",
+      "candidateSha": "acb98cba935d7d319fbb82f4545df4e77eb17ffb",
+      "targetFile": "scripts/campaign/realDiffObligationAdapter.ts",
+      "targetSymbol": "deriveRealDiffObligations",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/campaign/runner_single_case.ts",
+      "consumerLocation": {
+        "filePath": "scripts/campaign/runner_single_case.ts",
+        "importSpecifier": "./realDiffObligationAdapter",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(repositoryRoot: string, parentSha: string, candidateSha: string): ObligationDerivation",
+        "candidateSignatureText": "(repositoryRoot: string, parentSha: string, candidateSha: string): ObligationDerivation"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/campaign/runner_single_case.ts",
+        "importClauseText": "import { deriveRealDiffObligations } from './realDiffObligationAdapter';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q002",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/testSignalDetector.ts",
+      "targetSymbol": "detectTestSignals",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/mcp-server/src/evidence/postEditValidation.ts",
+      "consumerLocation": {
+        "filePath": "packages/mcp-server/src/evidence/postEditValidation.ts",
+        "importSpecifier": "../../../../scripts/v31/stage3A/testSignalDetector",
+        "importLine": 13
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "SIGNATURE_MUTATED",
+      "expectedOutcome": "UNKNOWN",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(relPath: string, fileContent: string): TestSignalResult",
+        "candidateSignatureText": "(relPath: string, fileContent: string, topologyRole?: string): TestSignalResult"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/mcp-server/src/evidence/postEditValidation.ts",
+        "importClauseText": "import { detectTestSignals } from '../../../../scripts/v31/stage3A/testSignalDetector';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Complex signature mutation requiring deeper type algebra proof.",
+      "groundTruthConfidence": "MEDIUM"
+    },
+    {
+      "queryId": "Q003",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/testSignalDetector.ts",
+      "targetSymbol": "detectTestSignals",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/roleGating.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/roleGating.ts",
+        "importSpecifier": "./stage3A/testSignalDetector",
+        "importLine": 12
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "SIGNATURE_MUTATED",
+      "expectedOutcome": "UNKNOWN",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(relPath: string, fileContent: string): TestSignalResult",
+        "candidateSignatureText": "(relPath: string, fileContent: string, topologyRole?: string): TestSignalResult"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/roleGating.ts",
+        "importClauseText": "import { detectTestSignals } from './stage3A/testSignalDetector';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Complex signature mutation requiring deeper type algebra proof.",
+      "groundTruthConfidence": "MEDIUM"
+    },
+    {
+      "queryId": "Q004",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/testSignalDetector.ts",
+      "targetSymbol": "detectTestSignals",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importSpecifier": "./testSignalDetector",
+        "importLine": 14
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "SIGNATURE_MUTATED",
+      "expectedOutcome": "UNKNOWN",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(relPath: string, fileContent: string): TestSignalResult",
+        "candidateSignatureText": "(relPath: string, fileContent: string, topologyRole?: string): TestSignalResult"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importClauseText": "import { detectTestSignals } from './testSignalDetector';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Complex signature mutation requiring deeper type algebra proof.",
+      "groundTruthConfidence": "MEDIUM"
+    },
+    {
+      "queryId": "Q005",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/testSignalDetector.ts",
+      "targetSymbol": "detectTestSignals",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/extractors/javaRoleExtractor.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/extractors/javaRoleExtractor.ts",
+        "importSpecifier": "../testSignalDetector",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "SIGNATURE_MUTATED",
+      "expectedOutcome": "UNKNOWN",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(relPath: string, fileContent: string): TestSignalResult",
+        "candidateSignatureText": "(relPath: string, fileContent: string, topologyRole?: string): TestSignalResult"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/extractors/javaRoleExtractor.ts",
+        "importClauseText": "import { detectTestSignals } from '../testSignalDetector';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Complex signature mutation requiring deeper type algebra proof.",
+      "groundTruthConfidence": "MEDIUM"
+    },
+    {
+      "queryId": "Q006",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/testSignalDetector.ts",
+      "targetSymbol": "detectTestSignals",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/extractors/tsJsRoleExtractor.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/extractors/tsJsRoleExtractor.ts",
+        "importSpecifier": "../testSignalDetector",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "SIGNATURE_MUTATED",
+      "expectedOutcome": "UNKNOWN",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(relPath: string, fileContent: string): TestSignalResult",
+        "candidateSignatureText": "(relPath: string, fileContent: string, topologyRole?: string): TestSignalResult"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/extractors/tsJsRoleExtractor.ts",
+        "importClauseText": "import { detectTestSignals } from '../testSignalDetector';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Complex signature mutation requiring deeper type algebra proof.",
+      "groundTruthConfidence": "MEDIUM"
+    },
+    {
+      "queryId": "Q007",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "packages/mcp-server/src/tools/registry.ts",
+      "targetSymbol": "registerAllTools",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/mcp-server/src/index.ts",
+      "consumerLocation": {
+        "filePath": "packages/mcp-server/src/index.ts",
+        "importSpecifier": "./tools/registry",
+        "importLine": 19
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(server: McpServer, repoRoot: string, vertexClient?: VertexAIClient): void",
+        "candidateSignatureText": "(server: McpServer, repoRoot: string, vertexClient?: VertexAIClient): void"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/mcp-server/src/index.ts",
+        "importClauseText": "import { registerAllTools } from './tools/registry';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q008",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "packages/reasoning/src/retrieval/QueryGraphResolver.ts",
+      "targetSymbol": "tokenizeQuery",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v30/debug_misses_scratch.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v30/debug_misses_scratch.ts",
+        "importSpecifier": "../../packages/reasoning/src/retrieval/QueryGraphResolver",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(text: string): string[]",
+        "candidateSignatureText": "(text: string): string[]"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v30/debug_misses_scratch.ts",
+        "importClauseText": "import { tokenizeQuery } from '../../packages/reasoning/src/retrieval/QueryGraphResolver';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q009",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "packages/reasoning/src/retrieval/QueryGraphResolver.ts",
+      "targetSymbol": "tokenizeQuery",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v30/test_weights_scratch.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v30/test_weights_scratch.ts",
+        "importSpecifier": "../../packages/reasoning/src/retrieval/QueryGraphResolver",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(text: string): string[]",
+        "candidateSignatureText": "(text: string): string[]"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v30/test_weights_scratch.ts",
+        "importClauseText": "import { tokenizeQuery } from '../../packages/reasoning/src/retrieval/QueryGraphResolver';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q010",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/audit_axum_diff.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/audit_axum_diff.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/audit_axum_diff.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q011",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/audit_h1_boundary.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/audit_h1_boundary.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 22
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/audit_h1_boundary.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q012",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/check_axum_h4a.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/check_axum_h4a.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/check_axum_h4a.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q013",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/diagnose_zod_failures.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/diagnose_zod_failures.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/diagnose_zod_failures.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q014",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/run_bavsa_experiment.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/run_bavsa_experiment.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/run_bavsa_experiment.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q015",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/run_ctt_experiment.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/run_ctt_experiment.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 56
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/run_ctt_experiment.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q016",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/run_external_validation.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/run_external_validation.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 16
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/run_external_validation.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q017",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/run_qtiec_experiment.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/run_qtiec_experiment.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/run_qtiec_experiment.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q018",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/run_qtir_experiment.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/run_qtir_experiment.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 56
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/run_qtir_experiment.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q019",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/run_resp_experiment.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/run_resp_experiment.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 51
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/run_resp_experiment.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q020",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A_validator.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A_validator.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 76
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A_validator.ts",
+        "importClauseText": "import { evaluateNegativeEvidence, computeLegacyNegativePenalties } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q021",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/trace_17_pool.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/trace_17_pool.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 8
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/trace_17_pool.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q022",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "evaluateNegativeEvidence",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/validate_ownership.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/validate_ownership.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 11
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility",
+        "candidateSignatureText": "(queryAnalysis: QueryAnalysis, candidate: CandidateAnalysis): NegativeEligibility"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/validate_ownership.ts",
+        "importClauseText": "import { evaluateNegativeEvidence } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q023",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/negativeEvidence.ts",
+      "targetSymbol": "computeLegacyNegativePenalties",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A_validator.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A_validator.ts",
+        "importSpecifier": "./stage3A/negativeEvidence",
+        "importLine": 76
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(relPath: string, fileClassification: CandidateFileClassification, queryIntent: QueryIntent): LegacyNegativePenalties",
+        "candidateSignatureText": "(relPath: string, fileClassification: CandidateFileClassification, queryIntent: QueryIntent): LegacyNegativePenalties"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A_validator.ts",
+        "importClauseText": "import { evaluateNegativeEvidence, computeLegacyNegativePenalties } from './stage3A/negativeEvidence';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q024",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/types.ts",
+      "targetSymbol": "mergeRetrievalResult",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage7_investigator.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage7_investigator.ts",
+        "importSpecifier": "./types",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(original: VerificationObligation, result: Stage2RetrievalResult): VerificationObligation",
+        "candidateSignatureText": "(original: VerificationObligation, result: Stage2RetrievalResult): VerificationObligation"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage7_investigator.ts",
+        "importClauseText": "import { \n  VerificationObligation, \n  SearchHistory, \n  GapAxis, \n  Stage2RetrievalResult, \n  TermTracking, \n  mergeRetrievalResult, \n  pruneStagnantTerms,\n  FROZEN_CONFIG \n} from './types';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q025",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/types.ts",
+      "targetSymbol": "mergeRetrievalResult",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/test_phase3_integration.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/test_phase3_integration.ts",
+        "importSpecifier": "./types",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(original: VerificationObligation, result: Stage2RetrievalResult): VerificationObligation",
+        "candidateSignatureText": "(original: VerificationObligation, result: Stage2RetrievalResult): VerificationObligation"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/test_phase3_integration.ts",
+        "importClauseText": "import { \n  VerificationObligation, \n  SearchHistory, \n  GapAxis, \n  TermTracking,\n  pruneStagnantTerms,\n  mergeRetrievalResult\n} from './types';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q026",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/types.ts",
+      "targetSymbol": "pruneStagnantTerms",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage7_investigator.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage7_investigator.ts",
+        "importSpecifier": "./types",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(obligation: VerificationObligation, trackingMap: Map<string, TermTracking>, currentLoop: number, unresolvedCount?: number): VerificationObligation",
+        "candidateSignatureText": "(obligation: VerificationObligation, trackingMap: Map<string, TermTracking>, currentLoop: number, unresolvedCount?: number): VerificationObligation"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage7_investigator.ts",
+        "importClauseText": "import { \n  VerificationObligation, \n  SearchHistory, \n  GapAxis, \n  Stage2RetrievalResult, \n  TermTracking, \n  mergeRetrievalResult, \n  pruneStagnantTerms,\n  FROZEN_CONFIG \n} from './types';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q027",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/types.ts",
+      "targetSymbol": "pruneStagnantTerms",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/test_phase3_integration.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/test_phase3_integration.ts",
+        "importSpecifier": "./types",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(obligation: VerificationObligation, trackingMap: Map<string, TermTracking>, currentLoop: number, unresolvedCount?: number): VerificationObligation",
+        "candidateSignatureText": "(obligation: VerificationObligation, trackingMap: Map<string, TermTracking>, currentLoop: number, unresolvedCount?: number): VerificationObligation"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/test_phase3_integration.ts",
+        "importClauseText": "import { \n  VerificationObligation, \n  SearchHistory, \n  GapAxis, \n  TermTracking,\n  pruneStagnantTerms,\n  mergeRetrievalResult\n} from './types';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q028",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/repoProfile.ts",
+      "targetSymbol": "getRepoProfile",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/offline_target_resolver.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/offline_target_resolver.ts",
+        "importSpecifier": "./repoProfile",
+        "importLine": 14
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(repoRoot: string, options?: { minSourceFiles?: number; extensions?: Set<string>; forceRefresh?: boolean }): RepoProfile",
+        "candidateSignatureText": "(repoRoot: string, options?: { minSourceFiles?: number; extensions?: Set<string>; forceRefresh?: boolean }): RepoProfile"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/offline_target_resolver.ts",
+        "importClauseText": "import { getRepoProfile, SKIP_DIRS } from './repoProfile';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q029",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/repoProfile.ts",
+      "targetSymbol": "getRepoProfile",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A_validator.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A_validator.ts",
+        "importSpecifier": "./repoProfile",
+        "importLine": 16
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(repoRoot: string, options?: { minSourceFiles?: number; extensions?: Set<string>; forceRefresh?: boolean }): RepoProfile",
+        "candidateSignatureText": "(repoRoot: string, options?: { minSourceFiles?: number; extensions?: Set<string>; forceRefresh?: boolean }): RepoProfile"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A_validator.ts",
+        "importClauseText": "import { getRepoProfile, SKIP_DIRS } from './repoProfile';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q030",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/repoProfile.ts",
+      "targetSymbol": "getRepoProfile",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/test_grocery_profile.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/test_grocery_profile.ts",
+        "importSpecifier": "./repoProfile",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(repoRoot: string, options?: { minSourceFiles?: number; extensions?: Set<string>; forceRefresh?: boolean }): RepoProfile",
+        "candidateSignatureText": "(repoRoot: string, options?: { minSourceFiles?: number; extensions?: Set<string>; forceRefresh?: boolean }): RepoProfile"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/test_grocery_profile.ts",
+        "importClauseText": "import { getRepoProfile } from './repoProfile';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q031",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/languageRegistry.ts",
+      "targetSymbol": "resolveLanguage",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importSpecifier": "./languageRegistry",
+        "importLine": 15
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(filePath: string): string | null",
+        "candidateSignatureText": "(filePath: string): string | null"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importClauseText": "import { resolveLanguage, isExistingAnalyzerLanguage, hasGrammar } from './languageRegistry';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q032",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/languageRegistry.ts",
+      "targetSymbol": "resolveLanguage",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/candidateGenerator.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/candidateGenerator.ts",
+        "importSpecifier": "./languageRegistry",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(filePath: string): string | null",
+        "candidateSignatureText": "(filePath: string): string | null"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/candidateGenerator.ts",
+        "importClauseText": "import { resolveLanguage } from './languageRegistry';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q033",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/languageRegistry.ts",
+      "targetSymbol": "resolveLanguage",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/roleEvidenceAnalyzer.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/roleEvidenceAnalyzer.ts",
+        "importSpecifier": "./languageRegistry",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(filePath: string): string | null",
+        "candidateSignatureText": "(filePath: string): string | null"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/roleEvidenceAnalyzer.ts",
+        "importClauseText": "import { resolveLanguage } from './languageRegistry';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q034",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/languageRegistry.ts",
+      "targetSymbol": "isExistingAnalyzerLanguage",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importSpecifier": "./languageRegistry",
+        "importLine": 15
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(language: string | null): boolean",
+        "candidateSignatureText": "(language: string | null): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importClauseText": "import { resolveLanguage, isExistingAnalyzerLanguage, hasGrammar } from './languageRegistry';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q035",
+      "repository": "automation-playwright-nexus-docs",
+      "parentSha": "616a320b8beb49156979cf9aeb4a5d53524eafb7",
+      "candidateSha": "3c0e9ca03dea1e6f66e0bb194821de7323f43d8d",
+      "targetFile": "scripts/v31/stage3A/languageRegistry.ts",
+      "targetSymbol": "hasGrammar",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+      "consumerLocation": {
+        "filePath": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importSpecifier": "./languageRegistry",
+        "importLine": 15
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(language: string | null): boolean",
+        "candidateSignatureText": "(language: string | null): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "scripts/v31/stage3A/candidateAnalyzer.ts",
+        "importClauseText": "import { resolveLanguage, isExistingAnalyzerLanguage, hasGrammar } from './languageRegistry';"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q036",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidBase64",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(data: string): boolean",
+        "candidateSignatureText": "(data: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q037",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidBase64URL",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(data: string): boolean",
+        "candidateSignatureText": "(data: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q038",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidCIDRv6",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: string): boolean",
+        "candidateSignatureText": "(value: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q039",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidCreditCard",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(input: string): boolean",
+        "candidateSignatureText": "(input: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q040",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidIPv6",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: string): boolean",
+        "candidateSignatureText": "(value: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q041",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidJWT",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(token: string, algorithm?: util.JWTAlgorithm | null): boolean",
+        "candidateSignatureText": "(token: string, algorithm?: util.JWTAlgorithm | null): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q042",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "mergeValues",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(a: any, b: any): { valid: true; data: any } | { valid: false; mergeErrorPath: (string | number)[] }",
+        "candidateSignatureText": "(a: any, b: any): { valid: true; data: any } | { valid: false; mergeErrorPath: (string | number)[] }"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q043",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "parseURLObject",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(trimmed: string, def: Pick<$ZodURLDef, \"protocol\" | \"normalize\">): URL | typeof URL_BAD_FORMAT | typeof URL_UNPARSEABLE",
+        "candidateSignatureText": "(trimmed: string, def: Pick<$ZodURLDef, \"protocol\" | \"normalize\">): URL | typeof URL_BAD_FORMAT | typeof URL_UNPARSEABLE"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q044",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "stripTabAndNewline",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: string): string",
+        "candidateSignatureText": "(value: string): string"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q045",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "urlHostnameOk",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(url: URL, hostname: RegExp): boolean",
+        "candidateSignatureText": "(url: URL, hostname: RegExp): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q046",
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "urlProtocolOk",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(url: URL, protocol: RegExp): boolean",
+        "candidateSignatureText": "(url: URL, protocol: RegExp): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q047",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "assignProp",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/classic/from-json-schema.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/classic/from-json-schema.ts",
+        "importSpecifier": "../core/util.js",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(target: T, prop: K, value: K extends keyof T ? T[K] : any): void",
+        "candidateSignatureText": "(target: T, prop: K, value: K extends keyof T ? T[K] : any): void"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/classic/from-json-schema.ts",
+        "importClauseText": "import { assignProp, isPlainObject } from \"../core/util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q048",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "assignProp",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/json-schema-processors.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/json-schema-processors.ts",
+        "importSpecifier": "./util.js",
+        "importLine": 20
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(target: T, prop: K, value: K extends keyof T ? T[K] : any): void",
+        "candidateSignatureText": "(target: T, prop: K, value: K extends keyof T ? T[K] : any): void"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/json-schema-processors.ts",
+        "importClauseText": "import { assignProp, getEnumValues } from \"./util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q049",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "assignProp",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/to-json-schema.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/to-json-schema.ts",
+        "importSpecifier": "./util.js",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(target: T, prop: K, value: K extends keyof T ? T[K] : any): void",
+        "candidateSignatureText": "(target: T, prop: K, value: K extends keyof T ? T[K] : any): void"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/to-json-schema.ts",
+        "importClauseText": "import { assignProp } from \"./util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q050",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "isPlainObject",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/classic/from-json-schema.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/classic/from-json-schema.ts",
+        "importSpecifier": "../core/util.js",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(o: any): o is Record<PropertyKey, unknown>",
+        "candidateSignatureText": "(o: any): o is Record<PropertyKey, unknown>"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/classic/from-json-schema.ts",
+        "importClauseText": "import { assignProp, isPlainObject } from \"../core/util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q051",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "clone",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/classic/in-out.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/classic/in-out.ts",
+        "importSpecifier": "../core/util.js",
+        "importLine": 2
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(inst: T, def?: T[\"_zod\"][\"def\"], params?: { parent: boolean }): T",
+        "candidateSignatureText": "(inst: T, def?: T[\"_zod\"][\"def\"], params?: { parent: boolean }): T"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/classic/in-out.ts",
+        "importClauseText": "import { clone, mergeDefs } from \"../core/util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q052",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "clone",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/visit.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/visit.ts",
+        "importSpecifier": "./util.js",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(inst: T, def?: T[\"_zod\"][\"def\"], params?: { parent: boolean }): T",
+        "candidateSignatureText": "(inst: T, def?: T[\"_zod\"][\"def\"], params?: { parent: boolean }): T"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/visit.ts",
+        "importClauseText": "import { clone } from \"./util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q053",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "clone",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/mini/in-out.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/mini/in-out.ts",
+        "importSpecifier": "../core/util.js",
+        "importLine": 2
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(inst: T, def?: T[\"_zod\"][\"def\"], params?: { parent: boolean }): T",
+        "candidateSignatureText": "(inst: T, def?: T[\"_zod\"][\"def\"], params?: { parent: boolean }): T"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/mini/in-out.ts",
+        "importClauseText": "import { clone, mergeDefs } from \"../core/util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q054",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "mergeDefs",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/classic/in-out.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/classic/in-out.ts",
+        "importSpecifier": "../core/util.js",
+        "importLine": 2
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(defs: Record<string, any>[]): any",
+        "candidateSignatureText": "(defs: Record<string, any>[]): any"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/classic/in-out.ts",
+        "importClauseText": "import { clone, mergeDefs } from \"../core/util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q055",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "mergeDefs",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/mini/in-out.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/mini/in-out.ts",
+        "importSpecifier": "../core/util.js",
+        "importLine": 2
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(defs: Record<string, any>[]): any",
+        "candidateSignatureText": "(defs: Record<string, any>[]): any"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/mini/in-out.ts",
+        "importClauseText": "import { clone, mergeDefs } from \"../core/util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q056",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "getEnumValues",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/json-schema-processors.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/json-schema-processors.ts",
+        "importSpecifier": "./util.js",
+        "importLine": 20
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(entries: EnumLike): EnumValue[]",
+        "candidateSignatureText": "(entries: EnumLike): EnumValue[]"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/json-schema-processors.ts",
+        "importClauseText": "import { assignProp, getEnumValues } from \"./util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q057",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "parsedType",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/tests/locales/en.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/tests/locales/en.test.ts",
+        "importSpecifier": "../../util.js",
+        "importLine": 2
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(data: unknown): errors.$ZodInvalidTypeExpected",
+        "candidateSignatureText": "(data: unknown): errors.$ZodInvalidTypeExpected"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/tests/locales/en.test.ts",
+        "importClauseText": "import { parsedType } from \"../../util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q058",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "parsedType",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/tests/locales/tk.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/tests/locales/tk.test.ts",
+        "importSpecifier": "../../util.js",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(data: unknown): errors.$ZodInvalidTypeExpected",
+        "candidateSignatureText": "(data: unknown): errors.$ZodInvalidTypeExpected"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/tests/locales/tk.test.ts",
+        "importClauseText": "import { parsedType } from \"../../util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q059",
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "targetFile": "packages/zod/src/v4/core/util.ts",
+      "targetSymbol": "parsedType",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/tests/locales/tr.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/tests/locales/tr.test.ts",
+        "importSpecifier": "../../util.js",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(data: unknown): errors.$ZodInvalidTypeExpected",
+        "candidateSignatureText": "(data: unknown): errors.$ZodInvalidTypeExpected"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/tests/locales/tr.test.ts",
+        "importClauseText": "import { parsedType } from \"../../util.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q060",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidBase64",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(data: string): boolean",
+        "candidateSignatureText": "(data: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q061",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidBase64URL",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(data: string): boolean",
+        "candidateSignatureText": "(data: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q062",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidCIDRv6",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: string): boolean",
+        "candidateSignatureText": "(value: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q063",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidCreditCard",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(input: string): boolean",
+        "candidateSignatureText": "(input: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q064",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidIPv6",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: string): boolean",
+        "candidateSignatureText": "(value: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q065",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "isValidJWT",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(token: string, algorithm?: util.JWTAlgorithm | null): boolean",
+        "candidateSignatureText": "(token: string, algorithm?: util.JWTAlgorithm | null): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q066",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "mergeValues",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(a: any, b: any): { valid: true; data: any } | { valid: false; mergeErrorPath: (string | number)[] }",
+        "candidateSignatureText": "(a: any, b: any): { valid: true; data: any } | { valid: false; mergeErrorPath: (string | number)[] }"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q067",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "parseURLObject",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(trimmed: string, def: Pick<$ZodURLDef, \"protocol\" | \"normalize\">): URL | typeof URL_BAD_FORMAT | typeof URL_UNPARSEABLE",
+        "candidateSignatureText": "(trimmed: string, def: Pick<$ZodURLDef, \"protocol\" | \"normalize\">): URL | typeof URL_BAD_FORMAT | typeof URL_UNPARSEABLE"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q068",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "stripTabAndNewline",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: string): string",
+        "candidateSignatureText": "(value: string): string"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q069",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "urlHostnameOk",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(url: URL, hostname: RegExp): boolean",
+        "candidateSignatureText": "(url: URL, hostname: RegExp): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q070",
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "targetFile": "packages/zod/src/v4/core/schemas.ts",
+      "targetSymbol": "urlProtocolOk",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/zod/src/v4/core/compile.ts",
+      "consumerLocation": {
+        "filePath": "packages/zod/src/v4/core/compile.ts",
+        "importSpecifier": "./schemas.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(url: URL, protocol: RegExp): boolean",
+        "candidateSignatureText": "(url: URL, protocol: RegExp): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/zod/src/v4/core/compile.ts",
+        "importClauseText": "import {\n  isValidBase64,\n  isValidBase64URL,\n  isValidCIDRv6,\n  isValidCreditCard,\n  isValidIPv6,\n  isValidJWT,\n  mergeValues,\n  parseURLObject,\n  stripTabAndNewline,\n  urlHostnameOk,\n  urlProtocolOk,\n} from \"./schemas.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q071",
+      "repository": "TypeScript-Website",
+      "parentSha": "c964e94d427477ac93b99d1445ffe8e64234bb53",
+      "candidateSha": "1843cf45e06193b3dc072088785fe2bfad477de5",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createFSBackedSystem",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System",
+        "candidateSignatureText": "(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importClauseText": "import { createFSBackedSystem, createVirtualTypeScriptEnvironment } from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q072",
+      "repository": "TypeScript-Website",
+      "parentSha": "c964e94d427477ac93b99d1445ffe8e64234bb53",
+      "candidateSha": "1843cf45e06193b3dc072088785fe2bfad477de5",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualTypeScriptEnvironment",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment",
+        "candidateSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importClauseText": "import { createFSBackedSystem, createVirtualTypeScriptEnvironment } from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q073",
+      "repository": "TypeScript-Website",
+      "parentSha": "c964e94d427477ac93b99d1445ffe8e64234bb53",
+      "candidateSha": "1843cf45e06193b3dc072088785fe2bfad477de5",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualTypeScriptEnvironment",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment",
+        "candidateSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q074",
+      "repository": "TypeScript-Website",
+      "parentSha": "c964e94d427477ac93b99d1445ffe8e64234bb53",
+      "candidateSha": "1843cf45e06193b3dc072088785fe2bfad477de5",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createSystem",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(files: Map<string, string>): System",
+        "candidateSignatureText": "(files: Map<string, string>): System"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q075",
+      "repository": "TypeScript-Website",
+      "parentSha": "c964e94d427477ac93b99d1445ffe8e64234bb53",
+      "candidateSha": "1843cf45e06193b3dc072088785fe2bfad477de5",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualCompilerHost",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred",
+        "candidateSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q076",
+      "repository": "TypeScript-Website",
+      "parentSha": "c3f02791e58c0fd6dd43ab1f4ba2bc1af23da34a",
+      "candidateSha": "4a30b022bc0c1df6b6abb71c99c104f3b19f2c91",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createFSBackedSystem",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System",
+        "candidateSignatureText": "(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importClauseText": "import { createFSBackedSystem, createVirtualTypeScriptEnvironment } from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q077",
+      "repository": "TypeScript-Website",
+      "parentSha": "c3f02791e58c0fd6dd43ab1f4ba2bc1af23da34a",
+      "candidateSha": "4a30b022bc0c1df6b6abb71c99c104f3b19f2c91",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualTypeScriptEnvironment",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment",
+        "candidateSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/fsbacked.test.ts",
+        "importClauseText": "import { createFSBackedSystem, createVirtualTypeScriptEnvironment } from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q078",
+      "repository": "TypeScript-Website",
+      "parentSha": "c3f02791e58c0fd6dd43ab1f4ba2bc1af23da34a",
+      "candidateSha": "4a30b022bc0c1df6b6abb71c99c104f3b19f2c91",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualTypeScriptEnvironment",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment",
+        "candidateSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q079",
+      "repository": "TypeScript-Website",
+      "parentSha": "c3f02791e58c0fd6dd43ab1f4ba2bc1af23da34a",
+      "candidateSha": "4a30b022bc0c1df6b6abb71c99c104f3b19f2c91",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createSystem",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(files: Map<string, string>): System",
+        "candidateSignatureText": "(files: Map<string, string>): System"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q080",
+      "repository": "TypeScript-Website",
+      "parentSha": "c3f02791e58c0fd6dd43ab1f4ba2bc1af23da34a",
+      "candidateSha": "4a30b022bc0c1df6b6abb71c99c104f3b19f2c91",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualCompilerHost",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred",
+        "candidateSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q081",
+      "repository": "TypeScript-Website",
+      "parentSha": "441338c04fbbef834ffa1ac6dc0dc8816e9137fc",
+      "candidateSha": "725841adc9e5b734ccb0663fccb2ba05d0dcca62",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualTypeScriptEnvironment",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment",
+        "candidateSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q082",
+      "repository": "TypeScript-Website",
+      "parentSha": "441338c04fbbef834ffa1ac6dc0dc8816e9137fc",
+      "candidateSha": "725841adc9e5b734ccb0663fccb2ba05d0dcca62",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createSystem",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(files: Map<string, string>): System",
+        "candidateSignatureText": "(files: Map<string, string>): System"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q083",
+      "repository": "TypeScript-Website",
+      "parentSha": "441338c04fbbef834ffa1ac6dc0dc8816e9137fc",
+      "candidateSha": "725841adc9e5b734ccb0663fccb2ba05d0dcca62",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualCompilerHost",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred",
+        "candidateSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q084",
+      "repository": "TypeScript-Website",
+      "parentSha": "b5d65fb04d431f7da49d5dee9831314f060e5444",
+      "candidateSha": "441338c04fbbef834ffa1ac6dc0dc8816e9137fc",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualTypeScriptEnvironment",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment",
+        "candidateSignatureText": "(sys: System, rootFiles: string[], ts: TS, compilerOptions?: CompilerOptions, customTransformers?: CustomTransformers): VirtualTypeScriptEnvironment"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q085",
+      "repository": "TypeScript-Website",
+      "parentSha": "b5d65fb04d431f7da49d5dee9831314f060e5444",
+      "candidateSha": "441338c04fbbef834ffa1ac6dc0dc8816e9137fc",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createSystem",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(files: Map<string, string>): System",
+        "candidateSignatureText": "(files: Map<string, string>): System"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q086",
+      "repository": "TypeScript-Website",
+      "parentSha": "b5d65fb04d431f7da49d5dee9831314f060e5444",
+      "candidateSha": "441338c04fbbef834ffa1ac6dc0dc8816e9137fc",
+      "targetFile": "packages/typescript-vfs/src/index.ts",
+      "targetSymbol": "createVirtualCompilerHost",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/typescript-vfs/test/index.test.ts",
+        "importSpecifier": "../src",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred",
+        "candidateSignatureText": "(sys: System, compilerOptions: CompilerOptions, ts: TS): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/typescript-vfs/test/index.test.ts",
+        "importClauseText": "import {\n  createSystem,\n  createVirtualTypeScriptEnvironment,\n  createDefaultMapFromNodeModules,\n  createDefaultMapFromCDN,\n  knownLibFilesForCompilerOptions,\n  createVirtualCompilerHost,\n} from \"../src\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q087",
+      "repository": "TypeScript-Website",
+      "parentSha": "23cec9e38a85b0498629f361b49a5ead0f6bcf27",
+      "candidateSha": "b5d65fb04d431f7da49d5dee9831314f060e5444",
+      "targetFile": "packages/sandbox/src/compilerOptions.ts",
+      "targetSymbol": "getDefaultSandboxCompilerOptions",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/sandbox/src/index.ts",
+      "consumerLocation": {
+        "filePath": "packages/sandbox/src/index.ts",
+        "importSpecifier": "./compilerOptions",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(config: SandboxConfig, monaco: Monaco, ts: { versionMajorMinor: string }): inferred",
+        "candidateSignatureText": "(config: SandboxConfig, monaco: Monaco, ts: { versionMajorMinor: string }): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/sandbox/src/index.ts",
+        "importClauseText": "import {\n  getDefaultSandboxCompilerOptions,\n  getCompilerOptionsFromParams,\n  createURLQueryWithCompilerOptions,\n} from \"./compilerOptions\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q088",
+      "repository": "TypeScript-Website",
+      "parentSha": "23cec9e38a85b0498629f361b49a5ead0f6bcf27",
+      "candidateSha": "b5d65fb04d431f7da49d5dee9831314f060e5444",
+      "targetFile": "packages/sandbox/src/compilerOptions.ts",
+      "targetSymbol": "getDefaultSandboxCompilerOptions",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/sandbox/test/defaultCompilerOptions.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/sandbox/test/defaultCompilerOptions.test.ts",
+        "importSpecifier": "../src/compilerOptions",
+        "importLine": 1
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(config: SandboxConfig, monaco: Monaco, ts: { versionMajorMinor: string }): inferred",
+        "candidateSignatureText": "(config: SandboxConfig, monaco: Monaco, ts: { versionMajorMinor: string }): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/sandbox/test/defaultCompilerOptions.test.ts",
+        "importClauseText": "import { getCompilerOptionsFromParams, getDefaultSandboxCompilerOptions } from \"../src/compilerOptions\""
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q089",
+      "repository": "turborepo",
+      "parentSha": "4db9ca09bdac8cc0f8ece533cc480c10947f7bc1",
+      "candidateSha": "ef4677219f6d31911aff5a0c5aa953c53e12c40b",
+      "targetFile": "apps/docs/app/[lang]/devtools/devtools-client.tsx",
+      "targetSymbol": "DevtoolsClientComponent",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/docs/app/[lang]/devtools/page.tsx",
+      "consumerLocation": {
+        "filePath": "apps/docs/app/[lang]/devtools/page.tsx",
+        "importSpecifier": "./devtools-client",
+        "importLine": 2
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(): inferred",
+        "candidateSignatureText": "(): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/docs/app/[lang]/devtools/page.tsx",
+        "importClauseText": "import { DevtoolsClientComponent } from \"./devtools-client\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q090",
+      "repository": "turborepo",
+      "parentSha": "4db9ca09bdac8cc0f8ece533cc480c10947f7bc1",
+      "candidateSha": "ef4677219f6d31911aff5a0c5aa953c53e12c40b",
+      "targetFile": "apps/docs/components/diagram/layout.ts",
+      "targetSymbol": "layoutFlowchart",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/docs/components/diagram/flow-diagram.tsx",
+      "consumerLocation": {
+        "filePath": "apps/docs/components/diagram/flow-diagram.tsx",
+        "importSpecifier": "./layout",
+        "importLine": 15
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(nodes: Node[], edges: Edge[], direction: FlowDirection, subgraphs?: FlowSubgraph[]): LayoutResult",
+        "candidateSignatureText": "(nodes: Node[], edges: Edge[], direction: FlowDirection, subgraphs?: FlowSubgraph[]): LayoutResult"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/docs/components/diagram/flow-diagram.tsx",
+        "importClauseText": "import { layoutFlowchart } from \"./layout\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q091",
+      "repository": "turborepo",
+      "parentSha": "996a0bb50acd63e607d85ace82cf6e95cc8d4d56",
+      "candidateSha": "c02f97ef2bbfb2e1179fba6197fa44bc825f5d10",
+      "targetFile": "packages/eslint-plugin-turbo/lib/rules/no-undeclared-env-vars.ts",
+      "targetSymbol": "clearCache",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/eslint-plugin-turbo/__tests__/lib/no-undeclared-env-vars/workspace-configs/no-undeclared-env-vars.commonjs.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/eslint-plugin-turbo/__tests__/lib/no-undeclared-env-vars/workspace-configs/no-undeclared-env-vars.commonjs.test.ts",
+        "importSpecifier": "../../../../lib/rules/no-undeclared-env-vars",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(): void",
+        "candidateSignatureText": "(): void"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/eslint-plugin-turbo/__tests__/lib/no-undeclared-env-vars/workspace-configs/no-undeclared-env-vars.commonjs.test.ts",
+        "importClauseText": "import rule, { clearCache } from \"../../../../lib/rules/no-undeclared-env-vars\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q092",
+      "repository": "turborepo",
+      "parentSha": "996a0bb50acd63e607d85ace82cf6e95cc8d4d56",
+      "candidateSha": "c02f97ef2bbfb2e1179fba6197fa44bc825f5d10",
+      "targetFile": "packages/eslint-plugin-turbo/lib/rules/no-undeclared-env-vars.ts",
+      "targetSymbol": "clearCache",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/eslint-plugin-turbo/__tests__/lib/no-undeclared-env-vars/workspace-configs/no-undeclared-env-vars.module.test.ts",
+      "consumerLocation": {
+        "filePath": "packages/eslint-plugin-turbo/__tests__/lib/no-undeclared-env-vars/workspace-configs/no-undeclared-env-vars.module.test.ts",
+        "importSpecifier": "../../../../lib/rules/no-undeclared-env-vars",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(): void",
+        "candidateSignatureText": "(): void"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/eslint-plugin-turbo/__tests__/lib/no-undeclared-env-vars/workspace-configs/no-undeclared-env-vars.module.test.ts",
+        "importClauseText": "import rule, { clearCache } from \"../../../../lib/rules/no-undeclared-env-vars\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q093",
+      "repository": "turborepo",
+      "parentSha": "acd35c831d848ab5991ffd40d6ead39f73352c51",
+      "candidateSha": "a6b88eefa867457c8eab806515628bbfe882ebf5",
+      "targetFile": "packages/turbo-utils/src/examples.ts",
+      "targetSymbol": "getRepoInfo",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/turbo-utils/src/create-project.ts",
+      "consumerLocation": {
+        "filePath": "packages/turbo-utils/src/create-project.ts",
+        "importSpecifier": "./examples",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(url: URL, examplePath?: string): Promise<RepoInfo | undefined>",
+        "candidateSignatureText": "(url: URL, examplePath?: string): Promise<RepoInfo | undefined>"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/turbo-utils/src/create-project.ts",
+        "importClauseText": "import {\n  downloadAndExtractExample,\n  downloadAndExtractRepo,\n  getRepoInfo,\n  existsInRepo,\n  hasRepo,\n  type RepoInfo\n} from \"./examples\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q094",
+      "repository": "turborepo",
+      "parentSha": "acd35c831d848ab5991ffd40d6ead39f73352c51",
+      "candidateSha": "a6b88eefa867457c8eab806515628bbfe882ebf5",
+      "targetFile": "packages/turbo-utils/src/examples.ts",
+      "targetSymbol": "hasRepo",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/turbo-utils/src/create-project.ts",
+      "consumerLocation": {
+        "filePath": "packages/turbo-utils/src/create-project.ts",
+        "importSpecifier": "./examples",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "({\n  username,\n  name,\n  branch,\n  filePath\n}: RepoInfo): Promise<boolean>",
+        "candidateSignatureText": "({\n  username,\n  name,\n  branch,\n  filePath\n}: RepoInfo): Promise<boolean>"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/turbo-utils/src/create-project.ts",
+        "importClauseText": "import {\n  downloadAndExtractExample,\n  downloadAndExtractRepo,\n  getRepoInfo,\n  existsInRepo,\n  hasRepo,\n  type RepoInfo\n} from \"./examples\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q095",
+      "repository": "turborepo",
+      "parentSha": "acd35c831d848ab5991ffd40d6ead39f73352c51",
+      "candidateSha": "a6b88eefa867457c8eab806515628bbfe882ebf5",
+      "targetFile": "packages/turbo-utils/src/examples.ts",
+      "targetSymbol": "downloadAndExtractRepo",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/turbo-utils/src/create-project.ts",
+      "consumerLocation": {
+        "filePath": "packages/turbo-utils/src/create-project.ts",
+        "importSpecifier": "./examples",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(root: string, { username, name, branch, filePath }: RepoInfo): inferred",
+        "candidateSignatureText": "(root: string, { username, name, branch, filePath }: RepoInfo): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/turbo-utils/src/create-project.ts",
+        "importClauseText": "import {\n  downloadAndExtractExample,\n  downloadAndExtractRepo,\n  getRepoInfo,\n  existsInRepo,\n  hasRepo,\n  type RepoInfo\n} from \"./examples\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q096",
+      "repository": "turborepo",
+      "parentSha": "acd35c831d848ab5991ffd40d6ead39f73352c51",
+      "candidateSha": "a6b88eefa867457c8eab806515628bbfe882ebf5",
+      "targetFile": "packages/turbo-utils/src/examples.ts",
+      "targetSymbol": "downloadAndExtractExample",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/turbo-utils/src/create-project.ts",
+      "consumerLocation": {
+        "filePath": "packages/turbo-utils/src/create-project.ts",
+        "importSpecifier": "./examples",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(root: string, name: string): inferred",
+        "candidateSignatureText": "(root: string, name: string): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/turbo-utils/src/create-project.ts",
+        "importClauseText": "import {\n  downloadAndExtractExample,\n  downloadAndExtractRepo,\n  getRepoInfo,\n  existsInRepo,\n  hasRepo,\n  type RepoInfo\n} from \"./examples\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q097",
+      "repository": "turborepo",
+      "parentSha": "acd35c831d848ab5991ffd40d6ead39f73352c51",
+      "candidateSha": "a6b88eefa867457c8eab806515628bbfe882ebf5",
+      "targetFile": "packages/turbo-utils/src/examples.ts",
+      "targetSymbol": "existsInRepo",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "packages/turbo-utils/src/create-project.ts",
+      "consumerLocation": {
+        "filePath": "packages/turbo-utils/src/create-project.ts",
+        "importSpecifier": "./examples",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(nameOrUrl: string): Promise<boolean>",
+        "candidateSignatureText": "(nameOrUrl: string): Promise<boolean>"
+      },
+      "consumerEvidence": {
+        "consumerFile": "packages/turbo-utils/src/create-project.ts",
+        "importClauseText": "import {\n  downloadAndExtractExample,\n  downloadAndExtractRepo,\n  getRepoInfo,\n  existsInRepo,\n  hasRepo,\n  type RepoInfo\n} from \"./examples\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q098",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/operator-console.ts",
+      "targetSymbol": "selectedOperatorModel",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/agent/agent.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/agent/agent.ts",
+        "importSpecifier": "./lib/operator-console.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(auth: OperatorAuth | null | undefined): string | undefined",
+        "candidateSignatureText": "(auth: OperatorAuth | null | undefined): string | undefined"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/agent/agent.ts",
+        "importClauseText": "import { selectedOperatorModel } from \"./lib/operator-console.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q099",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/operator-console.ts",
+      "targetSymbol": "isOperatorSessionPrincipal",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/agent/tools/create_pull_request.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/agent/tools/create_pull_request.ts",
+        "importSpecifier": "../lib/operator-console.js",
+        "importLine": 7
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(auth: | {\n        readonly authenticator: string;\n        readonly principalId: string;\n        readonly principalType: string;\n      }\n    | null\n    | undefined): boolean",
+        "candidateSignatureText": "(auth: | {\n        readonly authenticator: string;\n        readonly principalId: string;\n        readonly principalType: string;\n      }\n    | null\n    | undefined): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/agent/tools/create_pull_request.ts",
+        "importClauseText": "import { isOperatorSessionPrincipal } from \"../lib/operator-console.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q100",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/operator-console.ts",
+      "targetSymbol": "isOperatorSessionPrincipal",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/agent/tools/rebuild_factory_image.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/agent/tools/rebuild_factory_image.ts",
+        "importSpecifier": "../lib/operator-console.js",
+        "importLine": 6
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(auth: | {\n        readonly authenticator: string;\n        readonly principalId: string;\n        readonly principalType: string;\n      }\n    | null\n    | undefined): boolean",
+        "candidateSignatureText": "(auth: | {\n        readonly authenticator: string;\n        readonly principalId: string;\n        readonly principalType: string;\n      }\n    | null\n    | undefined): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/agent/tools/rebuild_factory_image.ts",
+        "importClauseText": "import { isOperatorSessionPrincipal } from \"../lib/operator-console.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q101",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/workspace.ts",
+      "targetSymbol": "isWorkspaceMutationRequest",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/app/api/workspaces/[workspaceId]/terminal/route.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/app/api/workspaces/[workspaceId]/terminal/route.ts",
+        "importSpecifier": "../../../../../agent/lib/workspace",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(request: Request, action: string): boolean",
+        "candidateSignatureText": "(request: Request, action: string): boolean"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/app/api/workspaces/[workspaceId]/terminal/route.ts",
+        "importClauseText": "import {\n  isWorkspaceMutationRequest,\n  WORKSPACE_TERMINAL_ACTION\n} from \"../../../../../agent/lib/workspace\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q102",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/workspace.ts",
+      "targetSymbol": "toWorkspaceView",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/app/api/workspaces/[workspaceId]/route.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/app/api/workspaces/[workspaceId]/route.ts",
+        "importSpecifier": "../../../../agent/lib/workspace",
+        "importLine": 2
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(workspace: WorkspaceRecord): PublicWorkspaceView",
+        "candidateSignatureText": "(workspace: WorkspaceRecord): PublicWorkspaceView"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/app/api/workspaces/[workspaceId]/route.ts",
+        "importClauseText": "import { toWorkspaceView } from \"../../../../agent/lib/workspace\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q103",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/workspace.ts",
+      "targetSymbol": "isWorkspaceId",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/agent/lib/workspace-store.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/agent/lib/workspace-store.ts",
+        "importSpecifier": "./workspace",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: unknown): value is string",
+        "candidateSignatureText": "(value: unknown): value is string"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/agent/lib/workspace-store.ts",
+        "importClauseText": "import {\n  isWorkspaceId,\n  isWorkspaceRecord,\n  type WorkspaceRecord\n} from \"./workspace\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q104",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/workspace.ts",
+      "targetSymbol": "isWorkspaceRecord",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/agent/lib/workspace-store.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/agent/lib/workspace-store.ts",
+        "importSpecifier": "./workspace",
+        "importLine": 4
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(value: unknown): value is WorkspaceRecord",
+        "candidateSignatureText": "(value: unknown): value is WorkspaceRecord"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/agent/lib/workspace-store.ts",
+        "importClauseText": "import {\n  isWorkspaceId,\n  isWorkspaceRecord,\n  type WorkspaceRecord\n} from \"./workspace\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q105",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/agent/lib/workspace.ts",
+      "targetSymbol": "toWorkspaceSummary",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/app/api/workspaces/route.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/app/api/workspaces/route.ts",
+        "importSpecifier": "../../../agent/lib/workspace",
+        "importLine": 5
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(workspace: WorkspaceRecord): WorkspaceSummary",
+        "candidateSignatureText": "(workspace: WorkspaceRecord): WorkspaceSummary"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/app/api/workspaces/route.ts",
+        "importClauseText": "import { toWorkspaceSummary } from \"../../../agent/lib/workspace\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q106",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/app/workspace-composer.tsx",
+      "targetSymbol": "WorkspaceComposer",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/app/work/page.tsx",
+      "consumerLocation": {
+        "filePath": "apps/factory/app/work/page.tsx",
+        "importSpecifier": "../workspace-composer",
+        "importLine": 8
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "({\n  defaultModel,\n  models\n}: WorkspaceComposerProps): inferred",
+        "candidateSignatureText": "({\n  defaultModel,\n  models\n}: WorkspaceComposerProps): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/app/work/page.tsx",
+        "importClauseText": "import { WorkspaceComposer } from \"../workspace-composer\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q107",
+      "repository": "turborepo",
+      "parentSha": "8ef6aaf286ec874ab1637c8bdc191e86a095a458",
+      "candidateSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+      "targetFile": "apps/factory/app/workspace-client.tsx",
+      "targetSymbol": "WorkspaceClient",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/app/workspaces/[id]/page.tsx",
+      "consumerLocation": {
+        "filePath": "apps/factory/app/workspaces/[id]/page.tsx",
+        "importSpecifier": "../../workspace-client",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "({ workspaceId }: WorkspaceClientProps): inferred",
+        "candidateSignatureText": "({ workspaceId }: WorkspaceClientProps): inferred"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/app/workspaces/[id]/page.tsx",
+        "importClauseText": "import { WorkspaceClient } from \"../../workspace-client\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    },
+    {
+      "queryId": "Q108",
+      "repository": "turborepo",
+      "parentSha": "ebef94217f96b1eb7d1cc6a8c8067da9e4169781",
+      "candidateSha": "a57476f09281771d32d08d816a3602bdb34e1374",
+      "targetFile": "apps/factory/agent/lib/performance-models.ts",
+      "targetSymbol": "selectPerformanceModels",
+      "declarationKind": "FunctionDeclaration",
+      "consumerFile": "apps/factory/agent/agent.ts",
+      "consumerLocation": {
+        "filePath": "apps/factory/agent/agent.ts",
+        "importSpecifier": "./lib/performance-models.js",
+        "importLine": 3
+      },
+      "importForm": "DIRECT_RELATIVE_NAMED",
+      "mutationKind": "INTERNAL_BODY_ONLY",
+      "expectedOutcome": "PRESERVED",
+      "eligibilityEvidence": {
+        "providerExportedInBoth": true,
+        "consumerDirectNamedImportInBoth": true,
+        "consumerUnchangedBetweenRevisions": true,
+        "providerModifiedBetweenRevisions": true
+      },
+      "providerIdentityEvidence": {
+        "declarationOrdinal": 0,
+        "ownerChain": [],
+        "parentSignatureText": "(date: Date): PerformanceModelSelection",
+        "candidateSignatureText": "(date: Date): PerformanceModelSelection"
+      },
+      "consumerEvidence": {
+        "consumerFile": "apps/factory/agent/agent.ts",
+        "importClauseText": "import {\n  GPT_SOL_MODEL,\n  selectPerformanceModels\n} from \"./lib/performance-models.js\";"
+      },
+      "groundTruthBasis": "INDEPENDENT_EVIDENCE: Provider signature is contract-identical between parent and candidate; modification is internal implementation only.",
+      "groundTruthConfidence": "HIGH"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+[
+  {
+    "commitSha": "06f59004ba50fabd4c582230ed076ee909fb85fc",
+    "parentSha": "06f59004ba50fabd4c582230ed076ee909fb85fc^",
+    "targetSymbol": "getAvailablePackageManagers",
+    "targetFile": "packages/create-turbo/src/commands/create/index.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Refactored package manager detection to reuse detection results without altering the returned data contract or caller expectations.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "25fe817c05f0d886316ee7bb5087b1589239b4ae",
+    "parentSha": "25fe817c05f0d886316ee7bb5087b1589239b4ae^",
+    "targetSymbol": "module.exports",
+    "targetFile": "examples/with-docker/apps/api/.eslintrc.js",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Example ESLint configuration update; exports flat config compatible with ESLint execution in example apps.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "4db9ca09bdac8cc0f8ece533cc480c10947f7bc1",
+    "parentSha": "4db9ca09bdac8cc0f8ece533cc480c10947f7bc1^",
+    "targetSymbol": "GET",
+    "targetFile": "apps/docs/app/api/binaries/version/route.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Optimized route payload fetching by calling dist-tags endpoint; response format remains JSON string version compatible with API clients.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "77e975c94fea84e4056394b085de3cf2edb370ca",
+    "parentSha": "77e975c94fea84e4056394b085de3cf2edb370ca^",
+    "targetSymbol": "eveAgent",
+    "targetFile": "apps/factory/agent/channels/eve.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Added thinking-effort parameter to agent channel options with optional default value; existing invocation sites are unimpacted.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "8cc0c42f97651847c2b5a0831e6d77e1db2b1d14",
+    "parentSha": "8cc0c42f97651847c2b5a0831e6d77e1db2b1d14^",
+    "targetSymbol": "findInstalledTurboLsp",
+    "targetFile": "packages/turbo-vsc/src/extension.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Converted synchronous LSP probe to nonblocking async execution; return promise resolves to same path identity contract.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "a6b88eefa867457c8eab806515628bbfe882ebf5",
+    "parentSha": "a6b88eefa867457c8eab806515628bbfe882ebf5^",
+    "targetSymbol": "downloadAndExtractRepo",
+    "targetFile": "packages/turbo-utils/src/examples.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Streamed download buffer directly to disk rather than allocating full ArrayBuffer; signature and return type contract preserved.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "c02f97ef2bbfb2e1179fba6197fa44bc825f5d10",
+    "parentSha": "c02f97ef2bbfb2e1179fba6197fa44bc825f5d10^",
+    "targetSymbol": "createRule",
+    "targetFile": "packages/eslint-plugin-turbo/lib/rules/no-undeclared-env-vars.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Cached Turbo config reads across rule invocations; rule AST listener interface remains fully backward compatible.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "ef4677219f6d31911aff5a0c5aa953c53e12c40b",
+    "parentSha": "ef4677219f6d31911aff5a0c5aa953c53e12c40b^",
+    "targetSymbol": "calculateDepths",
+    "targetFile": "apps/docs/app/[lang]/devtools/devtools-client.tsx",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Optimized graph depth calculation to single outgoing adjacency pass; outputs identical depth map structure.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "efbe558dfc240ac818a049197da8573a4238fb6d",
+    "parentSha": "efbe558dfc240ac818a049197da8573a4238fb6d^",
+    "targetSymbol": "copy_file_dependencies",
+    "targetFile": "turborepo-tests/integration/fixtures/monorepo_with_shared_file_deps/apps/docs/src/index.js",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Deduplicated shared file copy passes during prune without changing resultant pruned directory contents.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  }
+]

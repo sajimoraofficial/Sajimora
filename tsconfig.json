@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "packages/*/src/**/*",
+    "packages/*/tests/**/*",
+    "packages/ambient.d.ts",
+    "scripts/sajimora/**/*.ts",
+    "scripts/campaign/*.ts",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "scripts/campaign/repos"
+  ]
+}

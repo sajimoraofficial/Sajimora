@@ -1,0 +1,39 @@
+{
+  "inspectionDate": "2026-10-17",
+  "note": "Jackson versions found in pilot repository artifacts. These must be validated before Jackson temporal wire semantics are implemented.",
+  "foundVersions": [
+    {
+      "source": "artifacts/production-large-repo/holdout/fineract/buildSrc/src/main/groovy/org.apache.fineract.dependencies.gradle",
+      "jacksonDatabind": "2.22.3 (via com.fasterxml.jackson:jackson-bom:2.22.3)",
+      "jacksonDatatypeJsr310": "2.22.3 (via com.fasterxml.jackson:jackson-bom:2.22.3)",
+      "jacksonCore": "2.22.3 (via com.fasterxml.jackson:jackson-bom:2.22.3)"
+    },
+    {
+      "source": "artifacts/production-large-repo/holdout/fineract/fineract-client-feign/dependencies.gradle",
+      "jacksonDatabind": "managed (bom 2.22.3)",
+      "jacksonDatatypeJsr310": "managed (bom 2.22.3)",
+      "jacksonCore": "not-found"
+    },
+    {
+      "source": "artifacts/production-large-repo/holdout/fineract/buildSrc/build.gradle",
+      "jacksonDatabind": "managed (bom 2.22.3)",
+      "jacksonDatatypeJsr310": "not-found",
+      "jacksonCore": "not-found"
+    },
+    {
+      "source": "artifacts/production-large-repo/holdout/fineract/fineract-e2e-tests-core/build.gradle",
+      "jacksonDatabind": "not-found",
+      "jacksonDatatypeJsr310": "not-found",
+      "jacksonCore": "not-found"
+    },
+    {
+      "source": "package.json",
+      "jacksonDatabind": "not-found",
+      "jacksonDatatypeJsr310": "not-found",
+      "jacksonCore": "not-found"
+    }
+  ],
+  "versionResolutionStatus": "PENDING_CONFIRMATION",
+  "blockerForGateG3": true,
+  "actionRequired": "Confirm the Jackson versions in the pilot repository before implementing temporal wire semantics. The versions found here may be transitive or managed in a parent POM."
+}

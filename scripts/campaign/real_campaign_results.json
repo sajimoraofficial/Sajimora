@@ -1,0 +1,710 @@
+{
+  "summary": {
+    "totalCommitPairs": 21,
+    "analyzablePairs": 16,
+    "nonAnalyzablePairs": 5,
+    "totalMutationsDerived": 28,
+    "verdicts": {
+      "PRESERVED": 0,
+      "VIOLATED": 0,
+      "UNKNOWN": 26,
+      "NOT_APPLICABLE": 2
+    },
+    "usefulVerdictCoverage": "0.0% (0/28)",
+    "unsafePositives": 0,
+    "unknownTaxonomy": {
+      "SEMANTIC_SCOPE :: UNSUPPORTED_SEMANTIC_SCOPE": 5,
+      "IDENTITY :: UNCERTAIN_IDENTITY": 20,
+      "CLOSURE_COMPLETENESS :: INCOMPLETE_CLOSURE": 1
+    },
+    "campaignDurationMs": 62054984
+  },
+  "details": [
+    {
+      "repository": "zod",
+      "parentSha": "68a609ac9b9516e6fe84e3558f17ce16b1032bef",
+      "candidateSha": "2ec972ecc5a8af8135ed072d2d5b5363c27bb46f",
+      "subject": "refactor: collapse toZod's enum leaf normalizer to a dummy union (#6533)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "ToZodNormalizeEnum",
+          "targetKind": "TYPE_ALIAS",
+          "targetFile": "packages/zod/src/v4/core/util.ts",
+          "classification": "SYMBOL_DELETED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "SEMANTIC_SCOPE",
+          "authorityReason": "UNSUPPORTED_SEMANTIC_SCOPE",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 2,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 9883,
+          "peakRssBytes": 3321987072
+        },
+        {
+          "targetSymbol": "ToZodNormalize",
+          "targetKind": "TYPE_ALIAS",
+          "targetFile": "packages/zod/src/v4/core/util.ts",
+          "classification": "TYPE_DEF_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "SEMANTIC_SCOPE",
+          "authorityReason": "UNSUPPORTED_SEMANTIC_SCOPE",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 6,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 7152,
+          "peakRssBytes": 3321987072
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "0227e53d03b5652be75422b6d10e0dd9bf340f0b",
+      "candidateSha": "68a609ac9b9516e6fe84e3558f17ce16b1032bef",
+      "subject": "Widen literal inputs in property check types (#6520)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "_property",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/zod/src/v4/core/api.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 15,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 18186,
+          "peakRssBytes": 5479702528
+        },
+        {
+          "targetSymbol": "_properties",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/zod/src/v4/core/api.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 11,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 8700,
+          "peakRssBytes": 5479702528
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "candidateSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "subject": "perf: build literal and enum pattern regexes lazily (#6531)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "$ZodEnum",
+          "targetKind": "FIELD",
+          "targetFile": "packages/zod/src/v4/core/schemas.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 74,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 18632,
+          "peakRssBytes": 5567094784
+        },
+        {
+          "targetSymbol": "$ZodLiteral",
+          "targetKind": "FIELD",
+          "targetFile": "packages/zod/src/v4/core/schemas.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 62,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 10894,
+          "peakRssBytes": 5567094784
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "74f9a6d3f2818f24e6df5394b8b6e60acb176463",
+      "candidateSha": "f83ab51129038a2f868ee11dda906ed78ae2e478",
+      "subject": "fix(v4): reject component-only strings from z.emoji() (#6532)",
+      "analyzable": true,
+      "mutationsCount": 1,
+      "evaluations": [
+        {
+          "targetSymbol": "_emoji",
+          "targetKind": "FIELD",
+          "targetFile": "packages/zod/src/v4/core/regexes.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 3,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 15021,
+          "peakRssBytes": 5581504512
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "candidateSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "subject": "Accept enum-typed targets in z.toZod (#6528)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "ToZodShape",
+          "targetKind": "TYPE_ALIAS",
+          "targetFile": "packages/zod/src/v4/core/util.ts",
+          "classification": "TYPE_DEF_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "SEMANTIC_SCOPE",
+          "authorityReason": "UNSUPPORTED_SEMANTIC_SCOPE",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 4,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 13910,
+          "peakRssBytes": 5592305664
+        },
+        {
+          "targetSymbol": "toZod",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/zod/src/v4/core/util.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 14,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 8517,
+          "peakRssBytes": 5592305664
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "candidateSha": "319f47f44f40755773a9aa83b6fdaaad1ff01d77",
+      "subject": "Emit a length-aware base64url pattern in toJSONSchema (#6527)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "base64url",
+          "targetKind": "FIELD",
+          "targetFile": "packages/zod/src/v4/core/regexes.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 5,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 14929,
+          "peakRssBytes": 5606137856
+        },
+        {
+          "targetSymbol": "isValidBase64URL",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/zod/src/v4/core/schemas.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 10,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 7383,
+          "peakRssBytes": 5606137856
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "1ec6b7c5ec58d0e58f6b582c96e7cabfc5cb2f95",
+      "candidateSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+      "subject": "perf(v4): read Luhn digits with charCodeAt instead of string indexing (#6529)",
+      "analyzable": true,
+      "mutationsCount": 1,
+      "evaluations": [
+        {
+          "targetSymbol": "isLuhnAlgo",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/zod/src/v4/core/schemas.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 2,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 14351,
+          "peakRssBytes": 5718102016
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "84dd3b0fc6cb5a24f773cb6db66bc934338b44ea",
+      "candidateSha": "0227e53d03b5652be75422b6d10e0dd9bf340f0b",
+      "subject": "docs: bump the star pill's GitHub mark to 20px",
+      "analyzable": true,
+      "mutationsCount": 1,
+      "evaluations": [
+        {
+          "targetSymbol": "GitHubStarPill",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/docs/components/github-star-pill.tsx",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 8029,
+          "peakRssBytes": 5536772096
+        }
+      ]
+    },
+    {
+      "repository": "zod",
+      "parentSha": "a2a019a57e4444f61bf677ca79c1352823e2b7c8",
+      "candidateSha": "74f9a6d3f2818f24e6df5394b8b6e60acb176463",
+      "subject": "docs: drop the toZod enum block from basics and pin curation rule",
+      "analyzable": false,
+      "nonAnalyzableReason": "No changed top-level declaration could be derived unambiguously from the diff.",
+      "mutationsCount": 0,
+      "evaluations": []
+    },
+    {
+      "repository": "TypeScript-Website",
+      "parentSha": "673b339a77d87f0e8187040c25c30801af802ab9",
+      "candidateSha": "5d0a1d07010d3053f3859f6f0a0d0b1d954a93ca",
+      "subject": "Accessibility bug fix 2737380 (#3530)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "SidebarToggleButton",
+          "targetKind": "FIELD",
+          "targetFile": "packages/typescriptlang-org/src/components/layout/Sidebar.tsx",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 3796,
+          "peakRssBytes": 5578981376
+        },
+        {
+          "targetSymbol": "Sidebar",
+          "targetKind": "FIELD",
+          "targetFile": "packages/typescriptlang-org/src/components/layout/Sidebar.tsx",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 2917,
+          "peakRssBytes": 5578981376
+        }
+      ]
+    },
+    {
+      "repository": "TypeScript-Website",
+      "parentSha": "d21b31543d87c3b190e034694c955d2192b06a4d",
+      "candidateSha": "673b339a77d87f0e8187040c25c30801af802ab9",
+      "subject": "Update for TS 6.0 (#3534)",
+      "analyzable": true,
+      "mutationsCount": 3,
+      "evaluations": [
+        {
+          "targetSymbol": "CompilerOptionName",
+          "targetKind": "TYPE_ALIAS",
+          "targetFile": "packages/tsconfig-reference/data/_types.ts",
+          "classification": "TYPE_DEF_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "SEMANTIC_SCOPE",
+          "authorityReason": "UNSUPPORTED_SEMANTIC_SCOPE",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 8,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 1069,
+          "peakRssBytes": 5583511552
+        },
+        {
+          "targetSymbol": "okToSkip",
+          "targetKind": "FIELD",
+          "targetFile": "packages/tsconfig-reference/scripts/schema/generateJSON.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 1004,
+          "peakRssBytes": 5583511552
+        },
+        {
+          "targetSymbol": "compilerOptions",
+          "targetKind": "FIELD",
+          "targetFile": "packages/tsconfig-reference/scripts/tsconfig/generateMarkdown.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 978,
+          "peakRssBytes": 5583511552
+        }
+      ]
+    },
+    {
+      "repository": "TypeScript-Website",
+      "parentSha": "32433bc2c7528771aa4c63b2d22d7172b0dd376c",
+      "candidateSha": "d21b31543d87c3b190e034694c955d2192b06a4d",
+      "subject": "Accessibility bug fix 2737338 (#3529)",
+      "analyzable": true,
+      "mutationsCount": 1,
+      "evaluations": [
+        {
+          "targetSymbol": "createConfigDropdown",
+          "targetKind": "FIELD",
+          "targetFile": "packages/playground/src/createConfigDropdown.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 2421,
+          "peakRssBytes": 5540945920
+        }
+      ]
+    },
+    {
+      "repository": "TypeScript-Website",
+      "parentSha": "57e19fd99f8128f9abd3810a89b9856f1b36b32b",
+      "candidateSha": "9953d5bf9168335e3ddad7b1752b3213f3f9a636",
+      "subject": "fix(sandbox): getInitialCode should not use URL hash without full prefix (#3523)",
+      "analyzable": true,
+      "mutationsCount": 1,
+      "evaluations": [
+        {
+          "targetSymbol": "getInitialCode",
+          "targetKind": "FIELD",
+          "targetFile": "packages/sandbox/src/getInitialCode.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 1305,
+          "peakRssBytes": 5547331584
+        }
+      ]
+    },
+    {
+      "repository": "TypeScript-Website",
+      "parentSha": "49d7c6bae9c5e6f9d9c2b2acc1ef6b1de248704c",
+      "candidateSha": "32433bc2c7528771aa4c63b2d22d7172b0dd376c",
+      "subject": "Bump the github-actions group with 2 updates (#3525)",
+      "analyzable": false,
+      "nonAnalyzableReason": "No changed top-level declaration could be derived unambiguously from the diff.",
+      "mutationsCount": 0,
+      "evaluations": []
+    },
+    {
+      "repository": "turborepo",
+      "parentSha": "ef4677219f6d31911aff5a0c5aa953c53e12c40b",
+      "candidateSha": "06f59004ba50fabd4c582230ed076ee909fb85fc",
+      "subject": "perf: Reuse package manager detection during create startup (#14006)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "create",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/create-turbo/src/commands/create/index.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "CLOSURE_COMPLETENESS",
+          "authorityReason": "INCOMPLETE_CLOSURE",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 9,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 2413,
+          "peakRssBytes": 5610881024
+        },
+        {
+          "targetSymbol": "packageManager",
+          "targetKind": "FUNCTION",
+          "targetFile": "packages/create-turbo/src/commands/create/prompts.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 2,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 1396,
+          "peakRssBytes": 5610881024
+        }
+      ]
+    },
+    {
+      "repository": "turborepo",
+      "parentSha": "4db9ca09bdac8cc0f8ece533cc480c10947f7bc1",
+      "candidateSha": "ef4677219f6d31911aff5a0c5aa953c53e12c40b",
+      "subject": "perf: Compute Devtools graph depths without rescanning every edge (#14001)",
+      "analyzable": true,
+      "mutationsCount": 2,
+      "evaluations": [
+        {
+          "targetSymbol": "calculateDepths",
+          "targetKind": "FUNCTION",
+          "targetFile": "apps/docs/app/[lang]/devtools/devtools-client.tsx",
+          "classification": "SYMBOL_DELETED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 4213,
+          "peakRssBytes": 5666709504
+        },
+        {
+          "targetSymbol": "calculateDepths",
+          "targetKind": "FUNCTION",
+          "targetFile": "apps/docs/components/diagram/layout.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 3769,
+          "peakRssBytes": 5666709504
+        }
+      ]
+    },
+    {
+      "repository": "turborepo",
+      "parentSha": "6a95c81b161f7509a622de54dca44041bfd550cb",
+      "candidateSha": "4db9ca09bdac8cc0f8ece533cc480c10947f7bc1",
+      "subject": "perf: Fetch only npm dist tags in the binary version endpoint (#14007)",
+      "analyzable": true,
+      "mutationsCount": 3,
+      "evaluations": [
+        {
+          "targetSymbol": "FetchDistTags",
+          "targetKind": "INTERFACE",
+          "targetFile": "apps/docs/app/api/binaries/version/route.ts",
+          "classification": "SYMBOL_DELETED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "SEMANTIC_SCOPE",
+          "authorityReason": "UNSUPPORTED_SEMANTIC_SCOPE",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 3,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 4299,
+          "peakRssBytes": 1017016320
+        },
+        {
+          "targetSymbol": "fetchDistTags",
+          "targetKind": "FUNCTION",
+          "targetFile": "apps/docs/app/api/binaries/version/route.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "UNKNOWN",
+          "authorityGate": "IDENTITY",
+          "authorityReason": "UNCERTAIN_IDENTITY",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 1,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 2998,
+          "peakRssBytes": 1017016320
+        },
+        {
+          "targetSymbol": "GET",
+          "targetKind": "FUNCTION",
+          "targetFile": "apps/docs/app/api/binaries/version/route.ts",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "NOT_APPLICABLE",
+          "authorityGate": "EMPTY_CLOSURE",
+          "authorityReason": "STRUCTURAL_TRIGGER_NO_CONSUMERS",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 0,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 2009,
+          "peakRssBytes": 1017016320
+        }
+      ]
+    },
+    {
+      "repository": "turborepo",
+      "parentSha": "58974208b6fdd5eda5d4a40d2ab00bcd5c25d31d",
+      "candidateSha": "6a95c81b161f7509a622de54dca44041bfd550cb",
+      "subject": "perf: Binary search boundaries comments before each import (#14003)",
+      "analyzable": false,
+      "nonAnalyzableReason": "No changed top-level declaration could be derived unambiguously from the diff.",
+      "mutationsCount": 0,
+      "evaluations": []
+    },
+    {
+      "repository": "express",
+      "parentSha": "cb19f04170fc815321d40dcd3bc620ae03c828cd",
+      "candidateSha": "90ec6206d3275fdf2787f2028c6f48a2d92e8042",
+      "subject": "Improve error logging by logging full error object (#6464)",
+      "analyzable": true,
+      "mutationsCount": 1,
+      "evaluations": [
+        {
+          "targetSymbol": "logerror",
+          "targetKind": "FUNCTION",
+          "targetFile": "lib/application.js",
+          "classification": "EXPORTED_SIGNATURE_MUTATED",
+          "verdict": "NOT_APPLICABLE",
+          "authorityGate": "EMPTY_CLOSURE",
+          "authorityReason": "STRUCTURAL_TRIGGER_NO_CONSUMERS",
+          "authoritySource": "VERDICT_AUTHORITY",
+          "hasSemanticCompatibility": false,
+          "evaluatedConsumerCount": 0,
+          "compatibilityStatuses": {},
+          "witnesses": [],
+          "isUnsafePositive": false,
+          "durationMs": 0,
+          "peakRssBytes": 1020739584
+        }
+      ]
+    },
+    {
+      "repository": "express",
+      "parentSha": "a08da78e64a7fdc610d453fb7771754091d8ed3b",
+      "candidateSha": "cb19f04170fc815321d40dcd3bc620ae03c828cd",
+      "subject": "Upgrade content-type (#7234)",
+      "analyzable": false,
+      "nonAnalyzableReason": "No changed top-level declaration could be derived unambiguously from the diff.",
+      "mutationsCount": 0,
+      "evaluations": []
+    },
+    {
+      "repository": "express",
+      "parentSha": "dae209ae6559c29cfca2a1f4414c51d89ea643d5",
+      "candidateSha": "a08da78e64a7fdc610d453fb7771754091d8ed3b",
+      "subject": "deps: bump qs minimum to 6.15.2 (#7305)",
+      "analyzable": false,
+      "nonAnalyzableReason": "No changed top-level declaration could be derived unambiguously from the diff.",
+      "mutationsCount": 0,
+      "evaluations": []
+    }
+  ]
+}

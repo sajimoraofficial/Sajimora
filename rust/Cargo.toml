@@ -1,0 +1,46 @@
+[workspace]
+members = [
+    "crates/source-index",
+    "crates/contract-core",
+    "crates/telemetry-core",
+    "crates/verifier",
+    "crates/sajimora-cli",
+    "crates/sajimora-mcp",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Sajimora"]
+license = "SEE LICENSE IN LICENSE"
+publish = false
+
+[workspace.dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order", "float_roundtrip"] }
+sha2 = "0.11.0"
+ed25519-dalek = { version = "3.0.0", features = ["pem"] }
+hex = "0.4"
+base64 = "0.22"
+getrandom = "0.4"
+clap = { version = "4.5", features = ["derive"] }
+tokio = { version = "1.53.1", features = ["full"] }
+rmcp = { version = "3.5.0", features = ["server", "transport-io"] }
+rmcp-macros = "3.5.0"
+anyhow = "1.0"
+thiserror = "2.0"
+quick-xml = "=0.36.0"
+uuid = { version = "1.10", features = ["v4", "serde"] }
+
+contract-core = { path = "crates/contract-core" }
+telemetry-core = { path = "crates/telemetry-core" }
+source-index = { path = "crates/source-index" }
+verifier = { path = "crates/verifier" }
+sajimora-mcp = { path = "crates/sajimora-mcp" }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "debuginfo"

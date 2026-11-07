@@ -1,0 +1,22 @@
+{
+  "name": "@sajimora/analysis",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "tsx tests/sajimora/P0AuditSuite.test.ts && tsx tests/sajimora/AdversarialMatrix.test.ts && tsx tests/sajimora/MultiProjectWorkspace.test.ts && tsx tests/sajimora/ReleaseBlocker1Positive.test.ts && tsx tests/sajimora/ReleaseBlocker1Negative.test.ts && tsx tests/sajimora/V1ForcedLimit.test.ts && npm run test:cross-language --prefix ../.."
+  },
+  "dependencies": {
+    "@sajimora/core": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tree-sitter": "0.21.1",
+    "tree-sitter-java": "0.23.5",
+    "tsx": "^4.19.0",
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.9"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": [
+    "src/sajimora/**/*.ts",
+    "tests/sajimora/**/*.ts",
+    "../core/src/sajimora/**/*.ts",
+    "../core/tests/sajimora/**/*.ts",
+    "../ambient.d.ts"
+  ]
+}

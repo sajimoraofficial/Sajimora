@@ -1,0 +1,8 @@
+{
+  "schema_version": "V32.9-TS-real-change-benchmark-v1",
+  "construction_status": "INSUFFICIENT_OBJECTIVE_CASES",
+  "cases": [],
+  "rejected_candidate_summary": {
+    "zod_process_to_processSchema": "Independent regression behavior exists, but a unique same-symbol parent-to-candidate identity is not established by the current diff evidence."
+  }
+}

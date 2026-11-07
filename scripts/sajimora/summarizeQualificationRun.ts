@@ -1,0 +1,33 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {parseEnvelope,verifyEnvelopeIntegrity,canonicalJson} from '../../packages/analysis/src/sajimora/cross-language/ContractArtifactEnvelope';
+import {ArtifactComparisonEngine} from '../../packages/analysis/src/sajimora/cross-language/ArtifactComparisonEngine';
+import {serializeReport} from '../../packages/analysis/src/sajimora/cross-language/AgentImpactJson';
+const [directory]=process.argv.slice(2);if(!directory)throw Error('Usage: summarizeQualificationRun.ts <artifact-directory>');
+const read=(name:string)=>fs.readFileSync(path.join(directory,name),'utf8');
+const backend=parseEnvelope(read('backend.json')),frontend=parseEnvelope(read('frontend.json'));
+assert(verifyEnvelopeIntegrity(backend));assert(verifyEnvelopeIntegrity(frontend));
+const binary=path.resolve('rust/target/release/sajimora.exe');
+const started=Date.now();
+const native=JSON.parse(execFileSync(binary,['check-contract','--base',path.resolve(directory,'backend.json'),'--candidate',path.resolve(directory,'backend.json'),'--target',path.resolve(directory,'frontend.json'),'--trusted-local'],{encoding:'utf8',maxBuffer:128*1024*1024,env:{...process.env,PATH:''}}));
+const rustElapsedMs=Date.now()-started;
+const core=new ArtifactComparisonEngine({requireServiceMapping:true}).compare(backend,backend,[frontend]);
+const reference=JSON.parse(serializeReport({...core,delta:{newFindings:[],existingFindings:core.findings,resolvedFindings:[]}}));
+const normalize=(report:any)=>{
+  const value=JSON.parse(JSON.stringify(report));
+  for(const findings of [value.findings,...Object.values(value.delta??{})] as any[][]){findings.sort((a,b)=>a.id.localeCompare(b.id));for(const finding of findings)finding.evidence.sort((a:any,b:any)=>canonicalJson(a).localeCompare(canonicalJson(b)));}
+  value.blockers.sort((a:any,b:any)=>canonicalJson(a).localeCompare(canonicalJson(b)));value.completeness.unresolvedEvidence.sort();
+  return canonicalJson(value);
+};
+assert.equal(normalize(native),normalize(reference),'Complete service report parity');
+fs.writeFileSync(path.join(directory,'rust-baseline.json'),JSON.stringify(native));
+fs.writeFileSync(path.join(directory,'ts-baseline.json'),JSON.stringify(reference));
+const unknown=(value:any):boolean=>!!value&&typeof value==='object'&&(value.kind==='UNKNOWN'||Object.values(value).some(item=>Array.isArray(item)?item.some(unknown):unknown(item)));
+const endpoints=(backend.payload as any).endpoints,calls=(frontend.payload as any).clientContracts;
+const inventory=JSON.parse(read('independent-inventory.json')),qualification=JSON.parse(read('qualification.json'));
+const summary={productionQualified:false,f0Filter:false,revision:inventory.revision,sourceFiles:inventory.sourceFiles,independentCandidateObligations:inventory.inventory.length,inventoryReviewed:false,qualification,backend:{entries:endpoints.length,unknownBodies:endpoints.filter((e:any)=>unknown(e.body)).length,blockers:backend.completeness.blockers.length},frontend:{calls:calls.length,unknownResponseCalls:calls.filter((c:any)=>unknown(c.expectedResponse)).length,incompleteTraversal:calls.filter((c:any)=>!c.consumerTraversalComplete).length,consumerLocations:calls.reduce((total:number,c:any)=>total+c.consumers.length,0),blockers:frontend.completeness.blockers.length},report:{verdict:native.verdict,unverifiedFindings:native.findings.length,delta:{new:native.delta.newFindings.length,existing:native.delta.existingFindings.length,resolved:native.delta.resolvedFindings.length},allServiceReportFieldsMatch:true,rustElapsedMs},binarySha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),interpretation:'Unreviewed discovery obligations have no verified outcomes. Their 100% pending rate is an evidence status, not a measured analyzer accuracy rate.'};
+fs.writeFileSync(path.join(directory,'summary.json'),JSON.stringify(summary,null,2));
+console.log(JSON.stringify({...summary,qualification:undefined},null,2));

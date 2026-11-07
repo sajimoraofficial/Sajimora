@@ -1,0 +1,20 @@
+[package]
+name = "telemetry-core"
+description = "Sajimora native telemetry ingestion and reduction -- JaCoCo XML and OpenTelemetry"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+contract-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+hex.workspace = true
+base64.workspace = true
+ed25519-dalek.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+quick-xml.workspace = true

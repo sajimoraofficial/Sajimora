@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "SAJIMORA_FIXTURE_V1",
+  "kind": "DIAGNOSTIC",
+  "id": "zod-phase0-observations",
+  "toolchain": { "language": "typescript", "versionPolicy": "recorded campaign toolchain" },
+  "evidence": {
+    "authority": "NON_AUTHORITATIVE_DIAGNOSTIC_ONLY",
+    "observations": [
+      {
+        "name": "recursive inference type-alias mutation",
+        "stoppingPoint": "SEMANTIC_SCOPE",
+        "claim": "Observation only; no correctness label."
+      },
+      {
+        "name": "prefault",
+        "stoppingPoint": "COMPATIBILITY",
+        "blocker": "UNDECIDABLE_COMPATIBILITY",
+        "claim": "Observation only; no correctness label."
+      }
+    ]
+  }
+}

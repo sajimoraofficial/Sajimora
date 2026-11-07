@@ -1,0 +1,11 @@
+{
+  "producers": [
+    {
+      "repositoryId": "github.com/other/different-repo",
+      "serviceId": "other-service",
+      "allowedDigests": [],
+      "publicKeys": []
+    }
+  ],
+  "requireSignatures": false
+}

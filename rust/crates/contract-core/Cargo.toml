@@ -1,0 +1,22 @@
+[package]
+name = "contract-core"
+description = "Sajimora contract artifact DTOs, canonicalization, admission, and comparison"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+ed25519-dalek.workspace = true
+hex.workspace = true
+base64.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+ryu-js = "=1.0.3"
+
+[dev-dependencies]
+serde_json.workspace = true

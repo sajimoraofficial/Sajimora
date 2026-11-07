@@ -1,0 +1,1177 @@
+[
+  {
+    "id": "java-pilot-01",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Add new non-breaking public method ping() to OrderService",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>orders</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/OrderService.java": "package com.acme;\npublic class OrderService {\n  public void process() {}\n}",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.OrderService;\npublic class Consumer {\n  public void run(OrderService s) { s.process(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>orders</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/OrderService.java": "package com.acme;\npublic class OrderService {\n  public void process() {}\n  public void ping() {}\n}",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.OrderService;\npublic class Consumer {\n  public void run(OrderService s) { s.process(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Consumer.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-02",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Add static final public constant to Config",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>app</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Config.java": "package com.acme;\npublic class Config {\n  public static final int TIMEOUT = 5000;\n}",
+      "src/com/acme/Client.java": "package com.acme;\nimport com.acme.Config;\npublic class Client {\n  public int get() { return Config.TIMEOUT; }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>app</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Config.java": "package com.acme;\npublic class Config {\n  public static final int TIMEOUT = 5000;\n  public static final String ENV = \"PROD\";\n}",
+      "src/com/acme/Client.java": "package com.acme;\nimport com.acme.Config;\npublic class Client {\n  public int get() { return Config.TIMEOUT; }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Client.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-03",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Internal method logic optimization without signature change",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>calc</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Calculator.java": "package com.acme;\npublic class Calculator {\n  public int add(int a, int b) { return a + b; }\n}",
+      "src/com/acme/User.java": "package com.acme;\nimport com.acme.Calculator;\npublic class User {\n  public int exec(Calculator c) { return c.add(1, 2); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>calc</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Calculator.java": "package com.acme;\npublic class Calculator {\n  public int add(int a, int b) { return a + b; }\n  public int diff(int a, int b) { return a - b; }\n}",
+      "src/com/acme/User.java": "package com.acme;\nimport com.acme.Calculator;\npublic class User {\n  public int exec(Calculator c) { return c.add(1, 2); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/User.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-04",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Add overloaded method with distinct arity",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>str</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Formatter.java": "package com.acme;\npublic class Formatter {\n  public String format(String s) { return s; }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>str</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Formatter.java": "package com.acme;\npublic class Formatter {\n  public String format(String s) { return s; }\n  public String format(String s, String prefix) { return prefix + s; }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-05",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Add private helper method to existing class",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>auth</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/AuthService.java": "package com.acme;\npublic class AuthService {\n  public boolean verify(String token) { return token != null; }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>auth</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/AuthService.java": "package com.acme;\npublic class AuthService {\n  public boolean verify(String token) { return isValid(token); }\n  private boolean isValid(String t) { return t != null && !t.isEmpty(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-06",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Introduce new standalone helper class in the same package",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>tool</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/MainTool.java": "package com.acme;\npublic class MainTool {\n  public void run() {}\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>tool</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/MainTool.java": "package com.acme;\npublic class MainTool {\n  public void run() {}\n}",
+      "src/com/acme/SubTool.java": "package com.acme;\npublic class SubTool {\n  public void helper() {}\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-07",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Update Javadoc and whitespace formatting",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Repository.java": "package com.acme;\npublic class Repository {\n  public void save() {}\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Repository.java": "package com.acme;\n/**\n * Manages entity persistence.\n */\npublic class Repository {\n  /** Saves state. */\n  public void save() {}\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-08",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Preserved method with active consumer in same package",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>flow</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Flow.java": "package com.acme;\npublic class Flow {\n  public void start() {}\n}",
+      "src/com/acme/Runner.java": "package com.acme;\nimport com.acme.Flow;\npublic class Runner {\n  public void exec(Flow f) { f.start(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>flow</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Flow.java": "package com.acme;\npublic class Flow {\n  public void start() {}\n  public void stop() {}\n}",
+      "src/com/acme/Runner.java": "package com.acme;\nimport com.acme.Flow;\npublic class Runner {\n  public void exec(Flow f) { f.start(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Runner.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-09",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Add static utility method",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>util</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Strings.java": "package com.acme;\npublic class Strings {\n  public static boolean isEmpty(String s) { return s == null || s.length() == 0; }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>util</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Strings.java": "package com.acme;\npublic class Strings {\n  public static boolean isEmpty(String s) { return s == null || s.length() == 0; }\n  public static boolean isNotEmpty(String s) { return !isEmpty(s); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-10",
+    "category": "SINGLE_MODULE_CLEAN_COMPATIBLE",
+    "description": "Java record adding a helper accessor method",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>model</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Point.java": "package com.acme;\npublic record Point(int x, int y) {}\n"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>model</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Point.java": "package com.acme;\npublic record Point(int x, int y) {\n  public int sum() { return x + y; }\n}\n"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-11",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Public method deleteById() removed from UserService with active consumer",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>user</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/UserService.java": "package com.acme;\npublic class UserService {\n  public void deleteById(String id) {}\n}",
+      "src/com/acme/UserController.java": "package com.acme;\nimport com.acme.UserService;\npublic class UserController {\n  public void handle(UserService u) { u.deleteById(\"42\"); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>user</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/UserService.java": "package com.acme;\npublic class UserService {}\n",
+      "src/com/acme/UserController.java": "package com.acme;\nimport com.acme.UserService;\npublic class UserController {\n  public void handle(UserService u) { u.deleteById(\"42\"); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/UserController.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/UserController.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-12",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Parameter type changed from String to Long breaking consumer",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>finder</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Finder.java": "package com.acme;\npublic class Finder {\n  public void search(String query) {}\n}",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.Finder;\npublic class Consumer {\n  public void run(Finder f) { f.search(\"abc\"); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>finder</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Finder.java": "package com.acme;\npublic class Finder {\n  public void search(Long query) {}\n}",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.Finder;\npublic class Consumer {\n  public void run(Finder f) { f.search(\"abc\"); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Consumer.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/Consumer.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-13",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Method return type changed from String to int",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>stat</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/StatusProvider.java": "package com.acme;\npublic class StatusProvider {\n  public String getStatus() { return \"OK\"; }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>stat</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/StatusProvider.java": "package com.acme;\npublic class StatusProvider {\n  public int getStatus() { return 200; }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-14",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Public field timeout removed",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>opts</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Options.java": "package com.acme;\npublic class Options {\n  public int timeout;\n}",
+      "src/com/acme/Client.java": "package com.acme;\nimport com.acme.Options;\npublic class Client {\n  public int read(Options o) { return o.timeout; }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>opts</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Options.java": "package com.acme;\npublic class Options {}\n",
+      "src/com/acme/Client.java": "package com.acme;\nimport com.acme.Options;\npublic class Client {\n  public int read(Options o) { return o.timeout; }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Client.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/Client.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-15",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Method visibility reduced from public to private",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>priv</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Worker.java": "package com.acme;\npublic class Worker {\n  public void execute() {}\n}",
+      "src/com/acme/Caller.java": "package com.acme;\nimport com.acme.Worker;\npublic class Caller {\n  public void doWork(Worker w) { w.execute(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>priv</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Worker.java": "package com.acme;\npublic class Worker {\n  private void execute() {}\n}",
+      "src/com/acme/Caller.java": "package com.acme;\nimport com.acme.Worker;\npublic class Caller {\n  public void doWork(Worker w) { w.execute(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Caller.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/Caller.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-16",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Public class Validator deleted",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>val</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Validator.java": "package com.acme;\npublic class Validator {\n  public boolean check() { return true; }\n}",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.Validator;\npublic class Consumer {\n  public boolean test(Validator v) { return v.check(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>val</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.Validator;\npublic class Consumer {\n  public boolean test(Validator v) { return v.check(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Consumer.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/Consumer.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-17",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Class made abstract preventing instantiation by consumer",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>base</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Base.java": "package com.acme;\npublic class Base {\n  public void run() {}\n}",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.Base;\npublic class Consumer {\n  public Base make() { return new Base(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>base</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Base.java": "package com.acme;\npublic abstract class Base {\n  public void run() {}\n}",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.Base;\npublic class Consumer {\n  public Base make() { return new Base(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Consumer.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/Consumer.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-18",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Method parameter count changed from 2 to 1",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>param</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Handler.java": "package com.acme;\npublic class Handler {\n  public void handle(String a, int b) {}\n}",
+      "src/com/acme/User.java": "package com.acme;\nimport com.acme.Handler;\npublic class User {\n  public void run(Handler h) { h.handle(\"x\", 1); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>param</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Handler.java": "package com.acme;\npublic class Handler {\n  public void handle(String a) {}\n}",
+      "src/com/acme/User.java": "package com.acme;\nimport com.acme.Handler;\npublic class User {\n  public void run(Handler h) { h.handle(\"x\", 1); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/User.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/User.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-19",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "New method added to interface without default implementation",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>inf</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Listener.java": "package com.acme;\npublic interface Listener {\n  void onEvent();\n}",
+      "src/com/acme/MyListener.java": "package com.acme;\nimport com.acme.Listener;\npublic class MyListener implements Listener {\n  public void onEvent() {}\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>inf</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Listener.java": "package com.acme;\npublic interface Listener {\n  void onEvent();\n  void onError();\n}",
+      "src/com/acme/MyListener.java": "package com.acme;\nimport com.acme.Listener;\npublic class MyListener implements Listener {\n  public void onEvent() {}\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/MyListener.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/MyListener.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-20",
+    "category": "SINGLE_MODULE_CLEAN_BREAKING",
+    "description": "Class made final breaking subclassing consumer",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>fnl</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/BaseService.java": "package com.acme;\npublic class BaseService {\n  public void ping() {}\n}",
+      "src/com/acme/CustomService.java": "package com.acme;\nimport com.acme.BaseService;\npublic class CustomService extends BaseService {}\n"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>fnl</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/BaseService.java": "package com.acme;\npublic final class BaseService {\n  public void ping() {}\n}",
+      "src/com/acme/CustomService.java": "package com.acme;\nimport com.acme.BaseService;\npublic class CustomService extends BaseService {}\n"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/CustomService.java"
+      ],
+      "goldBreakingConsumers": [
+        "src/com/acme/CustomService.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-21",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "Maven multi-module: core module adds method format(), api module preserved",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>core</module><module>api</module></modules></project>",
+      "core/pom.xml": "<project><parent><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version></parent><artifactId>core</artifactId></project>",
+      "core/src/main/java/com/acme/core/Engine.java": "package com.acme.core;\npublic class Engine {\n  public void start() {}\n}",
+      "api/pom.xml": "<project><parent><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version></parent><artifactId>api</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>core</artifactId></dependency></dependencies></project>",
+      "api/src/main/java/com/acme/api/Controller.java": "package com.acme.api;\nimport com.acme.core.Engine;\npublic class Controller {\n  public void run(Engine e) { e.start(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>core</module><module>api</module></modules></project>",
+      "core/pom.xml": "<project><parent><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version></parent><artifactId>core</artifactId></project>",
+      "core/src/main/java/com/acme/core/Engine.java": "package com.acme.core;\npublic class Engine {\n  public void start() {}\n  public void format() {}\n}",
+      "api/pom.xml": "<project><parent><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version></parent><artifactId>api</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>core</artifactId></dependency></dependencies></project>",
+      "api/src/main/java/com/acme/api/Controller.java": "package com.acme.api;\nimport com.acme.core.Engine;\npublic class Controller {\n  public void run(Engine e) { e.start(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "api/src/main/java/com/acme/api/Controller.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-22",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "Gradle multi-module: lib module adds helper method, app module unaffected",
+    "historicalFiles": {
+      "settings.gradle": "include 'lib', 'app'",
+      "lib/build.gradle": "plugins { id \"java-library\" }",
+      "lib/src/main/java/com/acme/lib/MathHelper.java": "package com.acme.lib;\npublic class MathHelper {\n  public static int sum(int a, int b) { return a + b; }\n}",
+      "app/build.gradle": "dependencies { implementation project(':lib') }",
+      "app/src/main/java/com/acme/app/Main.java": "package com.acme.app;\nimport com.acme.lib.MathHelper;\npublic class Main {\n  public int exec() { return MathHelper.sum(1, 2); }\n}"
+    },
+    "candidateFiles": {
+      "settings.gradle": "include 'lib', 'app'",
+      "lib/build.gradle": "plugins { id \"java-library\" }",
+      "lib/src/main/java/com/acme/lib/MathHelper.java": "package com.acme.lib;\npublic class MathHelper {\n  public static int sum(int a, int b) { return a + b; }\n  public static int diff(int a, int b) { return a - b; }\n}",
+      "app/build.gradle": "dependencies { implementation project(':lib') }",
+      "app/src/main/java/com/acme/app/Main.java": "package com.acme.app;\nimport com.acme.lib.MathHelper;\npublic class Main {\n  public int exec() { return MathHelper.sum(1, 2); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "app/src/main/java/com/acme/app/Main.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-23",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "JPMS module exports package com.acme.common to consumer module",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>jpms-root</artifactId><version>1.0.0</version><modules><module>common</module><module>client</module></modules></project>",
+      "common/pom.xml": "<project><artifactId>common</artifactId></project>",
+      "common/src/main/java/module-info.java": "module com.acme.common {\n  exports com.acme.common;\n}",
+      "common/src/main/java/com/acme/common/CommonService.java": "package com.acme.common;\npublic class CommonService {\n  public void execute() {}\n}",
+      "client/pom.xml": "<project><artifactId>client</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>common</artifactId></dependency></dependencies></project>",
+      "client/src/main/java/com/acme/client/ClientApp.java": "package com.acme.client;\nimport com.acme.common.CommonService;\npublic class ClientApp {\n  public void run(CommonService s) { s.execute(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>jpms-root</artifactId><version>1.0.0</version><modules><module>common</module><module>client</module></modules></project>",
+      "common/pom.xml": "<project><artifactId>common</artifactId></project>",
+      "common/src/main/java/module-info.java": "module com.acme.common {\n  exports com.acme.common;\n}",
+      "common/src/main/java/com/acme/common/CommonService.java": "package com.acme.common;\npublic class CommonService {\n  public void execute() {}\n  public void ping() {}\n}",
+      "client/pom.xml": "<project><artifactId>client</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>common</artifactId></dependency></dependencies></project>",
+      "client/src/main/java/com/acme/client/ClientApp.java": "package com.acme.client;\nimport com.acme.common.CommonService;\npublic class ClientApp {\n  public void run(CommonService s) { s.execute(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "client/src/main/java/com/acme/client/ClientApp.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-24",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "Three-module Maven reactor (domain -> service -> web) compatible",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>root</artifactId><version>1.0.0</version><modules><module>domain</module><module>service</module><module>web</module></modules></project>",
+      "domain/pom.xml": "<project><artifactId>domain</artifactId></project>",
+      "domain/src/main/java/com/acme/domain/Item.java": "package com.acme.domain;\npublic class Item {\n  public String getId() { return \"1\"; }\n}",
+      "service/pom.xml": "<project><artifactId>service</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>domain</artifactId></dependency></dependencies></project>",
+      "service/src/main/java/com/acme/service/ItemService.java": "package com.acme.service;\nimport com.acme.domain.Item;\npublic class ItemService {\n  public String fetch(Item i) { return i.getId(); }\n}",
+      "web/pom.xml": "<project><artifactId>web</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>service</artifactId></dependency></dependencies></project>",
+      "web/src/main/java/com/acme/web/ItemController.java": "package com.acme.web;\nimport com.acme.service.ItemService;\npublic class ItemController {\n  public void render(ItemService s) {}\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>root</artifactId><version>1.0.0</version><modules><module>domain</module><module>service</module><module>web</module></modules></project>",
+      "domain/pom.xml": "<project><artifactId>domain</artifactId></project>",
+      "domain/src/main/java/com/acme/domain/Item.java": "package com.acme.domain;\npublic class Item {\n  public String getId() { return \"1\"; }\n  public String getName() { return \"item\"; }\n}",
+      "service/pom.xml": "<project><artifactId>service</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>domain</artifactId></dependency></dependencies></project>",
+      "service/src/main/java/com/acme/service/ItemService.java": "package com.acme.service;\nimport com.acme.domain.Item;\npublic class ItemService {\n  public String fetch(Item i) { return i.getId(); }\n}",
+      "web/pom.xml": "<project><artifactId>web</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>service</artifactId></dependency></dependencies></project>",
+      "web/src/main/java/com/acme/web/ItemController.java": "package com.acme.web;\nimport com.acme.service.ItemService;\npublic class ItemController {\n  public void render(ItemService s) {}\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "service/src/main/java/com/acme/service/ItemService.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-25",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "Multi-module compatible scenario 25",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-25</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val25() { return 25; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val25(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-25</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val25() { return 25; }\n  public String name() { return \"A\"; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val25(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "mod-b/src/com/acme/B.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-26",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "Multi-module compatible scenario 26",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-26</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val26() { return 26; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val26(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-26</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val26() { return 26; }\n  public String name() { return \"A\"; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val26(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "mod-b/src/com/acme/B.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-27",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "Multi-module compatible scenario 27",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-27</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val27() { return 27; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val27(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-27</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val27() { return 27; }\n  public String name() { return \"A\"; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val27(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "mod-b/src/com/acme/B.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-28",
+    "category": "MULTI_MODULE_REACTOR_COMPATIBLE",
+    "description": "Multi-module compatible scenario 28",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-28</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val28() { return 28; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val28(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>repo-28</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {\n  public int val28() { return 28; }\n  public String name() { return \"A\"; }\n}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {\n  public int run(A a) { return a.val28(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "mod-b/src/com/acme/B.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-29",
+    "category": "MULTI_MODULE_REACTOR_BREAKING",
+    "description": "Upstream module deletes method execute() used by downstream consumer",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>core</module><module>app</module></modules></project>",
+      "core/pom.xml": "<project><artifactId>core</artifactId></project>",
+      "core/src/com/acme/core/Engine.java": "package com.acme.core;\npublic class Engine {\n  public void execute() {}\n}",
+      "app/pom.xml": "<project><artifactId>app</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>core</artifactId></dependency></dependencies></project>",
+      "app/src/com/acme/app/App.java": "package com.acme.app;\nimport com.acme.core.Engine;\npublic class App {\n  public void run(Engine e) { e.execute(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>core</module><module>app</module></modules></project>",
+      "core/pom.xml": "<project><artifactId>core</artifactId></project>",
+      "core/src/com/acme/core/Engine.java": "package com.acme.core;\npublic class Engine {}\n",
+      "app/pom.xml": "<project><artifactId>app</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>core</artifactId></dependency></dependencies></project>",
+      "app/src/com/acme/app/App.java": "package com.acme.app;\nimport com.acme.core.Engine;\npublic class App {\n  public void run(Engine e) { e.execute(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "app/src/com/acme/app/App.java"
+      ],
+      "goldBreakingConsumers": [
+        "app/src/com/acme/app/App.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-30",
+    "category": "MULTI_MODULE_REACTOR_BREAKING",
+    "description": "Upstream module changes parameter type from String to int",
+    "historicalFiles": {
+      "settings.gradle": "include 'core', 'app'",
+      "core/build.gradle": "plugins { id \"java-library\" }",
+      "core/src/com/acme/core/Service.java": "package com.acme.core;\npublic class Service {\n  public void handle(String s) {}\n}",
+      "app/build.gradle": "dependencies { implementation project(':core') }",
+      "app/src/com/acme/app/App.java": "package com.acme.app;\nimport com.acme.core.Service;\npublic class App {\n  public void run(Service s) { s.handle(\"ok\"); }\n}"
+    },
+    "candidateFiles": {
+      "settings.gradle": "include 'core', 'app'",
+      "core/build.gradle": "plugins { id \"java-library\" }",
+      "core/src/com/acme/core/Service.java": "package com.acme.core;\npublic class Service {\n  public void handle(int s) {}\n}",
+      "app/build.gradle": "dependencies { implementation project(':core') }",
+      "app/src/com/acme/app/App.java": "package com.acme.app;\nimport com.acme.core.Service;\npublic class App {\n  public void run(Service s) { s.handle(\"ok\"); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "app/src/com/acme/app/App.java"
+      ],
+      "goldBreakingConsumers": [
+        "app/src/com/acme/app/App.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-31",
+    "category": "MULTI_MODULE_REACTOR_BREAKING",
+    "description": "Upstream module reduces visibility from public to package-private",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>root</artifactId><version>1.0.0</version><modules><module>lib</module><module>cli</module></modules></project>",
+      "lib/pom.xml": "<project><artifactId>lib</artifactId></project>",
+      "lib/src/com/acme/lib/Parser.java": "package com.acme.lib;\npublic class Parser {\n  public void parse() {}\n}",
+      "cli/pom.xml": "<project><artifactId>cli</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>lib</artifactId></dependency></dependencies></project>",
+      "cli/src/com/acme/cli/Command.java": "package com.acme.cli;\nimport com.acme.lib.Parser;\npublic class Command {\n  public void run(Parser p) { p.parse(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>root</artifactId><version>1.0.0</version><modules><module>lib</module><module>cli</module></modules></project>",
+      "lib/pom.xml": "<project><artifactId>lib</artifactId></project>",
+      "lib/src/com/acme/lib/Parser.java": "package com.acme.lib;\npublic class Parser {\n  void parse() {}\n}",
+      "cli/pom.xml": "<project><artifactId>cli</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>lib</artifactId></dependency></dependencies></project>",
+      "cli/src/com/acme/cli/Command.java": "package com.acme.cli;\nimport com.acme.lib.Parser;\npublic class Command {\n  public void run(Parser p) { p.parse(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "cli/src/com/acme/cli/Command.java"
+      ],
+      "goldBreakingConsumers": [
+        "cli/src/com/acme/cli/Command.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-32",
+    "category": "MULTI_MODULE_REACTOR_BREAKING",
+    "description": "Upstream module deletes public class Config entirely",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>core</module><module>app</module></modules></project>",
+      "core/pom.xml": "<project><artifactId>core</artifactId></project>",
+      "core/src/com/acme/core/Config.java": "package com.acme.core;\npublic class Config {}\n",
+      "app/pom.xml": "<project><artifactId>app</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>core</artifactId></dependency></dependencies></project>",
+      "app/src/com/acme/app/Main.java": "package com.acme.app;\nimport com.acme.core.Config;\npublic class Main {\n  public Config cfg;\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>core</module><module>app</module></modules></project>",
+      "core/pom.xml": "<project><artifactId>core</artifactId></project>",
+      "app/pom.xml": "<project><artifactId>app</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>core</artifactId></dependency></dependencies></project>",
+      "app/src/com/acme/app/Main.java": "package com.acme.app;\nimport com.acme.core.Config;\npublic class Main {\n  public Config cfg;\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "app/src/com/acme/app/Main.java"
+      ],
+      "goldBreakingConsumers": [
+        "app/src/com/acme/app/Main.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-33",
+    "category": "MULTI_MODULE_REACTOR_BREAKING",
+    "description": "Circular dependency introduced in reactor graph",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\npublic class A {}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>mod-a</module><module>mod-b</module></modules></project>",
+      "mod-a/pom.xml": "<project><artifactId>mod-a</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-b</artifactId></dependency></dependencies></project>",
+      "mod-a/src/com/acme/A.java": "package com.acme;\nimport com.acme.B;\npublic class A {}",
+      "mod-b/pom.xml": "<project><artifactId>mod-b</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>mod-a</artifactId></dependency></dependencies></project>",
+      "mod-b/src/com/acme/B.java": "package com.acme;\nimport com.acme.A;\npublic class B {}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-34",
+    "category": "MULTI_MODULE_REACTOR_BREAKING",
+    "description": "Gradle project lib deletes method compute() called by app",
+    "historicalFiles": {
+      "settings.gradle": "include 'lib', 'app'",
+      "lib/build.gradle": "plugins { id \"java-library\" }",
+      "lib/src/com/acme/lib/Calc.java": "package com.acme.lib;\npublic class Calc {\n  public int compute() { return 42; }\n}",
+      "app/build.gradle": "dependencies { implementation project(':lib') }",
+      "app/src/com/acme/app/App.java": "package com.acme.app;\nimport com.acme.lib.Calc;\npublic class App {\n  public int run(Calc c) { return c.compute(); }\n}"
+    },
+    "candidateFiles": {
+      "settings.gradle": "include 'lib', 'app'",
+      "lib/build.gradle": "plugins { id \"java-library\" }",
+      "lib/src/com/acme/lib/Calc.java": "package com.acme.lib;\npublic class Calc {}\n",
+      "app/build.gradle": "dependencies { implementation project(':lib') }",
+      "app/src/com/acme/app/App.java": "package com.acme.app;\nimport com.acme.lib.Calc;\npublic class App {\n  public int run(Calc c) { return c.compute(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "app/src/com/acme/app/App.java"
+      ],
+      "goldBreakingConsumers": [
+        "app/src/com/acme/app/App.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-35",
+    "category": "MULTI_MODULE_REACTOR_BREAKING",
+    "description": "Method return type changed across Maven modules",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>producer</module><module>consumer</module></modules></project>",
+      "producer/pom.xml": "<project><artifactId>producer</artifactId></project>",
+      "producer/src/com/acme/prod/Producer.java": "package com.acme.prod;\npublic class Producer {\n  public String get() { return \"val\"; }\n}",
+      "consumer/pom.xml": "<project><artifactId>consumer</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>producer</artifactId></dependency></dependencies></project>",
+      "consumer/src/com/acme/cons/Consumer.java": "package com.acme.cons;\nimport com.acme.prod.Producer;\npublic class Consumer {\n  public String read(Producer p) { return p.get(); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>parent</artifactId><version>1.0.0</version><modules><module>producer</module><module>consumer</module></modules></project>",
+      "producer/pom.xml": "<project><artifactId>producer</artifactId></project>",
+      "producer/src/com/acme/prod/Producer.java": "package com.acme.prod;\npublic class Producer {\n  public int get() { return 1; }\n}",
+      "consumer/pom.xml": "<project><artifactId>consumer</artifactId><dependencies><dependency><groupId>com.acme</groupId><artifactId>producer</artifactId></dependency></dependencies></project>",
+      "consumer/src/com/acme/cons/Consumer.java": "package com.acme.cons;\nimport com.acme.prod.Producer;\npublic class Consumer {\n  public String read(Producer p) { return p.get(); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "INCOMPATIBLE",
+      "goldConsumers": [
+        "consumer/src/com/acme/cons/Consumer.java"
+      ],
+      "goldBreakingConsumers": [
+        "consumer/src/com/acme/cons/Consumer.java"
+      ]
+    }
+  },
+  {
+    "id": "java-pilot-36",
+    "category": "DISQUALIFIED_WILDCARD",
+    "description": "Disqualified by wildcard import java.util.*",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>wild</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Service.java": "package com.acme;\nimport java.util.*;\npublic class Service {\n  private List list;\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>wild</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Service.java": "package com.acme;\nimport java.util.*;\npublic class Service {\n  private List list;\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-37",
+    "category": "DISQUALIFIED_WILDCARD",
+    "description": "Disqualified by package wildcard import com.acme.model.*",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>wild2</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.model.*;\npublic class Consumer {}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>wild2</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Consumer.java": "package com.acme;\nimport com.acme.model.*;\npublic class Consumer {}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-38",
+    "category": "DISQUALIFIED_WILDCARD",
+    "description": "Disqualified by static wildcard import java.lang.Math.*",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>statwild</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/MathOp.java": "package com.acme;\nimport static java.lang.Math.*;\npublic class MathOp {\n  public double calc() { return PI; }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>statwild</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/MathOp.java": "package com.acme;\nimport static java.lang.Math.*;\npublic class MathOp {\n  public double calc() { return PI; }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-39",
+    "category": "DISQUALIFIED_WILDCARD",
+    "description": "Disqualified by wildcard import org.junit.jupiter.api.*",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>testwild</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/SampleTest.java": "package com.acme;\nimport org.junit.jupiter.api.*;\npublic class SampleTest {}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>testwild</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/SampleTest.java": "package com.acme;\nimport org.junit.jupiter.api.*;\npublic class SampleTest {}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-40",
+    "category": "DISQUALIFIED_DYNAMIC_BUILD",
+    "description": "Disqualified by dynamic Gradle build script using rootDir.listFiles()",
+    "historicalFiles": {
+      "settings.gradle": "rootDir.listFiles().each { if (it.isDirectory()) include it.name }",
+      "src/com/acme/App.java": "package com.acme;\npublic class App {}"
+    },
+    "candidateFiles": {
+      "settings.gradle": "rootDir.listFiles().each { if (it.isDirectory()) include it.name }",
+      "src/com/acme/App.java": "package com.acme;\npublic class App {}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-41",
+    "category": "DISQUALIFIED_DYNAMIC_BUILD",
+    "description": "Disqualified by dynamic build logic using fileTree()",
+    "historicalFiles": {
+      "build.gradle": "dependencies { implementation fileTree('libs') }",
+      "src/com/acme/App.java": "package com.acme;\npublic class App {}"
+    },
+    "candidateFiles": {
+      "build.gradle": "dependencies { implementation fileTree('libs') }",
+      "src/com/acme/App.java": "package com.acme;\npublic class App {}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-42",
+    "category": "DISQUALIFIED_DYNAMIC_BUILD",
+    "description": "Disqualified by dynamic build logic subprojects.findAll",
+    "historicalFiles": {
+      "build.gradle": "subprojects.findAll { it.name.startsWith('plugin') }.each { }",
+      "src/com/acme/App.java": "package com.acme;\npublic class App {}"
+    },
+    "candidateFiles": {
+      "build.gradle": "subprojects.findAll { it.name.startsWith('plugin') }.each { }",
+      "src/com/acme/App.java": "package com.acme;\npublic class App {}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-43",
+    "category": "DISQUALIFIED_CODEGEN",
+    "description": "Disqualified by unmaterialized Lombok @Data annotation",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>lombok-app</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/UserEntity.java": "package com.acme;\n@Data\npublic class UserEntity {\n  private String name;\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>lombok-app</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/UserEntity.java": "package com.acme;\n@Data\npublic class UserEntity {\n  private String name;\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-44",
+    "category": "DISQUALIFIED_CODEGEN",
+    "description": "Disqualified by unmaterialized Lombok @Builder",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>lombok-builder</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Order.java": "package com.acme;\n@Builder\npublic class Order {\n  private String id;\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>lombok-builder</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Order.java": "package com.acme;\n@Builder\npublic class Order {\n  private String id;\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-45",
+    "category": "DISQUALIFIED_CODEGEN",
+    "description": "Disqualified by unmaterialized Lombok @Getter and @Setter",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>lombok-gs</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Account.java": "package com.acme;\n@Getter\n@Setter\npublic class Account {\n  private long balance;\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>lombok-gs</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Account.java": "package com.acme;\n@Getter\n@Setter\npublic class Account {\n  private long balance;\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-46",
+    "category": "ADVERSARIAL",
+    "description": "Subclass shadows field name from superclass",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>shadow</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Parent.java": "package com.acme;\npublic class Parent {\n  public int count = 1;\n}",
+      "src/com/acme/Child.java": "package com.acme;\nimport com.acme.Parent;\npublic class Child extends Parent {\n  public int count = 2;\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>shadow</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Parent.java": "package com.acme;\npublic class Parent {\n  public int count = 1;\n  public int offset = 0;\n}",
+      "src/com/acme/Child.java": "package com.acme;\nimport com.acme.Parent;\npublic class Child extends Parent {\n  public int count = 2;\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Child.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-47",
+    "category": "ADVERSARIAL",
+    "description": "Three-level inheritance hierarchy overriding method",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>hierarchy</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/GrandParent.java": "package com.acme;\npublic class GrandParent {\n  public void ping() {}\n}",
+      "src/com/acme/Parent.java": "package com.acme;\nimport com.acme.GrandParent;\npublic class Parent extends GrandParent {\n  public void ping() {}\n}",
+      "src/com/acme/Child.java": "package com.acme;\nimport com.acme.Parent;\npublic class Child extends Parent {\n  public void ping() {}\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>hierarchy</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/GrandParent.java": "package com.acme;\npublic class GrandParent {\n  public void ping() {}\n  public void hello() {}\n}",
+      "src/com/acme/Parent.java": "package com.acme;\nimport com.acme.GrandParent;\npublic class Parent extends GrandParent {\n  public void ping() {}\n}",
+      "src/com/acme/Child.java": "package com.acme;\nimport com.acme.Parent;\npublic class Child extends Parent {\n  public void ping() {}\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Parent.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-48",
+    "category": "ADVERSARIAL",
+    "description": "Interface default method and superclass method interaction",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>inf-default</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Named.java": "package com.acme;\npublic interface Named {\n  default String getName() { return \"default\"; }\n}",
+      "src/com/acme/BaseNamed.java": "package com.acme;\npublic class BaseNamed {\n  public String getName() { return \"base\"; }\n}",
+      "src/com/acme/Entity.java": "package com.acme;\nimport com.acme.Named;\nimport com.acme.BaseNamed;\npublic class Entity extends BaseNamed implements Named {}\n"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>inf-default</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Named.java": "package com.acme;\npublic interface Named {\n  default String getName() { return \"default\"; }\n}",
+      "src/com/acme/BaseNamed.java": "package com.acme;\npublic class BaseNamed {\n  public String getName() { return \"base\"; }\n  public String getPrefix() { return \"\"; }\n}",
+      "src/com/acme/Entity.java": "package com.acme;\nimport com.acme.Named;\nimport com.acme.BaseNamed;\npublic class Entity extends BaseNamed implements Named {}\n"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Entity.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-49",
+    "category": "ADVERSARIAL",
+    "description": "Disqualified by dynamic reflection Class.forName",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>refl</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Reflector.java": "package com.acme;\npublic class Reflector {\n  public Object load() throws Exception {\n    return Class.forName(\"com.acme.HiddenService\").getDeclaredConstructor().newInstance();\n  }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>refl</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Reflector.java": "package com.acme;\npublic class Reflector {\n  public Object load() throws Exception {\n    return Class.forName(\"com.acme.HiddenService\").getDeclaredConstructor().newInstance();\n  }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "RETAINED_IN_ADVISORY",
+      "expectedVerdict": "UNCERTIFIED",
+      "goldConsumers": [],
+      "goldBreakingConsumers": []
+    }
+  },
+  {
+    "id": "java-pilot-50",
+    "category": "ADVERSARIAL",
+    "description": "Overload resolution with distinct primitive vs wrapper types",
+    "historicalFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>overload</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Dispatcher.java": "package com.acme;\npublic class Dispatcher {\n  public void send(int code) {}\n  public void send(Integer code) {}\n}",
+      "src/com/acme/Caller.java": "package com.acme;\nimport com.acme.Dispatcher;\npublic class Caller {\n  public void run(Dispatcher d) { d.send(42); }\n}"
+    },
+    "candidateFiles": {
+      "pom.xml": "<project><groupId>com.acme</groupId><artifactId>overload</artifactId><version>1.0.0</version></project>",
+      "src/com/acme/Dispatcher.java": "package com.acme;\npublic class Dispatcher {\n  public void send(int code) {}\n  public void send(Integer code) {}\n  public void send(long code) {}\n}",
+      "src/com/acme/Caller.java": "package com.acme;\nimport com.acme.Dispatcher;\npublic class Caller {\n  public void run(Dispatcher d) { d.send(42); }\n}"
+    },
+    "goldSet": {
+      "expectedQualification": "QUALIFIED_FOR_CERTIFIED_F0",
+      "expectedVerdict": "COMPATIBLE",
+      "goldConsumers": [
+        "src/com/acme/Caller.java"
+      ],
+      "goldBreakingConsumers": []
+    }
+  }
+]

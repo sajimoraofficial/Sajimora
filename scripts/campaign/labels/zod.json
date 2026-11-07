@@ -1,0 +1,112 @@
+[
+  {
+    "commitSha": "0227e53d03b5652be75422b6d10e0dd9bf340f0b",
+    "parentSha": "0227e53d03b5652be75422b6d10e0dd9bf340f0b^",
+    "targetSymbol": "GithubStarPill",
+    "targetFile": "packages/docs/components/github-star-pill.tsx",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Documentation visual component update; component props interface preserved.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "07c43e2a08f67082bd35c158d528d571a36094e0",
+    "parentSha": "07c43e2a08f67082bd35c158d528d571a36094e0^",
+    "targetSymbol": "processJsonSchema",
+    "targetFile": "packages/zod/src/v4/core/json-schema-processors.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "JSON schema processor refactored internal conversion steps while maintaining return schema structure.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d",
+    "parentSha": "08ba069e29d67b2f7b13b98dc9e70b1d99aeab5d^",
+    "targetSymbol": "z.object",
+    "targetFile": "packages/zod/src/v4/core/schemas.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Object schema instantiation optimized internal property maps; schema contract and parse methods preserved.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "0c483c58849fdb6445aea4f54b1bac6b57ab3d22",
+    "parentSha": "0c483c58849fdb6445aea4f54b1bac6b57ab3d22^",
+    "targetSymbol": "runBenchmark",
+    "targetFile": "packages/bench/validate-vs-safeparse.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Benchmark script comparing validate vs safeParse; benchmark functions maintain output structure.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "18e71c71daff6e79ab8f00a48db252ccb340da1f",
+    "parentSha": "18e71c71daff6e79ab8f00a48db252ccb340da1f^",
+    "targetSymbol": "toJSONSchema",
+    "targetFile": "packages/zod/src/v4/core/json-schema-generator.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "toJSONSchema generator supports new options object while preserving single schema parameter contract.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "1c51cbe0fe23d09f8d520b31487d50a01588fae5",
+    "parentSha": "1c51cbe0fe23d09f8d520b31487d50a01588fae5^",
+    "targetSymbol": "ZOD_VERSION",
+    "targetFile": "packages/zod/src/v4/core/versions.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Version constant export updated version string value; consumers reading constant string remain valid.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "1ec6b7c5ec58d0e58f6b582c96e7cabfc5cb2f95",
+    "parentSha": "1ec6b7c5ec58d0e58f6b582c96e7cabfc5cb2f95^",
+    "targetSymbol": "GET",
+    "targetFile": "packages/docs/app/blog/rss.xml/route.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Added new RSS route handler; blog layout component advertises feed link without breaking existing layout props.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "213ee75d2ad6e41508587c3fab8246967f006993",
+    "parentSha": "213ee75d2ad6e41508587c3fab8246967f006993^",
+    "targetSymbol": "z.withParser",
+    "targetFile": "packages/zod/src/v4/classic/external.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Added z.withParser helper function for external parsers; existing z.compile() and schema contracts preserved.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "22bed613281143efa3815fe26ab666c6c56586af",
+    "parentSha": "22bed613281143efa3815fe26ab666c6c56586af^",
+    "targetSymbol": "z.iban",
+    "targetFile": "packages/bench/compile-matrix.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Added z.iban() string validator; non-breaking extension to string schema methods.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "2ec972ecc5a8af8135ed072d2d5b5363c27bb46f",
+    "parentSha": "2ec972ecc5a8af8135ed072d2d5b5363c27bb46f^",
+    "targetSymbol": "toZod",
+    "targetFile": "packages/zod/src/v4/core/util.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Collapsed enum leaf normalizer type utility; type-level behavior verifiably identical across compiler versions.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  }
+]

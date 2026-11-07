@@ -1,0 +1,13 @@
+{
+  "producers": [
+    {
+      "repositoryId": "github.com/example/monorepo",
+      "serviceId": "user-service",
+      "allowedDigests": [
+        "431fd6d7efc3ba0e1c77ed6016630c6069a15506276b35e85e41a72646aa763d"
+      ],
+      "publicKeys": []
+    }
+  ],
+  "requireSignatures": false
+}

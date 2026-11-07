@@ -1,0 +1,88 @@
+{
+  "envelopeVersion": "SAJIMORA_CONTRACT_ARTIFACT_V1",
+  "reportSchemaVersion": "SAJIMORA_CROSS_LANGUAGE_IMPACT_V1",
+  "kind": "BACKEND_CONTRACT",
+  "snapshot": {
+    "repositoryId": "github.com/example/monorepo",
+    "serviceId": "user-service",
+    "apiVersion": "v1",
+    "parentCommit": "abc1234def5678901234567890123456789abcde",
+    "candidateSnapshot": "sha:same000000003333"
+  },
+  "profile": {
+    "toolVersion": "0.1.0-test",
+    "frameworkProfile": "SPRING_MVC",
+    "codecProfile": "JACKSON_DEFAULT_V1",
+    "configFingerprint": null
+  },
+  "completeness": {
+    "complete": true,
+    "unresolvedEndpoints": [],
+    "blockers": []
+  },
+  "integrity": {
+    "sha256": "19a23f757e4deea7988fb0ce8f2333511e86ae9d492f3746ee30698ff43c66de"
+  },
+  "payload": {
+    "baseUrls": [
+      "http://user-service.internal"
+    ],
+    "proxyPrefixes": [],
+    "endpoints": [
+      {
+        "identity": {
+          "service": "user-service",
+          "httpMethod": "GET",
+          "normalizedRoute": {
+            "rawPath": "/api/users",
+            "segments": [
+              {
+                "text": "api",
+                "isParam": false
+              },
+              {
+                "text": "users",
+                "isParam": false
+              }
+            ]
+          },
+          "direction": "RESPONSE"
+        },
+        "pathParameters": [],
+        "queryParameters": [],
+        "headers": [],
+        "body": {
+          "kind": "OBJECT",
+          "properties": [
+            {
+              "wireName": "id",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "number"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            },
+            {
+              "wireName": "name",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "string"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            }
+          ]
+        },
+        "provenance": {
+          "sha256": "aaaa1111bbbb2222cccc3333dddd4444eeee5555ffff6666aaaa1111bbbb2222",
+          "language": "JAVA",
+          "file": "src/main/java/com/example/UserController.java",
+          "line": 42
+        }
+      }
+    ]
+  }
+}

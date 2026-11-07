@@ -1,0 +1,13 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { CertifiedCampaignAdapter } from './CertifiedCampaignAdapter';
+import { prepareCaseBInput } from './CaseBInputPreparation';
+import type { CertifiedCampaignOutputItem, QueryItem } from './run_campaign_50';
+const arg = (name: string) => { const i = process.argv.indexOf(name); if (i < 0 || !process.argv[i + 1]) throw new Error(`Missing ${name}`); return process.argv[i + 1]; };
+const q = JSON.parse(arg('--case-json')) as QueryItem, resultPath = path.resolve(arg('--result-path')), started = Date.now();
+const repoPath = path.resolve('scripts/campaign/repos', q.repository);
+const prepared = prepareCaseBInput(repoPath, q.parentSha, q.candidateSha, q.targetFile, q.targetSymbol);
+const result = CertifiedCampaignAdapter.evaluateRealCaseB({ repoPath, repoId: q.repository, parentSha: q.parentSha, candidateSha: q.candidateSha, targetSymbol: q.targetSymbol, targetFile: q.targetFile, consumerFile: prepared.consumerFile, targetDeclarationKind: prepared.target?.declarationKind, targetOwnerChain: prepared.target?.ownerChain, targetDeclarationOrdinal: prepared.target?.declarationOrdinal });
+const authority = result.verdictResult.auditTrace?.authorityDecision, reachedEvaluateProof = result.passedGates.includes('VERDICT_AUTHORITY'), verdict = result.verdictResult.verdict;
+const output: CertifiedCampaignOutputItem = { queryId: q.queryId, repository: q.repository, parentSha: q.parentSha, candidateSha: q.candidateSha, caseType: q.caseType, passedGates: result.passedGates, failedGate: result.failedGate || (reachedEvaluateProof ? 'NONE' : 'UNKNOWN'), authoritativeVerdict: verdict, blockerCode: result.blockerCode || authority?.reason || 'NONE', authorityGate: authority?.gate || (reachedEvaluateProof ? 'VERDICT_AUTHORITY' : result.failedGate || 'UNKNOWN'), identityStatus: 'UNRESOLVED', reachedEvaluateProof, runtimeMs: Date.now() - started, peakMemoryBytes: process.memoryUsage().rss, deterministicArtifactDigest: '', isUnsafePositive: (verdict === 'PRESERVED' || verdict === 'VIOLATED') && !reachedEvaluateProof, targetSymbol: q.targetSymbol, targetFile: q.targetFile, expectedSemanticCategory: q.expectedSemanticCategory, classification: q.classification, detailMessage: result.detailMessage };
+fs.mkdirSync(path.dirname(resultPath), { recursive: true }); fs.writeFileSync(resultPath, JSON.stringify(output, null, 2), 'utf8'); console.log(JSON.stringify({ queryId: q.queryId, verdict, failedGate: output.failedGate, runtimeMs: output.runtimeMs }));

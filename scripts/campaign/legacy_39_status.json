@@ -1,0 +1,10 @@
+{
+  "schema_version": "V32.9-TS-legacy-status-v1",
+  "legacy_39_status": "HISTORICAL_DEBUG_DATA_ONLY",
+  "performance_benchmark": false,
+  "correctness_labels": false,
+  "release_gate": false,
+  "audit_artifact": "audit_run_1.json",
+  "valid_cases": 0,
+  "rule": "The legacy 39 cases must not be used for performance scoring."
+}

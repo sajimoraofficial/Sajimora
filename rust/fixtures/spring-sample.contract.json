@@ -1,0 +1,386 @@
+{
+  "envelopeVersion": "SAJIMORA_CONTRACT_ARTIFACT_V2",
+  "reportSchemaVersion": "SAJIMORA_CROSS_LANGUAGE_IMPACT_V1",
+  "kind": "BACKEND_CONTRACT",
+  "snapshot": {
+    "repositoryId": "git-root:023abcbd535be63cafda6e1fab49d7b6b7439ff8",
+    "serviceId": "sample-service",
+    "apiVersion": null,
+    "parentCommit": "HEAD",
+    "candidateSnapshot": "working-tree:69e188da9b029860"
+  },
+  "profile": {
+    "toolVersion": "0.1.0",
+    "frameworkProfile": "SPRING_MVC",
+    "codecProfile": "JACKSON_DEFAULT_V1",
+    "configFingerprint": "209ec1ca643af7da07098ee7b501820e"
+  },
+  "completeness": {
+    "complete": true,
+    "unresolvedEndpoints": [],
+    "blockers": []
+  },
+  "payload": {
+    "baseUrls": [],
+    "proxyPrefixes": [],
+    "endpoints": [
+      {
+        "identity": {
+          "service": "sample-service",
+          "httpMethod": "GET",
+          "normalizedRoute": {
+            "rawPath": "/api/sample/{id}",
+            "segments": [
+              {
+                "text": "api",
+                "isParam": false
+              },
+              {
+                "text": "sample",
+                "isParam": false
+              },
+              {
+                "text": "{0}",
+                "isParam": true,
+                "paramIndex": 0,
+                "paramName": "id"
+              }
+            ]
+          },
+          "direction": "RESPONSE"
+        },
+        "pathParameters": [
+          {
+            "name": "id",
+            "required": true,
+            "type": {
+              "kind": "PRIMITIVE",
+              "scalar": "number"
+            },
+            "validationConstraints": []
+          }
+        ],
+        "queryParameters": [],
+        "headers": [],
+        "body": {
+          "kind": "REF",
+          "ref": "java:com.example.sample.SampleDto",
+          "provenance": {
+            "language": "JAVA",
+            "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleDto.java",
+            "line": 5,
+            "astIdentity": "com.example.sample.SampleDto"
+          }
+        },
+        "provenance": {
+          "language": "JAVA",
+          "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleController.java",
+          "line": 15,
+          "astIdentity": "com.example.sample.SampleController#getSample",
+          "sha256": "46b054b833b4e5262fdbb8c6b19cda6280b6cc585325f71f920f0c25ce842c72"
+        },
+        "mappingConditions": {
+          "params": [],
+          "complete": true
+        }
+      },
+      {
+        "identity": {
+          "service": "sample-service",
+          "httpMethod": "GET",
+          "normalizedRoute": {
+            "rawPath": "/api/sample/{id}",
+            "segments": [
+              {
+                "text": "api",
+                "isParam": false
+              },
+              {
+                "text": "sample",
+                "isParam": false
+              },
+              {
+                "text": "{0}",
+                "isParam": true,
+                "paramIndex": 0,
+                "paramName": "id"
+              }
+            ]
+          },
+          "direction": "REQUEST"
+        },
+        "pathParameters": [
+          {
+            "name": "id",
+            "required": true,
+            "type": {
+              "kind": "PRIMITIVE",
+              "scalar": "number"
+            },
+            "validationConstraints": []
+          }
+        ],
+        "queryParameters": [],
+        "headers": [],
+        "body": null,
+        "provenance": {
+          "language": "JAVA",
+          "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleController.java",
+          "line": 15,
+          "astIdentity": "com.example.sample.SampleController#getSample",
+          "sha256": "46b054b833b4e5262fdbb8c6b19cda6280b6cc585325f71f920f0c25ce842c72"
+        },
+        "mappingConditions": {
+          "params": [],
+          "complete": true
+        }
+      },
+      {
+        "identity": {
+          "service": "sample-service",
+          "httpMethod": "POST",
+          "normalizedRoute": {
+            "rawPath": "/api/sample",
+            "segments": [
+              {
+                "text": "api",
+                "isParam": false
+              },
+              {
+                "text": "sample",
+                "isParam": false
+              }
+            ]
+          },
+          "direction": "RESPONSE"
+        },
+        "pathParameters": [],
+        "queryParameters": [],
+        "headers": [],
+        "body": {
+          "kind": "REF",
+          "ref": "java:com.example.sample.SampleDto",
+          "provenance": {
+            "language": "JAVA",
+            "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleDto.java",
+            "line": 5,
+            "astIdentity": "com.example.sample.SampleDto"
+          }
+        },
+        "provenance": {
+          "language": "JAVA",
+          "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleController.java",
+          "line": 20,
+          "astIdentity": "com.example.sample.SampleController#createSample",
+          "sha256": "46b054b833b4e5262fdbb8c6b19cda6280b6cc585325f71f920f0c25ce842c72"
+        },
+        "mappingConditions": {
+          "params": [],
+          "complete": true
+        }
+      },
+      {
+        "identity": {
+          "service": "sample-service",
+          "httpMethod": "POST",
+          "normalizedRoute": {
+            "rawPath": "/api/sample",
+            "segments": [
+              {
+                "text": "api",
+                "isParam": false
+              },
+              {
+                "text": "sample",
+                "isParam": false
+              }
+            ]
+          },
+          "direction": "REQUEST"
+        },
+        "pathParameters": [],
+        "queryParameters": [],
+        "headers": [],
+        "body": {
+          "kind": "OBJECT",
+          "name": "CreateSampleRequest",
+          "properties": [
+            {
+              "wireName": "name",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "string"
+              },
+              "nullable": true,
+              "optional": true,
+              "validationConstraints": [],
+              "provenance": {
+                "language": "JAVA",
+                "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/CreateSampleRequest.java",
+                "line": 6,
+                "astIdentity": "com.example.sample.CreateSampleRequest#getName"
+              }
+            }
+          ],
+          "strict": false,
+          "provenance": {
+            "language": "JAVA",
+            "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/CreateSampleRequest.java",
+            "line": 3,
+            "astIdentity": "com.example.sample.CreateSampleRequest"
+          }
+        },
+        "provenance": {
+          "language": "JAVA",
+          "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleController.java",
+          "line": 20,
+          "astIdentity": "com.example.sample.SampleController#createSample",
+          "sha256": "46b054b833b4e5262fdbb8c6b19cda6280b6cc585325f71f920f0c25ce842c72"
+        },
+        "mappingConditions": {
+          "params": [],
+          "complete": true
+        }
+      },
+      {
+        "identity": {
+          "service": "sample-service",
+          "httpMethod": "GET",
+          "normalizedRoute": {
+            "rawPath": "/api/sample/generic",
+            "segments": [
+              {
+                "text": "api",
+                "isParam": false
+              },
+              {
+                "text": "sample",
+                "isParam": false
+              },
+              {
+                "text": "generic",
+                "isParam": false
+              }
+            ]
+          },
+          "direction": "RESPONSE"
+        },
+        "pathParameters": [],
+        "queryParameters": [],
+        "headers": [],
+        "body": {
+          "kind": "OBJECT",
+          "name": "GenericContainer",
+          "properties": [
+            {
+              "wireName": "data",
+              "type": {
+                "kind": "REF",
+                "ref": "java:com.example.sample.SampleDto",
+                "provenance": {
+                  "language": "JAVA",
+                  "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleDto.java",
+                  "line": 5,
+                  "astIdentity": "com.example.sample.SampleDto"
+                }
+              },
+              "nullable": true,
+              "optional": false,
+              "validationConstraints": [],
+              "provenance": {
+                "language": "JAVA",
+                "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/GenericContainer.java",
+                "line": 6,
+                "astIdentity": "com.example.sample.GenericContainer#getData"
+              }
+            }
+          ],
+          "strict": false,
+          "provenance": {
+            "language": "JAVA",
+            "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/GenericContainer.java",
+            "line": 3,
+            "astIdentity": "com.example.sample.GenericContainer"
+          }
+        },
+        "provenance": {
+          "language": "JAVA",
+          "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleController.java",
+          "line": 25,
+          "astIdentity": "com.example.sample.SampleController#getGeneric",
+          "sha256": "46b054b833b4e5262fdbb8c6b19cda6280b6cc585325f71f920f0c25ce842c72"
+        },
+        "mappingConditions": {
+          "params": [],
+          "complete": true
+        }
+      }
+    ],
+    "type_pool": {
+      "java:com.example.sample.SampleDto": {
+        "kind": "OBJECT",
+        "name": "SampleDto",
+        "properties": [
+          {
+            "wireName": "id",
+            "type": {
+              "kind": "PRIMITIVE",
+              "scalar": "number"
+            },
+            "nullable": true,
+            "optional": false,
+            "validationConstraints": [],
+            "provenance": {
+              "language": "JAVA",
+              "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleDto.java",
+              "line": 11,
+              "astIdentity": "com.example.sample.SampleDto#getId"
+            }
+          },
+          {
+            "wireName": "name",
+            "type": {
+              "kind": "PRIMITIVE",
+              "scalar": "string"
+            },
+            "nullable": true,
+            "optional": false,
+            "validationConstraints": [],
+            "provenance": {
+              "language": "JAVA",
+              "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleDto.java",
+              "line": 19,
+              "astIdentity": "com.example.sample.SampleDto#getName"
+            }
+          },
+          {
+            "wireName": "active",
+            "type": {
+              "kind": "PRIMITIVE",
+              "scalar": "boolean"
+            },
+            "nullable": false,
+            "optional": false,
+            "validationConstraints": [],
+            "provenance": {
+              "language": "JAVA",
+              "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleDto.java",
+              "line": 27,
+              "astIdentity": "com.example.sample.SampleDto#isActive"
+            }
+          }
+        ],
+        "strict": false,
+        "provenance": {
+          "language": "JAVA",
+          "file": "rust/fixtures/spring-sample/src/main/java/com/example/sample/SampleDto.java",
+          "line": 5,
+          "astIdentity": "com.example.sample.SampleDto"
+        }
+      }
+    }
+  },
+  "integrity": {
+    "sha256": "040b0e3306b2d158fd02588e85986758afa78c3273fc36eb3ceb65f010d0dc7b"
+  }
+}

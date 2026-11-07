@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "SAJIMORA_TYPESCRIPT_READINESS_TAXONOMY_V1",
+  "campaignId": "typescript-commercial-readiness-v1",
+  "caseBudget": 10000,
+  "matrixSource": "scripts/campaign/typescript_commercial_readiness_matrix_v1.md",
+  "dimensions": {
+    "provider": ["function", "method", "class", "interface", "type_alias", "enum", "namespace", "jsx_component", "ambient_declaration", "generated_declaration"],
+    "consumer": ["direct_call", "method_call", "construction", "property_access", "type_annotation", "generic_instantiation", "function_assignment", "callback", "higher_order", "object_literal", "implementation", "inheritance", "jsx_use", "type_alias_use", "re_export_consumer", "declaration_consumer"],
+    "resolution": ["relative_named", "relative_default", "namespace", "renamed_import", "barrel_named", "barrel_export_star", "renamed_re_export", "default_re_export", "multihop_2", "multihop_3", "multihop_4", "circular_barrel", "collision", "paths_baseurl", "workspace_package", "package_subpath", "package_exports", "package_imports", "conditional_exports", "package_self_reference", "require_commonjs", "module_exports", "esm_cjs_interop", "project_reference", "types_package", "ambient_module", "global_declaration", "unresolved_alias", "missing_package"],
+    "mutation": ["addition", "removal", "rename", "type_widening", "type_narrowing", "optionality", "requiredness", "visibility", "generic_constraint", "return_type", "parameter", "property", "method", "overload", "inheritance", "export_change", "import_change", "resolution_change", "file_move", "deletion", "configuration_change", "provider_consumer_composition"],
+    "repository": ["single_tsconfig", "multiple_tsconfig", "extends", "nested_extends", "project_references", "composite", "incremental", "include_exclude", "files_list", "strict_change", "strict_function_types", "module_resolution_change", "target_module_change", "jsx_config", "allow_js_check_js", "skip_lib_check", "baseurl_paths_change", "package_exports_change", "package_types_change", "lockfile_change", "case_sensitive_fs", "case_insensitive_fs", "symlink", "generated_source", "declaration_only_package"],
+    "topology": ["single_package", "npm_workspace", "pnpm_workspace", "yarn_workspace", "nx", "turborepo", "multiple_packages", "cross_package_source", "cross_package_types", "package_boundary_change", "project_reference_boundary", "circular_package_dependency"],
+    "semanticRelationship": ["function_signature", "method_signature", "constructor", "class_member", "inheritance_override", "interface_implementation", "object_structural_compatibility", "type_alias", "union_intersection", "generic_inference_constraint_variance", "overload_resolution", "callback_variance", "higher_order_function", "jsx_props_component", "enum_value", "namespace_module_augmentation", "declaration_merging", "type_only_binding"],
+    "composition": ["isolated", "provider_consumer", "alias_barrel", "alias_multihop", "package_barrel", "package_project_reference", "monorepo_alias", "monorepo_package_exports", "declaration_package", "jsx_barrel", "generic_barrel", "callback_alias", "config_and_resolution", "provider_and_consumer_change", "unrelated_unsupported_noise", "three_way_high_risk", "four_way_high_risk", "real_repository_chain"]
+  },
+  "coverageContract": {
+    "required": ["every matrix heading and listed variant occurs at least once", "every declared dimension value occurs at least once", "every feasible pair of values across distinct dimensions occurs at least once", "all named high-risk compositions occur", "all fail-closed scenario families occur"],
+    "additionalMatrixItems": [
+      { "id": "AF.01", "name": "Direct import composition" },
+      { "id": "AF.02", "name": "Direct import plus alias" },
+      { "id": "AF.03", "name": "Direct import plus barrel" },
+      { "id": "AF.04", "name": "Alias plus barrel" },
+      { "id": "AF.05", "name": "Alias plus multi-hop barrel" },
+      { "id": "AF.06", "name": "Alias plus package" },
+      { "id": "AF.07", "name": "Package plus barrel" },
+      { "id": "AF.08", "name": "Package plus project reference" },
+      { "id": "AF.09", "name": "Project reference plus barrel" },
+      { "id": "AF.10", "name": "Monorepo plus alias" },
+      { "id": "AF.11", "name": "Monorepo plus package exports" },
+      { "id": "AF.12", "name": "Declaration file plus package" },
+      { "id": "AF.13", "name": "JSX plus barrel" },
+      { "id": "AF.14", "name": "JSX plus alias" },
+      { "id": "AF.15", "name": "Generic plus barrel" },
+      { "id": "AF.16", "name": "Generic plus alias" },
+      { "id": "AF.17", "name": "Callback plus barrel" },
+      { "id": "AF.18", "name": "Callback plus alias" },
+      { "id": "AF.19", "name": "Three-way compositions" },
+      { "id": "AF.20", "name": "Four-way compositions" },
+      { "id": "AI.01", "name": "Provider signature, barrel, paths alias, import rename, and consumer call change" },
+      { "id": "AI.02", "name": "Monorepo package, barrel, alias, provider, and generic consumer chain" }
+    ],
+    "p0Families": ["direct imports", "aliased imports", "barrel exports", "multi-hop re-exports", "paths and baseUrl", "package and subpath resolution", "ESM and CommonJS", "project references", "monorepos", ".d.ts", "functions/methods/classes/interfaces", "generics", "overloads", "callbacks", "JSX", "type aliases/unions/intersections", "rename/move/delete", "provider and consumer composition", "configuration changes", "fail-closed UNKNOWN cases"],
+    "highRiskCompositions": ["alias_barrel", "alias_multihop", "package_barrel", "package_project_reference", "monorepo_alias", "monorepo_package_exports", "declaration_package", "jsx_barrel", "generic_barrel", "callback_alias", "config_and_resolution", "provider_and_consumer_change", "unrelated_unsupported_noise", "three_way_high_risk", "four_way_high_risk", "real_repository_chain"],
+    "failClosedFamilies": ["circular_barrel", "collision", "unresolved_alias", "missing_package", "missing_provider", "missing_consumer", "incomplete_project_graph", "missing_declaration", "unsupported_syntax", "dynamic_import_ambiguity", "configuration_mismatch", "resource_exhaustion", "contradictory_evidence", "insufficient_semantic_witness"],
+    "exclusions": [
+      { "combination": "CommonJS syntax with type-only ESM export", "reason": "No runtime binding can be observed for an erased type-only export; retain as explicit non-applicable/unsupported case rather than inventing a relation." },
+      { "combination": "JSX intrinsic element with package self-reference", "reason": "No provider-consumer relation exists unless an explicit component binding is added; generated cases must carry that binding or be excluded." },
+      { "combination": "Compiler-only mutation without source or config delta", "reason": "Cannot form a reproducible parent-to-candidate case; configuration mutations must alter a sealed config file." }
+    ],
+    "oracleSources": ["CONSTRUCTION", "INDEPENDENT_COMPILER", "REVIEWED_FIXTURE"],
+    "expectedVerdictLabels": ["PRESERVED", "VIOLATED", "NOT_APPLICABLE", "UNKNOWN"],
+    "unknownClassifications": ["EXPECTED_UNSUPPORTED", "EXPECTED_AMBIGUOUS", "EXPECTED_INCOMPLETE_EVIDENCE", "UNEXPECTED_IN_SUPPORTED_SCOPE"],
+    "executionEnvelopeRequired": ["typescriptVersion", "lockfileSha256", "effectiveCompilerOptions", "moduleResolution", "projectGraph", "packageConditions", "generatorVersion", "fixtureHashes", "timeBudgetMs", "memoryBudgetBytes"],
+    "pairwisePolicy": "All feasible cross-dimension value pairs; infeasible pairs require an exclusion with rationale.",
+    "productionCoveragePolicy": "Every listed scenario family and variant must be represented in the sealed executable corpus. P0 families additionally require supported certifying positive cases and adversarial negative cases. Unsupported non-P0 cases may remain UNKNOWN only when the reason is explicit and tested."
+  },
+  "generation": {
+    "algorithm": "Deterministic greedy covering array over the declared finite dimensions; stable tie-break by SHA-256 of seed and canonical row.",
+    "seed": "sajimora-ts-readiness-v1",
+    "feasibility": "Rows are coverage designs. A row is not executable until its sealed source/config fixture and independent oracle evidence are materialized.",
+    "stages": ["SMALL_SEALED_SLICE", "FULL_BASELINE", "ONE_SUPPORT_CHANGE_AT_A_TIME"]
+  },
+  "releaseGate": {
+    "certifiedVerdictRequires": ["valid proof path", "match with independent oracle"],
+    "blockOn": ["false positive", "proof-path violation", "oracle disagreement on certified verdict"],
+    "reportBy": ["family", "composition"],
+    "requiredMetrics": ["certificationRate", "unexpectedUnknownRate", "expectedUnknownRate", "proofPathViolations", "falsePositives", "resourceOutcomes"]
+  }
+}

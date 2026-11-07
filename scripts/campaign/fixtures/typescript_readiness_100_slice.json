@@ -1,0 +1,2506 @@
+{
+  "schemaVersion": "TYPESCRIPT_READINESS_100_SLICE_V1",
+  "totalCases": 100,
+  "distribution": {
+    "PRESERVED": 49,
+    "VIOLATED": 45,
+    "UNKNOWN": 6
+  },
+  "generatedAt": "2026-09-24T16:58:44.799Z",
+  "cases": [
+    {
+      "caseId": "TSR-SL-001",
+      "category": "A1",
+      "description": "Relative named import function widening",
+      "target": {
+        "file": "provider.ts",
+        "symbol": "greet"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-001-parent",
+        "files": {
+          "provider.ts": "export function greet(name: string): string { return \"Hello \" + name; }",
+          "consumer.ts": "import { greet } from \"./provider\"; export const msg = greet(\"Alice\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-001-candidate",
+        "files": {
+          "provider.ts": "export function greet(name: string, title?: string): string { return \"Hello \" + (title ? title + \" \" : \"\") + name; }",
+          "consumer.ts": "import { greet } from \"./provider\"; export const msg = greet(\"Alice\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-002",
+      "category": "A1",
+      "description": "Relative named import parameter removal breaks argument",
+      "target": {
+        "file": "provider.ts",
+        "symbol": "sum"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-002-parent",
+        "files": {
+          "provider.ts": "export function sum(a: number, b: number): number { return a + b; }",
+          "consumer.ts": "import { sum } from \"./provider\"; export const total = sum(1, 2);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-002-candidate",
+        "files": {
+          "provider.ts": "export function sum(a: number): number { return a; }",
+          "consumer.ts": "import { sum } from \"./provider\"; export const total = sum(1, 2);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-003",
+      "category": "A2",
+      "description": "Directory index import preserved",
+      "target": {
+        "file": "math/index.ts",
+        "symbol": "PI"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-003-parent",
+        "files": {
+          "math/index.ts": "export const PI = 3.14;",
+          "consumer.ts": "import { PI } from \"./math\"; export const piVal = PI;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-003-candidate",
+        "files": {
+          "math/index.ts": "export const PI = 3.14159;",
+          "consumer.ts": "import { PI } from \"./math\"; export const piVal = PI;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-004",
+      "category": "A2",
+      "description": "Directory index import type mismatch",
+      "target": {
+        "file": "math/index.ts",
+        "symbol": "PI"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-004-parent",
+        "files": {
+          "math/index.ts": "export const PI: number = 3.14;",
+          "consumer.ts": "import { PI } from \"./math\"; export const piVal: number = PI;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-004-candidate",
+        "files": {
+          "math/index.ts": "export const PI: string = \"3.14\";",
+          "consumer.ts": "import { PI } from \"./math\"; export const piVal: number = PI;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-005",
+      "category": "A3",
+      "description": "Default import return widening preserved",
+      "target": {
+        "file": "logger.ts",
+        "symbol": "default"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-005-parent",
+        "files": {
+          "logger.ts": "export default function log(m: string): void {}",
+          "consumer.ts": "import log from \"./logger\"; log(\"test\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-005-candidate",
+        "files": {
+          "logger.ts": "export default function log(m: string | number): void {}",
+          "consumer.ts": "import log from \"./logger\"; log(\"test\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-006",
+      "category": "A3",
+      "description": "Default import converted to named export breaks default import",
+      "target": {
+        "file": "logger.ts",
+        "symbol": "default"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-006-parent",
+        "files": {
+          "logger.ts": "export default function log(m: string): void {}",
+          "consumer.ts": "import log from \"./logger\"; log(\"test\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-006-candidate",
+        "files": {
+          "logger.ts": "export function log(m: string): void {}",
+          "consumer.ts": "import log from \"./logger\"; log(\"test\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-007",
+      "category": "A4",
+      "description": "Namespace import member access preserved",
+      "target": {
+        "file": "api.ts",
+        "symbol": "version"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-007-parent",
+        "files": {
+          "api.ts": "export const version = \"1.0\"; export const ping = () => true;",
+          "consumer.ts": "import * as Api from \"./api\"; export const v: string = Api.version;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-007-candidate",
+        "files": {
+          "api.ts": "export const version = \"1.1\"; export const ping = () => true;",
+          "consumer.ts": "import * as Api from \"./api\"; export const v: string = Api.version;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-008",
+      "category": "A4",
+      "description": "Namespace import member removal breaks access",
+      "target": {
+        "file": "api.ts",
+        "symbol": "ping"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-008-parent",
+        "files": {
+          "api.ts": "export const version = \"1.0\"; export const ping = () => true;",
+          "consumer.ts": "import * as Api from \"./api\"; export const ok: boolean = Api.ping();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-008-candidate",
+        "files": {
+          "api.ts": "export const version = \"1.0\";",
+          "consumer.ts": "import * as Api from \"./api\"; export const ok: boolean = Api.ping();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-009",
+      "category": "A5",
+      "description": "Type-only import widening preserved",
+      "target": {
+        "file": "types.ts",
+        "symbol": "Config"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-009-parent",
+        "files": {
+          "types.ts": "export interface Config { port: number; }",
+          "consumer.ts": "import type { Config } from \"./types\"; export const c: Config = { port: 8080 };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-009-candidate",
+        "files": {
+          "types.ts": "export interface Config { port: number; host?: string; }",
+          "consumer.ts": "import type { Config } from \"./types\"; export const c: Config = { port: 8080 };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-010",
+      "category": "A5",
+      "description": "Type-only import required property addition breaks consumer",
+      "target": {
+        "file": "types.ts",
+        "symbol": "Config"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-010-parent",
+        "files": {
+          "types.ts": "export interface Config { port: number; }",
+          "consumer.ts": "import type { Config } from \"./types\"; export const c: Config = { port: 8080 };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-010-candidate",
+        "files": {
+          "types.ts": "export interface Config { port: number; host: string; }",
+          "consumer.ts": "import type { Config } from \"./types\"; export const c: Config = { port: 8080 };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-011",
+      "category": "B1",
+      "description": "Named re-export through barrel preserved",
+      "target": {
+        "file": "source.ts",
+        "symbol": "val"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-011-parent",
+        "files": {
+          "source.ts": "export const val: number = 42;",
+          "barrel.ts": "export { val } from \"./source\";",
+          "consumer.ts": "import { val } from \"./barrel\"; export const num: number = val;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-011-candidate",
+        "files": {
+          "source.ts": "export const val: number = 100;",
+          "barrel.ts": "export { val } from \"./source\";",
+          "consumer.ts": "import { val } from \"./barrel\"; export const num: number = val;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-012",
+      "category": "B1",
+      "description": "Named re-export through barrel broken by type change",
+      "target": {
+        "file": "source.ts",
+        "symbol": "val"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-012-parent",
+        "files": {
+          "source.ts": "export const val: number = 42;",
+          "barrel.ts": "export { val } from \"./source\";",
+          "consumer.ts": "import { val } from \"./barrel\"; export const num: number = val;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-012-candidate",
+        "files": {
+          "source.ts": "export const val: string = \"42\";",
+          "barrel.ts": "export { val } from \"./source\";",
+          "consumer.ts": "import { val } from \"./barrel\"; export const num: number = val;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-013",
+      "category": "B2",
+      "description": "Star re-export through barrel preserved",
+      "target": {
+        "file": "source.ts",
+        "symbol": "action"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-013-parent",
+        "files": {
+          "source.ts": "export function action(): string { return \"go\"; }",
+          "barrel.ts": "export * from \"./source\";",
+          "consumer.ts": "import { action } from \"./barrel\"; export const res: string = action();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-013-candidate",
+        "files": {
+          "source.ts": "export function action(): string { return \"proceed\"; }",
+          "barrel.ts": "export * from \"./source\";",
+          "consumer.ts": "import { action } from \"./barrel\"; export const res: string = action();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-014",
+      "category": "B2",
+      "description": "Star re-export broken by parameter addition",
+      "target": {
+        "file": "source.ts",
+        "symbol": "action"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-014-parent",
+        "files": {
+          "source.ts": "export function action(): string { return \"go\"; }",
+          "barrel.ts": "export * from \"./source\";",
+          "consumer.ts": "import { action } from \"./barrel\"; export const res: string = action();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-014-candidate",
+        "files": {
+          "source.ts": "export function action(flag: boolean): string { return flag ? \"go\" : \"stop\"; }",
+          "barrel.ts": "export * from \"./source\";",
+          "consumer.ts": "import { action } from \"./barrel\"; export const res: string = action();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-015",
+      "category": "B3",
+      "description": "Renamed re-export preserved",
+      "target": {
+        "file": "source.ts",
+        "symbol": "orig"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-015-parent",
+        "files": {
+          "source.ts": "export const orig = 10;",
+          "barrel.ts": "export { orig as aliased } from \"./source\";",
+          "consumer.ts": "import { aliased } from \"./barrel\"; export const a: number = aliased;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-015-candidate",
+        "files": {
+          "source.ts": "export const orig = 20;",
+          "barrel.ts": "export { orig as aliased } from \"./source\";",
+          "consumer.ts": "import { aliased } from \"./barrel\"; export const a: number = aliased;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-016",
+      "category": "B3",
+      "description": "Renamed re-export broken by type narrowing/change",
+      "target": {
+        "file": "source.ts",
+        "symbol": "orig"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-016-parent",
+        "files": {
+          "source.ts": "export const orig: number = 10;",
+          "barrel.ts": "export { orig as aliased } from \"./source\";",
+          "consumer.ts": "import { aliased } from \"./barrel\"; export const a: number = aliased;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-016-candidate",
+        "files": {
+          "source.ts": "export const orig: boolean = true;",
+          "barrel.ts": "export { orig as aliased } from \"./source\";",
+          "consumer.ts": "import { aliased } from \"./barrel\"; export const a: number = aliased;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-017",
+      "category": "B6",
+      "description": "Multi-hop 3-step re-export preserved",
+      "target": {
+        "file": "step1.ts",
+        "symbol": "core"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-017-parent",
+        "files": {
+          "step1.ts": "export const core = \"sajimora\";",
+          "step2.ts": "export { core } from \"./step1\";",
+          "step3.ts": "export { core } from \"./step2\";",
+          "consumer.ts": "import { core } from \"./step3\"; export const name: string = core;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-017-candidate",
+        "files": {
+          "step1.ts": "export const core = \"sajimora-v32\";",
+          "step2.ts": "export { core } from \"./step1\";",
+          "step3.ts": "export { core } from \"./step2\";",
+          "consumer.ts": "import { core } from \"./step3\"; export const name: string = core;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-018",
+      "category": "B6",
+      "description": "Multi-hop 3-step re-export broken at source",
+      "target": {
+        "file": "step1.ts",
+        "symbol": "core"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-018-parent",
+        "files": {
+          "step1.ts": "export const core: string = \"sajimora\";",
+          "step2.ts": "export { core } from \"./step1\";",
+          "step3.ts": "export { core } from \"./step2\";",
+          "consumer.ts": "import { core } from \"./step3\"; export const name: string = core;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-018-candidate",
+        "files": {
+          "step1.ts": "export const core: number = 32;",
+          "step2.ts": "export { core } from \"./step1\";",
+          "step3.ts": "export { core } from \"./step2\";",
+          "consumer.ts": "import { core } from \"./step3\"; export const name: string = core;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-019",
+      "category": "B7",
+      "description": "Barrel export collision fails closed as UNKNOWN",
+      "target": {
+        "file": "b1.ts",
+        "symbol": "item"
+      },
+      "expectedVerdict": "UNKNOWN",
+      "parent": {
+        "commitSha": "TSR-SL-019-parent",
+        "files": {
+          "b1.ts": "export const item = 1;",
+          "b2.ts": "export const item = 2;",
+          "barrel.ts": "export * from \"./b1\"; export * from \"./b2\";",
+          "consumer.ts": "import { item } from \"./barrel\"; export const x = item;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-019-candidate",
+        "files": {
+          "b1.ts": "export const item = 10;",
+          "b2.ts": "export const item = 20;",
+          "barrel.ts": "export * from \"./b1\"; export * from \"./b2\";",
+          "consumer.ts": "import { item } from \"./barrel\"; export const x = item;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-020",
+      "category": "B8",
+      "description": "Circular barrel cycle fails closed",
+      "target": {
+        "file": "cycleA.ts",
+        "symbol": "cA"
+      },
+      "expectedVerdict": "UNKNOWN",
+      "parent": {
+        "commitSha": "TSR-SL-020-parent",
+        "files": {
+          "cycleA.ts": "export { cB } from \"./cycleB\"; export const cA = 1;",
+          "cycleB.ts": "export { cA } from \"./cycleA\"; export const cB = 2;",
+          "consumer.ts": "import { missingSym } from \"./cycleA\"; export const m = missingSym;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-020-candidate",
+        "files": {
+          "cycleA.ts": "export { cB } from \"./cycleB\"; export const cA = 1;",
+          "cycleB.ts": "export { cA } from \"./cycleA\"; export const cB = 2;",
+          "consumer.ts": "import { missingSym } from \"./cycleA\"; export const m = missingSym;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-021",
+      "category": "C1",
+      "description": "baseUrl absolute path resolution preserved",
+      "target": {
+        "file": "src/services/auth.ts",
+        "symbol": "isAuthed"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-021-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\"./src\",\"strict\":true}}",
+          "src/services/auth.ts": "export const isAuthed = (): boolean => true;",
+          "src/app.ts": "import { isAuthed } from \"services/auth\"; export const authed = isAuthed();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-021-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\"./src\",\"strict\":true}}",
+          "src/services/auth.ts": "export const isAuthed = (): boolean => false;",
+          "src/app.ts": "import { isAuthed } from \"services/auth\"; export const authed = isAuthed();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-022",
+      "category": "C1",
+      "description": "baseUrl resolution broken by return type change",
+      "target": {
+        "file": "src/services/auth.ts",
+        "symbol": "isAuthed"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-022-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\"./src\",\"strict\":true}}",
+          "src/services/auth.ts": "export const isAuthed = (): boolean => true;",
+          "src/app.ts": "import { isAuthed } from \"services/auth\"; export const authed: boolean = isAuthed();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-022-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\"./src\",\"strict\":true}}",
+          "src/services/auth.ts": "export const isAuthed = (): string => \"yes\";",
+          "src/app.ts": "import { isAuthed } from \"services/auth\"; export const authed: boolean = isAuthed();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-023",
+      "category": "C2",
+      "description": "paths wildcard @app/* preserved",
+      "target": {
+        "file": "src/lib/calc.ts",
+        "symbol": "multiply"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-023-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@app/*\":[\"src/*\"]},\"strict\":true}}",
+          "src/lib/calc.ts": "export const multiply = (x: number, y: number) => x * y;",
+          "src/main.ts": "import { multiply } from \"@app/lib/calc\"; export const prod: number = multiply(2, 4);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-023-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@app/*\":[\"src/*\"]},\"strict\":true}}",
+          "src/lib/calc.ts": "export const multiply = (x: number, y: number, z = 1) => x * y * z;",
+          "src/main.ts": "import { multiply } from \"@app/lib/calc\"; export const prod: number = multiply(2, 4);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-024",
+      "category": "C2",
+      "description": "paths wildcard broken by required param addition",
+      "target": {
+        "file": "src/lib/calc.ts",
+        "symbol": "multiply"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-024-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@app/*\":[\"src/*\"]},\"strict\":true}}",
+          "src/lib/calc.ts": "export const multiply = (x: number, y: number) => x * y;",
+          "src/main.ts": "import { multiply } from \"@app/lib/calc\"; export const prod: number = multiply(2, 4);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-024-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@app/*\":[\"src/*\"]},\"strict\":true}}",
+          "src/lib/calc.ts": "export const multiply = (x: number, y: number, z: number) => x * y * z;",
+          "src/main.ts": "import { multiply } from \"@app/lib/calc\"; export const prod: number = multiply(2, 4);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-025",
+      "category": "C3",
+      "description": "Unresolvable path alias fails closed",
+      "target": {
+        "file": "src/missing.ts",
+        "symbol": "data"
+      },
+      "expectedVerdict": "UNKNOWN",
+      "parent": {
+        "commitSha": "TSR-SL-025-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@unknown/*\":[\"nonexistent/*\"]},\"strict\":true}}",
+          "src/app.ts": "import { data } from \"@unknown/missing\"; export const d = data;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-025-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@unknown/*\":[\"nonexistent/*\"]},\"strict\":true}}",
+          "src/app.ts": "import { data } from \"@unknown/missing\"; export const d = data;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-026",
+      "category": "C4",
+      "description": "Multiple paths fallback resolution preserved",
+      "target": {
+        "file": "fallbacks/feature.ts",
+        "symbol": "feat"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-026-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@feat\":[\"primary/feature\",\"fallbacks/feature\"]},\"strict\":true}}",
+          "fallbacks/feature.ts": "export const feat = \"active\";",
+          "app.ts": "import { feat } from \"@feat\"; export const f: string = feat;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-026-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"baseUrl\":\".\",\"paths\":{\"@feat\":[\"primary/feature\",\"fallbacks/feature\"]},\"strict\":true}}",
+          "fallbacks/feature.ts": "export const feat = \"still active\";",
+          "app.ts": "import { feat } from \"@feat\"; export const f: string = feat;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-027",
+      "category": "C5",
+      "description": "rootDirs virtual merged tree preserved",
+      "target": {
+        "file": "generated/views/card.ts",
+        "symbol": "CardView"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-027-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"rootDirs\":[\"src/views\",\"generated/views\"],\"strict\":true}}",
+          "generated/views/card.ts": "export const CardView = \"card\";",
+          "src/views/main.ts": "import { CardView } from \"./card\"; export const cv: string = CardView;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-027-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"rootDirs\":[\"src/views\",\"generated/views\"],\"strict\":true}}",
+          "generated/views/card.ts": "export const CardView = \"card-v2\";",
+          "src/views/main.ts": "import { CardView } from \"./card\"; export const cv: string = CardView;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-028",
+      "category": "C5",
+      "description": "rootDirs virtual merged tree broken by type change",
+      "target": {
+        "file": "generated/views/card.ts",
+        "symbol": "CardView"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-028-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"rootDirs\":[\"src/views\",\"generated/views\"],\"strict\":true}}",
+          "generated/views/card.ts": "export const CardView: string = \"card\";",
+          "src/views/main.ts": "import { CardView } from \"./card\"; export const cv: string = CardView;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-028-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"rootDirs\":[\"src/views\",\"generated/views\"],\"strict\":true}}",
+          "generated/views/card.ts": "export const CardView: number = 42;",
+          "src/views/main.ts": "import { CardView } from \"./card\"; export const cv: string = CardView;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-029",
+      "category": "D1",
+      "description": "Conditional exports import condition preserved",
+      "target": {
+        "file": "node_modules/pkg/esm/index.ts",
+        "symbol": "run"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-029-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\".\":{\"import\":\"./esm/index.ts\"}}}",
+          "node_modules/pkg/esm/index.ts": "export const run = () => 1;",
+          "app.ts": "import { run } from \"pkg\"; export const r: number = run();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-029-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\".\":{\"import\":\"./esm/index.ts\"}}}",
+          "node_modules/pkg/esm/index.ts": "export const run = () => 2;",
+          "app.ts": "import { run } from \"pkg\"; export const r: number = run();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-030",
+      "category": "D1",
+      "description": "Conditional exports import broken by return type",
+      "target": {
+        "file": "node_modules/pkg/esm/index.ts",
+        "symbol": "run"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-030-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\".\":{\"import\":\"./esm/index.ts\"}}}",
+          "node_modules/pkg/esm/index.ts": "export const run = (): number => 1;",
+          "app.ts": "import { run } from \"pkg\"; export const r: number = run();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-030-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\".\":{\"import\":\"./esm/index.ts\"}}}",
+          "node_modules/pkg/esm/index.ts": "export const run = (): string => \"1\";",
+          "app.ts": "import { run } from \"pkg\"; export const r: number = run();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-031",
+      "category": "D2",
+      "description": "Subpath export pkg/sub preserved",
+      "target": {
+        "file": "node_modules/pkg/sub.ts",
+        "symbol": "subVal"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-031-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\"./sub\":\"./sub.ts\"}}",
+          "node_modules/pkg/sub.ts": "export const subVal = 42;",
+          "app.ts": "import { subVal } from \"pkg/sub\"; export const sv = subVal;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-031-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\"./sub\":\"./sub.ts\"}}",
+          "node_modules/pkg/sub.ts": "export const subVal = 84;",
+          "app.ts": "import { subVal } from \"pkg/sub\"; export const sv = subVal;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-032",
+      "category": "D2",
+      "description": "Subpath export pkg/sub broken by type mismatch",
+      "target": {
+        "file": "node_modules/pkg/sub.ts",
+        "symbol": "subVal"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-032-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\"./sub\":\"./sub.ts\"}}",
+          "node_modules/pkg/sub.ts": "export const subVal: number = 42;",
+          "app.ts": "import { subVal } from \"pkg/sub\"; export const sv: number = subVal;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-032-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"moduleResolution\":\"bundler\",\"strict\":true}}",
+          "node_modules/pkg/package.json": "{\"name\":\"pkg\",\"exports\":{\"./sub\":\"./sub.ts\"}}",
+          "node_modules/pkg/sub.ts": "export const subVal: boolean = true;",
+          "app.ts": "import { subVal } from \"pkg/sub\"; export const sv: number = subVal;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-033",
+      "category": "D3",
+      "description": "Missing package fails closed as UNKNOWN",
+      "target": {
+        "file": "missing-pkg",
+        "symbol": "fn"
+      },
+      "expectedVerdict": "UNKNOWN",
+      "parent": {
+        "commitSha": "TSR-SL-033-parent",
+        "files": {
+          "app.ts": "import { fn } from \"uninstalled-pkg\"; export const res = fn();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-033-candidate",
+        "files": {
+          "app.ts": "import { fn } from \"uninstalled-pkg\"; export const res = fn();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-034",
+      "category": "D4",
+      "description": "In-memory virtual monorepo workspace package preserved",
+      "target": {
+        "file": "packages/ui/src/button.ts",
+        "symbol": "Button"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-034-parent",
+        "files": {
+          "packages/ui/package.json": "{\"name\":\"@corp/ui\",\"exports\":{\".\":\"./src/button.ts\"}}",
+          "packages/ui/src/button.ts": "export const Button = () => \"btn\";",
+          "apps/web/src/index.ts": "import { Button } from \"@corp/ui\"; export const b = Button();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-034-candidate",
+        "files": {
+          "packages/ui/package.json": "{\"name\":\"@corp/ui\",\"exports\":{\".\":\"./src/button.ts\"}}",
+          "packages/ui/src/button.ts": "export const Button = (t?: string) => t ?? \"btn\";",
+          "apps/web/src/index.ts": "import { Button } from \"@corp/ui\"; export const b = Button();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-035",
+      "category": "D4",
+      "description": "In-memory virtual monorepo workspace package broken by required param",
+      "target": {
+        "file": "packages/ui/src/button.ts",
+        "symbol": "Button"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-035-parent",
+        "files": {
+          "packages/ui/package.json": "{\"name\":\"@corp/ui\",\"exports\":{\".\":\"./src/button.ts\"}}",
+          "packages/ui/src/button.ts": "export const Button = () => \"btn\";",
+          "apps/web/src/index.ts": "import { Button } from \"@corp/ui\"; export const b = Button();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-035-candidate",
+        "files": {
+          "packages/ui/package.json": "{\"name\":\"@corp/ui\",\"exports\":{\".\":\"./src/button.ts\"}}",
+          "packages/ui/src/button.ts": "export const Button = (label: string) => label;",
+          "apps/web/src/index.ts": "import { Button } from \"@corp/ui\"; export const b = Button();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-036",
+      "category": "D5",
+      "description": "Monorepo workspace subpath export @corp/utils/math preserved",
+      "target": {
+        "file": "packages/utils/src/math.ts",
+        "symbol": "add"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-036-parent",
+        "files": {
+          "packages/utils/package.json": "{\"name\":\"@corp/utils\",\"exports\":{\"./math\":\"./src/math.ts\"}}",
+          "packages/utils/src/math.ts": "export const add = (a: number, b: number) => a + b;",
+          "apps/web/src/index.ts": "import { add } from \"@corp/utils/math\"; export const sum: number = add(1, 2);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-036-candidate",
+        "files": {
+          "packages/utils/package.json": "{\"name\":\"@corp/utils\",\"exports\":{\"./math\":\"./src/math.ts\"}}",
+          "packages/utils/src/math.ts": "export const add = (a: number, b: number, c = 0) => a + b + c;",
+          "apps/web/src/index.ts": "import { add } from \"@corp/utils/math\"; export const sum: number = add(1, 2);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-037",
+      "category": "G1",
+      "description": "Adding optional parameter preserves zero-arg call",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "execute"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-037-parent",
+        "files": {
+          "fn.ts": "export function execute(): void {}",
+          "app.ts": "import { execute } from \"./fn\"; execute();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-037-candidate",
+        "files": {
+          "fn.ts": "export function execute(opt?: boolean): void {}",
+          "app.ts": "import { execute } from \"./fn\"; execute();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-038",
+      "category": "G1",
+      "description": "Adding required parameter rejects zero-arg call",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "execute"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-038-parent",
+        "files": {
+          "fn.ts": "export function execute(): void {}",
+          "app.ts": "import { execute } from \"./fn\"; execute();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-038-candidate",
+        "files": {
+          "fn.ts": "export function execute(req: boolean): void {}",
+          "app.ts": "import { execute } from \"./fn\"; execute();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-039",
+      "category": "G2",
+      "description": "Adding rest parameters preserves existing arity",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "combine"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-039-parent",
+        "files": {
+          "fn.ts": "export function combine(a: string): string { return a; }",
+          "app.ts": "import { combine } from \"./fn\"; export const r = combine(\"x\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-039-candidate",
+        "files": {
+          "fn.ts": "export function combine(a: string, ...rest: string[]): string { return [a, ...rest].join(\"\"); }",
+          "app.ts": "import { combine } from \"./fn\"; export const r = combine(\"x\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-040",
+      "category": "G2",
+      "description": "Parameter type widening (string -> string | number) is compatible for callers",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "processItem"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-040-parent",
+        "files": {
+          "fn.ts": "export function processItem(val: string): void {}",
+          "app.ts": "import { processItem } from \"./fn\"; processItem(\"data\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-040-candidate",
+        "files": {
+          "fn.ts": "export function processItem(val: string | number): void {}",
+          "app.ts": "import { processItem } from \"./fn\"; processItem(\"data\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-041",
+      "category": "G2",
+      "description": "Parameter type narrowing (string | number -> string) rejects number call",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "processItem"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-041-parent",
+        "files": {
+          "fn.ts": "export function processItem(val: string | number): void {}",
+          "app.ts": "import { processItem } from \"./fn\"; processItem(42);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-041-candidate",
+        "files": {
+          "fn.ts": "export function processItem(val: string): void {}",
+          "app.ts": "import { processItem } from \"./fn\"; processItem(42);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-042",
+      "category": "G3",
+      "description": "Return type narrowing (string | undefined -> string) preserves string read",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "fetchConfig"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-042-parent",
+        "files": {
+          "fn.ts": "export function fetchConfig(): string | undefined { return \"cfg\"; }",
+          "app.ts": "import { fetchConfig } from \"./fn\"; export const res: string | undefined = fetchConfig();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-042-candidate",
+        "files": {
+          "fn.ts": "export function fetchConfig(): string { return \"cfg\"; }",
+          "app.ts": "import { fetchConfig } from \"./fn\"; export const res: string | undefined = fetchConfig();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-043",
+      "category": "G3",
+      "description": "Return type widening (string -> string | undefined) breaks annotated consumer",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "fetchConfig"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-043-parent",
+        "files": {
+          "fn.ts": "export function fetchConfig(): string { return \"cfg\"; }",
+          "app.ts": "import { fetchConfig } from \"./fn\"; export const res: string = fetchConfig();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-043-candidate",
+        "files": {
+          "fn.ts": "export function fetchConfig(): string | undefined { return undefined; }",
+          "app.ts": "import { fetchConfig } from \"./fn\"; export const res: string = fetchConfig();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-044",
+      "category": "G4",
+      "description": "Function return widening to void is compatible for discard callers",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "noop"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-044-parent",
+        "files": {
+          "fn.ts": "export function noop(): number { return 1; }",
+          "app.ts": "import { noop } from \"./fn\"; noop();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-044-candidate",
+        "files": {
+          "fn.ts": "export function noop(): void {}",
+          "app.ts": "import { noop } from \"./fn\"; noop();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-045",
+      "category": "G5",
+      "description": "Adding explicit this parameter rejects caller without receiver",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "action"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-045-parent",
+        "files": {
+          "fn.ts": "export function action(): string { return \"ok\"; }",
+          "app.ts": "import { action } from \"./fn\"; export const a = action();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-045-candidate",
+        "files": {
+          "fn.ts": "export function action(this: { ctx: string }): string { return this.ctx; }",
+          "app.ts": "import { action } from \"./fn\"; export const a = action();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-046",
+      "category": "G6",
+      "description": "Inferred literal return preservation",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "status"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-046-parent",
+        "files": {
+          "fn.ts": "export const status = () => \"active\";",
+          "app.ts": "import { status } from \"./fn\"; export const s: string = status();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-046-candidate",
+        "files": {
+          "fn.ts": "export const status = () => \"active\" as const;",
+          "app.ts": "import { status } from \"./fn\"; export const s: string = status();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-047",
+      "category": "G7",
+      "description": "Replacing type predicate with boolean drops narrowing effect",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "isStr"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-047-parent",
+        "files": {
+          "fn.ts": "export function isStr(x: unknown): x is string { return typeof x === \"string\"; }",
+          "app.ts": "import { isStr } from \"./fn\"; const v: unknown = \"hello\"; if (isStr(v)) { const s: string = v; }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-047-candidate",
+        "files": {
+          "fn.ts": "export function isStr(x: unknown): boolean { return typeof x === \"string\"; }",
+          "app.ts": "import { isStr } from \"./fn\"; const v: unknown = \"hello\"; if (isStr(v)) { const s: string = v; }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-048",
+      "category": "G8",
+      "description": "Replacing assertion function with void drops assertion effect",
+      "target": {
+        "file": "fn.ts",
+        "symbol": "assertDefined"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-048-parent",
+        "files": {
+          "fn.ts": "export function assertDefined<T>(x: T | undefined): asserts x is T { if (x === undefined) throw new Error(); }",
+          "app.ts": "import { assertDefined } from \"./fn\"; export function check(u: number | undefined): number { assertDefined(u); return u; }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-048-candidate",
+        "files": {
+          "fn.ts": "export function assertDefined<T>(x: T | undefined): void { if (x === undefined) throw new Error(); }",
+          "app.ts": "import { assertDefined } from \"./fn\"; export function check(u: number | undefined): number { assertDefined(u); return u; }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-049",
+      "category": "J1",
+      "description": "Class method addition preserves existing call sites",
+      "target": {
+        "file": "cls.ts",
+        "symbol": "Service"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-049-parent",
+        "files": {
+          "cls.ts": "export class Service { run(): string { return \"ok\"; } }",
+          "app.ts": "import { Service } from \"./cls\"; const s = new Service(); export const r = s.run();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-049-candidate",
+        "files": {
+          "cls.ts": "export class Service { run(): string { return \"ok\"; } stop(): void {} }",
+          "app.ts": "import { Service } from \"./cls\"; const s = new Service(); export const r = s.run();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-050",
+      "category": "J1",
+      "description": "Class method removal breaks consumer calling that method",
+      "target": {
+        "file": "cls.ts",
+        "symbol": "Service"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-050-parent",
+        "files": {
+          "cls.ts": "export class Service { run(): string { return \"ok\"; } stop(): void {} }",
+          "app.ts": "import { Service } from \"./cls\"; const s = new Service(); s.stop();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-050-candidate",
+        "files": {
+          "cls.ts": "export class Service { run(): string { return \"ok\"; } }",
+          "app.ts": "import { Service } from \"./cls\"; const s = new Service(); s.stop();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-051",
+      "category": "J2",
+      "description": "Class constructor adding required parameter breaks zero-arg construction",
+      "target": {
+        "file": "cls.ts",
+        "symbol": "Client"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-051-parent",
+        "files": {
+          "cls.ts": "export class Client { constructor() {} }",
+          "app.ts": "import { Client } from \"./cls\"; export const c = new Client();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-051-candidate",
+        "files": {
+          "cls.ts": "export class Client { constructor(public token: string) {} }",
+          "app.ts": "import { Client } from \"./cls\"; export const c = new Client();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-052",
+      "category": "J3",
+      "description": "Class member made private breaks external consumer property access",
+      "target": {
+        "file": "cls.ts",
+        "symbol": "Store"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-052-parent",
+        "files": {
+          "cls.ts": "export class Store { public state = 1; }",
+          "app.ts": "import { Store } from \"./cls\"; const s = new Store(); export const v: number = s.state;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-052-candidate",
+        "files": {
+          "cls.ts": "export class Store { private state = 1; }",
+          "app.ts": "import { Store } from \"./cls\"; const s = new Store(); export const v: number = s.state;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-053",
+      "category": "K1",
+      "description": "Interface optional property addition preserves implementations",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "Model"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-053-parent",
+        "files": {
+          "iface.ts": "export interface Model { id: string; }",
+          "app.ts": "import { Model } from \"./iface\"; export const m: Model = { id: \"1\" };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-053-candidate",
+        "files": {
+          "iface.ts": "export interface Model { id: string; name?: string; }",
+          "app.ts": "import { Model } from \"./iface\"; export const m: Model = { id: \"1\" };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-054",
+      "category": "K1",
+      "description": "Interface required property addition breaks existing object literals",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "Model"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-054-parent",
+        "files": {
+          "iface.ts": "export interface Model { id: string; }",
+          "app.ts": "import { Model } from \"./iface\"; export const m: Model = { id: \"1\" };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-054-candidate",
+        "files": {
+          "iface.ts": "export interface Model { id: string; name: string; }",
+          "app.ts": "import { Model } from \"./iface\"; export const m: Model = { id: \"1\" };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-055",
+      "category": "K2",
+      "description": "Interface property removal breaks consumer reading that property",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "User"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-055-parent",
+        "files": {
+          "iface.ts": "export interface User { id: string; role: string; }",
+          "app.ts": "import { User } from \"./iface\"; export function getRole(u: User): string { return u.role; }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-055-candidate",
+        "files": {
+          "iface.ts": "export interface User { id: string; }",
+          "app.ts": "import { User } from \"./iface\"; export function getRole(u: User): string { return u.role; }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-056",
+      "category": "K3",
+      "description": "Consumer reading readonly property preserved when provider relaxes it",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "Item"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-056-parent",
+        "files": {
+          "iface.ts": "export interface Item { readonly id: number; }",
+          "app.ts": "import { Item } from \"./iface\"; export const readId = (it: Item): number => it.id;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-056-candidate",
+        "files": {
+          "iface.ts": "export interface Item { id: number; }",
+          "app.ts": "import { Item } from \"./iface\"; export const readId = (it: Item): number => it.id;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-057",
+      "category": "K4",
+      "description": "Downstream consumer write rejected when property becomes readonly",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "Item"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-057-parent",
+        "files": {
+          "iface.ts": "export interface Item { id: number; }",
+          "app.ts": "import { Item } from \"./iface\"; export function mutate(it: Item) { it.id = 2; }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-057-candidate",
+        "files": {
+          "iface.ts": "export interface Item { readonly id: number; }",
+          "app.ts": "import { Item } from \"./iface\"; export function mutate(it: Item) { it.id = 2; }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-058",
+      "category": "K5",
+      "description": "Interface method parameter widening preserved",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "Handler"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-058-parent",
+        "files": {
+          "iface.ts": "export interface Handler { handle(event: string): void; }",
+          "app.ts": "import { Handler } from \"./iface\"; export function invoke(h: Handler) { h.handle(\"click\"); }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-058-candidate",
+        "files": {
+          "iface.ts": "export interface Handler { handle(event: string | number): void; }",
+          "app.ts": "import { Handler } from \"./iface\"; export function invoke(h: Handler) { h.handle(\"click\"); }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-059",
+      "category": "K6",
+      "description": "Nested anonymous object property widening preserved",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "Payload"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-059-parent",
+        "files": {
+          "iface.ts": "export interface Payload { meta: { tag: string; }; }",
+          "app.ts": "import { Payload } from \"./iface\"; export const getTag = (p: Payload): string => p.meta.tag;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-059-candidate",
+        "files": {
+          "iface.ts": "export interface Payload { meta: { tag: string; timestamp?: number; }; }",
+          "app.ts": "import { Payload } from \"./iface\"; export const getTag = (p: Payload): string => p.meta.tag;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-060",
+      "category": "K6",
+      "description": "Nested anonymous object property removal breaks access",
+      "target": {
+        "file": "iface.ts",
+        "symbol": "Payload"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-060-parent",
+        "files": {
+          "iface.ts": "export interface Payload { meta: { tag: string; }; }",
+          "app.ts": "import { Payload } from \"./iface\"; export const getTag = (p: Payload): string => p.meta.tag;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-060-candidate",
+        "files": {
+          "iface.ts": "export interface Payload { meta: { other: number; }; }",
+          "app.ts": "import { Payload } from \"./iface\"; export const getTag = (p: Payload): string => p.meta.tag;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-061",
+      "category": "M1",
+      "description": "Generic identity function preserved across callers",
+      "target": {
+        "file": "gen.ts",
+        "symbol": "identity"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-061-parent",
+        "files": {
+          "gen.ts": "export function identity<T>(arg: T): T { return arg; }",
+          "app.ts": "import { identity } from \"./gen\"; export const num: number = identity(42);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-061-candidate",
+        "files": {
+          "gen.ts": "export function identity<T>(arg: T): T { return arg; }",
+          "app.ts": "import { identity } from \"./gen\"; export const num: number = identity(42);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-062",
+      "category": "M2",
+      "description": "Generic constraint tightening (T to T extends string) rejects number instantiation",
+      "target": {
+        "file": "gen.ts",
+        "symbol": "wrap"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-062-parent",
+        "files": {
+          "gen.ts": "export function wrap<T>(val: T): { value: T } { return { value: val }; }",
+          "app.ts": "import { wrap } from \"./gen\"; export const w = wrap<number>(123);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-062-candidate",
+        "files": {
+          "gen.ts": "export function wrap<T extends string>(val: T): { value: T } { return { value: val }; }",
+          "app.ts": "import { wrap } from \"./gen\"; export const w = wrap<number>(123);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-063",
+      "category": "M3",
+      "description": "Generic arity mismatch (adding required type parameter) breaks single-arg caller",
+      "target": {
+        "file": "gen.ts",
+        "symbol": "Pair"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-063-parent",
+        "files": {
+          "gen.ts": "export interface Pair<T> { first: T; }",
+          "app.ts": "import { Pair } from \"./gen\"; export const p: Pair<string> = { first: \"a\" };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-063-candidate",
+        "files": {
+          "gen.ts": "export interface Pair<T, U> { first: T; second: U; }",
+          "app.ts": "import { Pair } from \"./gen\"; export const p: Pair<string> = { first: \"a\" };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-064",
+      "category": "M4",
+      "description": "Adding default type parameter preserves single-arg instantiation",
+      "target": {
+        "file": "gen.ts",
+        "symbol": "Container"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-064-parent",
+        "files": {
+          "gen.ts": "export interface Container<T> { item: T; }",
+          "app.ts": "import { Container } from \"./gen\"; export const c: Container<number> = { item: 1 };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-064-candidate",
+        "files": {
+          "gen.ts": "export interface Container<T, M = string> { item: T; meta?: M; }",
+          "app.ts": "import { Container } from \"./gen\"; export const c: Container<number> = { item: 1 };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-065",
+      "category": "N1",
+      "description": "Adding new overload variant preserves historical string caller",
+      "target": {
+        "file": "ovl.ts",
+        "symbol": "format"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-065-parent",
+        "files": {
+          "ovl.ts": "export function format(val: string): string; export function format(val: string): string { return val; }",
+          "app.ts": "import { format } from \"./ovl\"; export const s: string = format(\"hello\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-065-candidate",
+        "files": {
+          "ovl.ts": "export function format(val: string): string; export function format(val: number): string; export function format(val: any): string { return String(val); }",
+          "app.ts": "import { format } from \"./ovl\"; export const s: string = format(\"hello\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-066",
+      "category": "N2",
+      "description": "Removing string overload breaks string caller",
+      "target": {
+        "file": "ovl.ts",
+        "symbol": "parse"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-066-parent",
+        "files": {
+          "ovl.ts": "export function parse(val: string): number; export function parse(val: number): number; export function parse(val: any): number { return Number(val); }",
+          "app.ts": "import { parse } from \"./ovl\"; export const p = parse(\"123\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-066-candidate",
+        "files": {
+          "ovl.ts": "export function parse(val: number): number; export function parse(val: any): number { return Number(val); }",
+          "app.ts": "import { parse } from \"./ovl\"; export const p = parse(\"123\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-067",
+      "category": "N3",
+      "description": "Consistent overload resolution under ES declaration order",
+      "target": {
+        "file": "ovl.ts",
+        "symbol": "dispatch"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-067-parent",
+        "files": {
+          "ovl.ts": "export function dispatch(a: string): \"str\"; export function dispatch(a: any): \"any\"; export function dispatch(a: any): any { return \"str\"; }",
+          "app.ts": "import { dispatch } from \"./ovl\"; export const r: \"str\" = dispatch(\"test\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-067-candidate",
+        "files": {
+          "ovl.ts": "export function dispatch(a: string): \"str\"; export function dispatch(a: any): \"any\"; export function dispatch(a: any): any { return \"str\"; }",
+          "app.ts": "import { dispatch } from \"./ovl\"; export const r: \"str\" = dispatch(\"test\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-068",
+      "category": "N4",
+      "description": "Overload return type changed from number to string on matched overload",
+      "target": {
+        "file": "ovl.ts",
+        "symbol": "calc"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-068-parent",
+        "files": {
+          "ovl.ts": "export function calc(x: number): number; export function calc(x: any): any { return x; }",
+          "app.ts": "import { calc } from \"./ovl\"; export const res: number = calc(10);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-068-candidate",
+        "files": {
+          "ovl.ts": "export function calc(x: number): string; export function calc(x: any): any { return String(x); }",
+          "app.ts": "import { calc } from \"./ovl\"; export const res: number = calc(10);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-069",
+      "category": "O1",
+      "description": "Callback widening callback parameter provides more info to caller",
+      "target": {
+        "file": "cb.ts",
+        "symbol": "each"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-069-parent",
+        "files": {
+          "cb.ts": "export function each(fn: (item: string) => void): void { fn(\"x\"); }",
+          "app.ts": "import { each } from \"./cb\"; let sink = \"\"; each((it) => { sink = it; });"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-069-candidate",
+        "files": {
+          "cb.ts": "export function each(fn: (item: string, index?: number) => void): void { fn(\"x\", 0); }",
+          "app.ts": "import { each } from \"./cb\"; let sink = \"\"; each((it) => { sink = it; });"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-070",
+      "category": "O2",
+      "description": "Callback return widening to void allows callback to return anything",
+      "target": {
+        "file": "cb.ts",
+        "symbol": "runCb"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-070-parent",
+        "files": {
+          "cb.ts": "export function runCb(cb: () => void): void { cb(); }",
+          "app.ts": "import { runCb } from \"./cb\"; runCb(() => 123);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-070-candidate",
+        "files": {
+          "cb.ts": "export function runCb(cb: () => void): void { cb(); }",
+          "app.ts": "import { runCb } from \"./cb\"; runCb(() => 123);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-071",
+      "category": "O3",
+      "description": "Higher order function returning changed signature breaks consumer",
+      "target": {
+        "file": "hof.ts",
+        "symbol": "createAdder"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-071-parent",
+        "files": {
+          "hof.ts": "export function createAdder(base: number): (x: number) => number { return (x) => base + x; }",
+          "app.ts": "import { createAdder } from \"./hof\"; const adder = createAdder(5); export const val: number = adder(10);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-071-candidate",
+        "files": {
+          "hof.ts": "export function createAdder(base: number): (x: string) => string { return (x) => String(base) + x; }",
+          "app.ts": "import { createAdder } from \"./hof\"; const adder = createAdder(5); export const val: number = adder(10);"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-072",
+      "category": "O4",
+      "description": "Higher order function returned signature preserved",
+      "target": {
+        "file": "hof.ts",
+        "symbol": "createGreeter"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-072-parent",
+        "files": {
+          "hof.ts": "export function createGreeter(): (name: string) => string { return (n) => \"Hi \" + n; }",
+          "app.ts": "import { createGreeter } from \"./hof\"; const g = createGreeter(); export const m: string = g(\"Bob\");"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-072-candidate",
+        "files": {
+          "hof.ts": "export function createGreeter(): (name: string, p?: string) => string { return (n) => \"Hi \" + n; }",
+          "app.ts": "import { createGreeter } from \"./hof\"; const g = createGreeter(); export const m: string = g(\"Bob\");"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-073",
+      "category": "Q1",
+      "description": "Distinct enums with identical numeric values are incompatible",
+      "target": {
+        "file": "enums.ts",
+        "symbol": "Status"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-073-parent",
+        "files": {
+          "enums.ts": "export enum Status { Ok = 1, Err = 2 }",
+          "app.ts": "import { Status } from \"./enums\"; export const s: Status = Status.Ok;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-073-candidate",
+        "files": {
+          "enums.ts": "export enum OtherStatus { Ok = 1, Err = 2 } export type Status = OtherStatus;",
+          "app.ts": "import { Status } from \"./enums\"; export const s: Status = Status.Ok;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-074",
+      "category": "Q2",
+      "description": "Enum member addition preserves existing members",
+      "target": {
+        "file": "enums.ts",
+        "symbol": "Color"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-074-parent",
+        "files": {
+          "enums.ts": "export enum Color { Red = \"RED\", Blue = \"BLUE\" }",
+          "app.ts": "import { Color } from \"./enums\"; export const c: Color = Color.Red;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-074-candidate",
+        "files": {
+          "enums.ts": "export enum Color { Red = \"RED\", Blue = \"BLUE\", Green = \"GREEN\" }",
+          "app.ts": "import { Color } from \"./enums\"; export const c: Color = Color.Red;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-075",
+      "category": "Q3",
+      "description": "Enum member removal breaks consumer reading that member",
+      "target": {
+        "file": "enums.ts",
+        "symbol": "Mode"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-075-parent",
+        "files": {
+          "enums.ts": "export enum Mode { Fast = 1, Safe = 2 }",
+          "app.ts": "import { Mode } from \"./enums\"; export const m: Mode = Mode.Safe;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-075-candidate",
+        "files": {
+          "enums.ts": "export enum Mode { Fast = 1 }",
+          "app.ts": "import { Mode } from \"./enums\"; export const m: Mode = Mode.Safe;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-076",
+      "category": "R1",
+      "description": "Discriminated union member addition preserved for specific tag check",
+      "target": {
+        "file": "union.ts",
+        "symbol": "Shape"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-076-parent",
+        "files": {
+          "union.ts": "export type Shape = { kind: \"circle\"; radius: number } | { kind: \"square\"; size: number };",
+          "app.ts": "import { Shape } from \"./union\"; export function getRadius(s: Shape): number | null { return s.kind === \"circle\" ? s.radius : null; }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-076-candidate",
+        "files": {
+          "union.ts": "export type Shape = { kind: \"circle\"; radius: number } | { kind: \"square\"; size: number } | { kind: \"rect\"; w: number; h: number };",
+          "app.ts": "import { Shape } from \"./union\"; export function getRadius(s: Shape): number | null { return s.kind === \"circle\" ? s.radius : null; }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-077",
+      "category": "R2",
+      "description": "Discriminated union member removal breaks consumer assigning that member",
+      "target": {
+        "file": "union.ts",
+        "symbol": "Event"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-077-parent",
+        "files": {
+          "union.ts": "export type Event = { type: \"login\"; user: string } | { type: \"logout\" };",
+          "app.ts": "import { Event } from \"./union\"; export const e: Event = { type: \"logout\" };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-077-candidate",
+        "files": {
+          "union.ts": "export type Event = { type: \"login\"; user: string };",
+          "app.ts": "import { Event } from \"./union\"; export const e: Event = { type: \"logout\" };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-078",
+      "category": "R3",
+      "description": "Discriminated union tag value change breaks consumer matching old tag",
+      "target": {
+        "file": "union.ts",
+        "symbol": "Action"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-078-parent",
+        "files": {
+          "union.ts": "export type Action = { type: \"START\" } | { type: \"STOP\" };",
+          "app.ts": "import { Action } from \"./union\"; export const a: Action = { type: \"START\" };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-078-candidate",
+        "files": {
+          "union.ts": "export type Action = { type: \"BEGIN\" } | { type: \"STOP\" };",
+          "app.ts": "import { Action } from \"./union\"; export const a: Action = { type: \"START\" };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-079",
+      "category": "S1",
+      "description": "Tuple type preserved",
+      "target": {
+        "file": "tuple.ts",
+        "symbol": "Point"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-079-parent",
+        "files": {
+          "tuple.ts": "export type Point = [number, number];",
+          "app.ts": "import { Point } from \"./tuple\"; export const pt: Point = [10, 20];"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-079-candidate",
+        "files": {
+          "tuple.ts": "export type Point = [number, number];",
+          "app.ts": "import { Point } from \"./tuple\"; export const pt: Point = [10, 20];"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-080",
+      "category": "S1",
+      "description": "Tuple cardinality mismatch (adding required 3rd element) breaks 2-tuple",
+      "target": {
+        "file": "tuple.ts",
+        "symbol": "Point"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-080-parent",
+        "files": {
+          "tuple.ts": "export type Point = [number, number];",
+          "app.ts": "import { Point } from \"./tuple\"; export const pt: Point = [10, 20];"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-080-candidate",
+        "files": {
+          "tuple.ts": "export type Point = [number, number, number];",
+          "app.ts": "import { Point } from \"./tuple\"; export const pt: Point = [10, 20];"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-081",
+      "category": "S2",
+      "description": "Tuple optional element addition preserves 2-tuple instantiation",
+      "target": {
+        "file": "tuple.ts",
+        "symbol": "Coord"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-081-parent",
+        "files": {
+          "tuple.ts": "export type Coord = [number, number];",
+          "app.ts": "import { Coord } from \"./tuple\"; export const c: Coord = [1, 2];"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-081-candidate",
+        "files": {
+          "tuple.ts": "export type Coord = [number, number, number?];",
+          "app.ts": "import { Coord } from \"./tuple\"; export const c: Coord = [1, 2];"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-082",
+      "category": "S3",
+      "description": "Readonly tuple rejects mutation by index write",
+      "target": {
+        "file": "tuple.ts",
+        "symbol": "Vec"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-082-parent",
+        "files": {
+          "tuple.ts": "export type Vec = [number, number];",
+          "app.ts": "import { Vec } from \"./tuple\"; export function update(v: Vec) { v[0] = 99; }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-082-candidate",
+        "files": {
+          "tuple.ts": "export type Vec = readonly [number, number];",
+          "app.ts": "import { Vec } from \"./tuple\"; export function update(v: Vec) { v[0] = 99; }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-083",
+      "category": "T1",
+      "description": "Type predicate (x is number) preserved",
+      "target": {
+        "file": "pred.ts",
+        "symbol": "isNum"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-083-parent",
+        "files": {
+          "pred.ts": "export function isNum(x: unknown): x is number { return typeof x === \"number\"; }",
+          "app.ts": "import { isNum } from \"./pred\"; const v: unknown = 42; if (isNum(v)) { const n: number = v; }"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-083-candidate",
+        "files": {
+          "pred.ts": "export function isNum(x: unknown): x is number { return typeof x === \"number\" && !Number.isNaN(x); }",
+          "app.ts": "import { isNum } from \"./pred\"; const v: unknown = 42; if (isNum(v)) { const n: number = v; }"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-084",
+      "category": "T2",
+      "description": "Assertion function (asserts x is string) preserved",
+      "target": {
+        "file": "pred.ts",
+        "symbol": "checkStr"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-084-parent",
+        "files": {
+          "pred.ts": "export function checkStr(x: unknown): asserts x is string { if (typeof x !== \"string\") throw new Error(); }",
+          "app.ts": "import { checkStr } from \"./pred\"; const v: unknown = \"hello\"; checkStr(v); const s: string = v;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-084-candidate",
+        "files": {
+          "pred.ts": "export function checkStr(x: unknown): asserts x is string { if (typeof x !== \"string\" || x.length === 0) throw new Error(); }",
+          "app.ts": "import { checkStr } from \"./pred\"; const v: unknown = \"hello\"; checkStr(v); const s: string = v;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-085",
+      "category": "L1",
+      "description": "Union type alias widening (\"a\" -> \"a\" | \"b\") preserved for \"a\" assignment",
+      "target": {
+        "file": "types.ts",
+        "symbol": "Choice"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-085-parent",
+        "files": {
+          "types.ts": "export type Choice = \"a\";",
+          "app.ts": "import { Choice } from \"./types\"; export const c: Choice = \"a\";"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-085-candidate",
+        "files": {
+          "types.ts": "export type Choice = \"a\" | \"b\";",
+          "app.ts": "import { Choice } from \"./types\"; export const c: Choice = \"a\";"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-086",
+      "category": "L2",
+      "description": "Union type alias narrowing (\"a\" | \"b\" -> \"a\") breaks \"b\" assignment",
+      "target": {
+        "file": "types.ts",
+        "symbol": "Choice"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-086-parent",
+        "files": {
+          "types.ts": "export type Choice = \"a\" | \"b\";",
+          "app.ts": "import { Choice } from \"./types\"; export const c: Choice = \"b\";"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-086-candidate",
+        "files": {
+          "types.ts": "export type Choice = \"a\";",
+          "app.ts": "import { Choice } from \"./types\"; export const c: Choice = \"b\";"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-087",
+      "category": "L3",
+      "description": "Intersection alias required property addition breaks consumer object literal",
+      "target": {
+        "file": "types.ts",
+        "symbol": "Combined"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-087-parent",
+        "files": {
+          "types.ts": "export type Combined = { a: number } & { b: string };",
+          "app.ts": "import { Combined } from \"./types\"; export const c: Combined = { a: 1, b: \"x\" };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-087-candidate",
+        "files": {
+          "types.ts": "export type Combined = { a: number } & { b: string; c: boolean };",
+          "app.ts": "import { Combined } from \"./types\"; export const c: Combined = { a: 1, b: \"x\" };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-088",
+      "category": "L4",
+      "description": "Recursive tree node type alias preserved",
+      "target": {
+        "file": "tree.ts",
+        "symbol": "TreeNode"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-088-parent",
+        "files": {
+          "tree.ts": "export interface TreeNode { val: number; children?: TreeNode[]; }",
+          "app.ts": "import { TreeNode } from \"./tree\"; export const t: TreeNode = { val: 1, children: [{ val: 2 }] };"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-088-candidate",
+        "files": {
+          "tree.ts": "export interface TreeNode { val: number; name?: string; children?: TreeNode[]; }",
+          "app.ts": "import { TreeNode } from \"./tree\"; export const t: TreeNode = { val: 1, children: [{ val: 2 }] };"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-089",
+      "category": "U1",
+      "description": "JSX component optional prop addition preserved",
+      "target": {
+        "file": "Button.tsx",
+        "symbol": "Button"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-089-parent",
+        "files": {
+          "Button.tsx": "export const Button = (props: { label: string }): string => props.label;",
+          "App.tsx": "import { Button } from \"./Button\"; export const b = Button({ label: \"Click\" });"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-089-candidate",
+        "files": {
+          "Button.tsx": "export const Button = (props: { label: string; primary?: boolean }): string => props.label;",
+          "App.tsx": "import { Button } from \"./Button\"; export const b = Button({ label: \"Click\" });"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-090",
+      "category": "U1",
+      "description": "JSX component required prop addition breaks caller missing that prop",
+      "target": {
+        "file": "Button.tsx",
+        "symbol": "Button"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-090-parent",
+        "files": {
+          "Button.tsx": "export const Button = (props: { label: string }): string => props.label;",
+          "App.tsx": "import { Button } from \"./Button\"; export const b = Button({ label: \"Click\" });"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-090-candidate",
+        "files": {
+          "Button.tsx": "export const Button = (props: { label: string; onClick: () => void }): string => props.label;",
+          "App.tsx": "import { Button } from \"./Button\"; export const b = Button({ label: \"Click\" });"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-091",
+      "category": "V1",
+      "description": "Namespace member function preserved",
+      "target": {
+        "file": "ns.ts",
+        "symbol": "Tools"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-091-parent",
+        "files": {
+          "ns.ts": "export namespace Tools { export function run(): string { return \"ok\"; } }",
+          "app.ts": "import { Tools } from \"./ns\"; export const r: string = Tools.run();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-091-candidate",
+        "files": {
+          "ns.ts": "export namespace Tools { export function run(): string { return \"ok\"; } export const v = 2; }",
+          "app.ts": "import { Tools } from \"./ns\"; export const r: string = Tools.run();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-092",
+      "category": "V1",
+      "description": "Namespace member removal breaks caller",
+      "target": {
+        "file": "ns.ts",
+        "symbol": "Tools"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-092-parent",
+        "files": {
+          "ns.ts": "export namespace Tools { export function run(): string { return \"ok\"; } }",
+          "app.ts": "import { Tools } from \"./ns\"; export const r: string = Tools.run();"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-092-candidate",
+        "files": {
+          "ns.ts": "export namespace Tools { export const v = 2; }",
+          "app.ts": "import { Tools } from \"./ns\"; export const r: string = Tools.run();"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-093",
+      "category": "W1",
+      "description": "Ambient module declaration preserved",
+      "target": {
+        "file": "declarations.d.ts",
+        "symbol": "id"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-093-parent",
+        "files": {
+          "declarations.d.ts": "declare module \"virtual-mod\" { export const id: number; }",
+          "app.ts": "import { id } from \"virtual-mod\"; export const myId: number = id;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-093-candidate",
+        "files": {
+          "declarations.d.ts": "declare module \"virtual-mod\" { export const id: number; export const name: string; }",
+          "app.ts": "import { id } from \"virtual-mod\"; export const myId: number = id;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-094",
+      "category": "W1",
+      "description": "Ambient module member removal breaks consumer",
+      "target": {
+        "file": "declarations.d.ts",
+        "symbol": "id"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-094-parent",
+        "files": {
+          "declarations.d.ts": "declare module \"virtual-mod\" { export const id: number; }",
+          "app.ts": "import { id } from \"virtual-mod\"; export const myId: number = id;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-094-candidate",
+        "files": {
+          "declarations.d.ts": "declare module \"virtual-mod\" { export const tag: string; }",
+          "app.ts": "import { id } from \"virtual-mod\"; export const myId: number = id;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-095",
+      "category": "X1",
+      "description": "Project reference source consumption preserved",
+      "target": {
+        "file": "packages/core/src/index.ts",
+        "symbol": "CORE_VAL"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-095-parent",
+        "files": {
+          "packages/core/package.json": "{\"name\":\"@proj/core\",\"exports\":{\".\":\"./src/index.ts\"}}",
+          "packages/core/src/index.ts": "export const CORE_VAL = \"active\";",
+          "packages/app/src/main.ts": "import { CORE_VAL } from \"@proj/core\"; export const cv: string = CORE_VAL;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-095-candidate",
+        "files": {
+          "packages/core/package.json": "{\"name\":\"@proj/core\",\"exports\":{\".\":\"./src/index.ts\"}}",
+          "packages/core/src/index.ts": "export const CORE_VAL = \"active-v2\";",
+          "packages/app/src/main.ts": "import { CORE_VAL } from \"@proj/core\"; export const cv: string = CORE_VAL;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-096",
+      "category": "X1",
+      "description": "Project reference source type change breaks consumer",
+      "target": {
+        "file": "packages/core/src/index.ts",
+        "symbol": "CORE_VAL"
+      },
+      "expectedVerdict": "VIOLATED",
+      "parent": {
+        "commitSha": "TSR-SL-096-parent",
+        "files": {
+          "packages/core/package.json": "{\"name\":\"@proj/core\",\"exports\":{\".\":\"./src/index.ts\"}}",
+          "packages/core/src/index.ts": "export const CORE_VAL: string = \"active\";",
+          "packages/app/src/main.ts": "import { CORE_VAL } from \"@proj/core\"; export const cv: string = CORE_VAL;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-096-candidate",
+        "files": {
+          "packages/core/package.json": "{\"name\":\"@proj/core\",\"exports\":{\".\":\"./src/index.ts\"}}",
+          "packages/core/src/index.ts": "export const CORE_VAL: number = 999;",
+          "packages/app/src/main.ts": "import { CORE_VAL } from \"@proj/core\"; export const cv: string = CORE_VAL;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-097",
+      "category": "Y1",
+      "description": "Configuration delta (strict: false -> strict: true) fails closed as CONFIGURATION_DEPENDENT",
+      "target": {
+        "file": "val.ts",
+        "symbol": "v"
+      },
+      "expectedVerdict": "UNKNOWN",
+      "parent": {
+        "commitSha": "TSR-SL-097-parent",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"strict\":false}}",
+          "val.ts": "export const v: string = null as any;",
+          "app.ts": "import { v } from \"./val\"; export const x: string = v;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-097-candidate",
+        "tsconfigPath": "tsconfig.json",
+        "files": {
+          "tsconfig.json": "{\"compilerOptions\":{\"strict\":true}}",
+          "val.ts": "export const v: string | null = null;",
+          "app.ts": "import { v } from \"./val\"; export const x: string = v;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-098",
+      "category": "Z1",
+      "description": "Diamond dependency graph preserved across multiple paths",
+      "target": {
+        "file": "root.ts",
+        "symbol": "shared"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-098-parent",
+        "files": {
+          "root.ts": "export const shared = \"common\";",
+          "branchA.ts": "export { shared } from \"./root\";",
+          "branchB.ts": "export { shared } from \"./root\";",
+          "join.ts": "import { shared as sA } from \"./branchA\"; import { shared as sB } from \"./branchB\"; export const match = sA === sB;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-098-candidate",
+        "files": {
+          "root.ts": "export const shared = \"common-v2\";",
+          "branchA.ts": "export { shared } from \"./root\";",
+          "branchB.ts": "export { shared } from \"./root\";",
+          "join.ts": "import { shared as sA } from \"./branchA\"; import { shared as sB } from \"./branchB\"; export const match = sA === sB;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-099",
+      "category": "Z2",
+      "description": "Same-commit provider and consumer simultaneous adaptation preserved",
+      "target": {
+        "file": "math.ts",
+        "symbol": "divide"
+      },
+      "expectedVerdict": "PRESERVED",
+      "parent": {
+        "commitSha": "TSR-SL-099-parent",
+        "files": {
+          "math.ts": "export function divide(a: number, b: number): number { return a / b; }",
+          "app.ts": "import { divide } from \"./math\"; export const res = divide(10, 2);"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-099-candidate",
+        "files": {
+          "math.ts": "export function divide(a: number, b: number): { quotient: number } { return { quotient: a / b }; }",
+          "app.ts": "import { divide } from \"./math\"; export const res = divide(10, 2).quotient;"
+        }
+      }
+    },
+    {
+      "caseId": "TSR-SL-100",
+      "category": "FC1",
+      "description": "Missing provider declaration in candidate strictly fails closed",
+      "target": {
+        "file": "missing.ts",
+        "symbol": "unresolvedSym"
+      },
+      "expectedVerdict": "UNKNOWN",
+      "parent": {
+        "commitSha": "TSR-SL-100-parent",
+        "files": {
+          "app.ts": "import { unresolvedSym } from \"./missing\"; export const u = unresolvedSym;"
+        }
+      },
+      "candidate": {
+        "commitSha": "TSR-SL-100-candidate",
+        "files": {
+          "app.ts": "import { unresolvedSym } from \"./missing\"; export const u = unresolvedSym;"
+        }
+      }
+    }
+  ]
+}

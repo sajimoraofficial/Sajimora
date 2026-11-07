@@ -1,0 +1,4074 @@
+{
+  "envelopeVersion": "SAJIMORA_CONTRACT_ARTIFACT_V2",
+  "reportSchemaVersion": "SAJIMORA_CROSS_LANGUAGE_IMPACT_V1",
+  "kind": "FRONTEND_CONTRACT",
+  "snapshot": {
+    "repositoryId": "git-root:a9177b7c026d28261fade815f72a1478576c9e19",
+    "serviceId": "grocery-frontend",
+    "apiVersion": "v1",
+    "parentCommit": "HEAD~1",
+    "candidateSnapshot": "working-tree:946ffede3386bbe0"
+  },
+  "profile": {
+    "toolVersion": "0.1.0",
+    "clientProfile": "MULTI_CLIENT_V1",
+    "configFingerprint": "cbe9f3004c4506b20cc7c31be4d10b9d"
+  },
+  "completeness": {
+    "complete": false,
+    "unresolvedEndpoints": [
+      "frontend/src/api/homeDashboardApi.ts: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/api/ordersApi.ts: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/api/ordersApi.ts: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/components/ProductsGrid.jsx: Route 'buildApiUrl(`/products/grouped?page=${page}&size=${pageSize}`)' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/AuthContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/AuthContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/AuthContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/AuthContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/CartContext.jsx: Route '`/cart/${pending.userId}/update`' requires Exact route binding/encoding required for pending.userId",
+      "frontend/src/context/CartContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/CartContext.jsx: Route '`/cart/${user.id}`' requires Exact route binding/encoding required for user.id",
+      "frontend/src/context/CartContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/CartContext.jsx: Route '`/cart/${user.id}/add`' requires Exact route binding/encoding required for user.id",
+      "frontend/src/context/CartContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/CartContext.jsx: Route '`/cart/${userIdAtRemoval}/update`' requires Exact route binding/encoding required for user?.id",
+      "frontend/src/context/CartContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/context/CartContext.jsx: Route '`/cart/${user.id}/clear`' requires Exact route binding/encoding required for user.id",
+      "frontend/src/context/CartContext.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/layouts/admin/AdminLayout.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/pages/ProductDetailPage.jsx: Route '`/products/${productId}`' requires Exact route binding/encoding required for productId",
+      "frontend/src/pages/ProductDetailPage.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/pages/Products.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/pages/Register.jsx: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/categories/${id}`' requires Exact route binding/encoding required for id",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/categories/${id}`' requires Exact route binding/encoding required for id",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/products/${productId}`' requires Exact route binding/encoding required for productId",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/products/${productId}`' requires Exact route binding/encoding required for productId",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/products/${productId}`' requires Exact route binding/encoding required for productId",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/products/${productId}/variants`' requires Exact route binding/encoding required for productId",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/products/variants/${variantId}`' requires Exact route binding/encoding required for variantId",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/products/variants/${variantId}`' requires Exact route binding/encoding required for variantId",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/orders/${id}`' requires Exact route binding/encoding required for id",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route '`/admin/orders/${id}/status`' requires Exact route binding/encoding required for id",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/adminapi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/authServices.ts: Route '`${API_BASE_URL}/auth/login`' requires Exact route binding/encoding required for API_BASE_URL",
+      "frontend/src/services/groceryApi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/groceryApi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/groceryApi.js: Route '`/products/${id}`' requires Exact route binding/encoding required for id",
+      "frontend/src/services/groceryApi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/groceryApi.js: Route '`/products/${id}`' requires Exact route binding/encoding required for id",
+      "frontend/src/services/groceryApi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/services/groceryApi.js: Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+      "frontend/src/utils/fetchHelper.js: Route 'url' requires Exact route binding/encoding required for url",
+      "Response method reference escapes captured calls",
+      "Response passed to an opaque function",
+      "Returned response has an unqualified external entry point",
+      "Unqualified response use: PropertyAssignment",
+      "Response method reference escapes captured calls",
+      "Returned response has an unqualified external entry point",
+      "Response method reference escapes captured calls",
+      "Response passed to an opaque function",
+      "Returned response has an unqualified external entry point",
+      "Unqualified response use: ConditionalExpression",
+      "Unresolved response type for GET <dynamic> at frontend/src/components/ProductsGrid.jsx:18",
+      "Unresolved response type for GET <dynamic> at frontend/src/components/ProductsGrid.jsx:18",
+      "Unqualified response use: BinaryExpression",
+      "Unresolved response type for GET <dynamic> at frontend/src/context/AuthContext.jsx:13",
+      "Unresolved response type for GET <dynamic> at frontend/src/context/AuthContext.jsx:13",
+      "Response passed to an opaque function",
+      "Unresolved response type for POST <dynamic> at frontend/src/context/AuthContext.jsx:30",
+      "Unresolved response type for POST <dynamic> at frontend/src/context/AuthContext.jsx:30",
+      "Unresolved response type for GET <dynamic> at frontend/src/context/AuthContext.jsx:31",
+      "Unresolved response type for GET <dynamic> at frontend/src/context/AuthContext.jsx:31",
+      "Response passed to an opaque function",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for POST <dynamic> at frontend/src/context/AuthContext.jsx:42",
+      "Unresolved response type for POST <dynamic> at frontend/src/context/AuthContext.jsx:42",
+      "Unresolved response type for PUT <dynamic> at frontend/src/context/CartContext.jsx:57",
+      "Unresolved response type for PUT <dynamic> at frontend/src/context/CartContext.jsx:57",
+      "Unresolved response type for GET <dynamic> at frontend/src/context/CartContext.jsx:152",
+      "Unresolved response type for GET <dynamic> at frontend/src/context/CartContext.jsx:152",
+      "Response passed to an opaque function",
+      "Unqualified response use: BinaryExpression",
+      "Unqualified response use: ConditionalExpression",
+      "Unresolved response type for POST <dynamic> at frontend/src/context/CartContext.jsx:240",
+      "Unresolved response type for POST <dynamic> at frontend/src/context/CartContext.jsx:240",
+      "Unresolved response type for PUT <dynamic> at frontend/src/context/CartContext.jsx:407",
+      "Unresolved response type for PUT <dynamic> at frontend/src/context/CartContext.jsx:407",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/context/CartContext.jsx:454",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/context/CartContext.jsx:454",
+      "Unresolved response type for POST <dynamic> at frontend/src/layouts/admin/AdminLayout.jsx:24",
+      "Unresolved response type for POST <dynamic> at frontend/src/layouts/admin/AdminLayout.jsx:24",
+      "Unresolved response type for GET <dynamic> at frontend/src/pages/ProductDetailPage.jsx:171",
+      "Unresolved response type for GET <dynamic> at frontend/src/pages/ProductDetailPage.jsx:171",
+      "Unqualified response use: BinaryExpression",
+      "Unqualified response use: SpreadAssignment",
+      "Unresolved response type for GET <dynamic> at frontend/src/pages/Products.jsx:27",
+      "Unresolved response type for GET <dynamic> at frontend/src/pages/Products.jsx:27",
+      "Unqualified response use: IfStatement",
+      "Unqualified response use: SpreadElement",
+      "Unresolved response type for POST <dynamic> at frontend/src/pages/Register.jsx:20",
+      "Unresolved response type for POST <dynamic> at frontend/src/pages/Register.jsx:20",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:12",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:12",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:19",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:19",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:24",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:24",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:29",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:29",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:34",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:34",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:45",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:45",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:50",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:50",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:55",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:55",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:60",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:60",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:65",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:65",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:69",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:69",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:74",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:74",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:79",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:79",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:91",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:91",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:96",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:96",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for PATCH <dynamic> at frontend/src/services/adminapi.js:101",
+      "Unresolved response type for PATCH <dynamic> at frontend/src/services/adminapi.js:101",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:110",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:110",
+      "Response return from callback or anonymous wrapper requires reconciliation",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/authServices.ts:7",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/authServices.ts:7",
+      "Returned response has an unqualified external entry point",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/groceryApi.js:6",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/groceryApi.js:6",
+      "Response method reference escapes captured calls",
+      "Returned response has an unqualified external entry point",
+      "Unqualified response use: BinaryExpression",
+      "Unqualified response use: PrefixUnaryExpression",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/groceryApi.js:14",
+      "Unresolved response type for POST <dynamic> at frontend/src/services/groceryApi.js:14",
+      "Returned response has an unqualified external entry point",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/groceryApi.js:18",
+      "Unresolved response type for DELETE <dynamic> at frontend/src/services/groceryApi.js:18",
+      "Returned response has an unqualified external entry point",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/groceryApi.js:22",
+      "Unresolved response type for PUT <dynamic> at frontend/src/services/groceryApi.js:22",
+      "Returned response has an unqualified external entry point",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/groceryApi.js:28",
+      "Unresolved response type for GET <dynamic> at frontend/src/services/groceryApi.js:28",
+      "Returned response has an unqualified external entry point",
+      "Unresolved response type for <dynamic> <dynamic> at frontend/src/utils/fetchHelper.js:12",
+      "Unresolved response type for <dynamic> <dynamic> at frontend/src/utils/fetchHelper.js:12",
+      "Response method reference escapes captured calls",
+      "Response method return/effects require an operation summary",
+      "Response passed to an opaque function",
+      "Returned response has an unqualified external entry point",
+      "Unresolved response type for GET https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${queryValue}&longitude=${queryValue}&localityLanguage=en at frontend/src/utils/locationTime.js:101",
+      "Unresolved response type for GET https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${queryValue}&longitude=${queryValue}&localityLanguage=en at frontend/src/utils/locationTime.js:101",
+      "Unqualified response use: BinaryExpression",
+      "Unresolved response type for GET https://timeapi.io/api/TimeZone/coordinate?latitude=${queryValue}&longitude=${queryValue} at frontend/src/utils/locationTime.js:126",
+      "Unresolved response type for GET https://timeapi.io/api/TimeZone/coordinate?latitude=${queryValue}&longitude=${queryValue} at frontend/src/utils/locationTime.js:126",
+      "Unqualified response use: BinaryExpression"
+    ],
+    "blockers": [
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'buildApiUrl(`/products/grouped?page=${page}&size=${pageSize}`)' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/components/ProductsGrid.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/cart/${pending.userId}/update`' requires Exact route binding/encoding required for pending.userId",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "UNSUPPORTED_CLIENT_WRAPPER",
+        "message": "Axios per-call configuration/interceptors are not qualified",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/cart/${user.id}`' requires Exact route binding/encoding required for user.id",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/cart/${user.id}/add`' requires Exact route binding/encoding required for user.id",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "UNSUPPORTED_CLIENT_WRAPPER",
+        "message": "Axios per-call configuration/interceptors are not qualified",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/cart/${userIdAtRemoval}/update`' requires Exact route binding/encoding required for user?.id",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "UNSUPPORTED_CLIENT_WRAPPER",
+        "message": "Axios per-call configuration/interceptors are not qualified",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/cart/${user.id}/clear`' requires Exact route binding/encoding required for user.id",
+        "file": "frontend/src/context/CartContext.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/products/${productId}`' requires Exact route binding/encoding required for productId",
+        "file": "frontend/src/pages/ProductDetailPage.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "UNSUPPORTED_CLIENT_WRAPPER",
+        "message": "Axios per-call configuration/interceptors are not qualified",
+        "file": "frontend/src/pages/Products.jsx"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/categories/${id}`' requires Exact route binding/encoding required for id",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/categories/${id}`' requires Exact route binding/encoding required for id",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "UNRESOLVED_HTTP_WRAPPER",
+        "message": "Endpoint path is resolved; dynamic query values, keys and constraints require qualification",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/products/${productId}`' requires Exact route binding/encoding required for productId",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/products/${productId}`' requires Exact route binding/encoding required for productId",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/products/${productId}`' requires Exact route binding/encoding required for productId",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/products/${productId}/variants`' requires Exact route binding/encoding required for productId",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/products/variants/${variantId}`' requires Exact route binding/encoding required for variantId",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/products/variants/${variantId}`' requires Exact route binding/encoding required for variantId",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "UNRESOLVED_HTTP_WRAPPER",
+        "message": "Endpoint path is resolved; dynamic query values, keys and constraints require qualification",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/orders/${id}`' requires Exact route binding/encoding required for id",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/admin/orders/${id}/status`' requires Exact route binding/encoding required for id",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "UNSUPPORTED_CLIENT_WRAPPER",
+        "message": "Axios per-call configuration/interceptors are not qualified",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/services/adminapi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`${API_BASE_URL}/auth/login`' requires Exact route binding/encoding required for API_BASE_URL",
+        "file": "frontend/src/services/authServices.ts"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "UNSUPPORTED_CLIENT_WRAPPER",
+        "message": "Axios per-call configuration/interceptors are not qualified",
+        "file": "frontend/src/services/groceryApi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/products/${id}`' requires Exact route binding/encoding required for id",
+        "file": "frontend/src/services/groceryApi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route '`/products/${id}`' requires Exact route binding/encoding required for id",
+        "file": "frontend/src/services/groceryApi.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'API_BASE_URL' requires Exact route binding/encoding required for import.meta.env.VITE_API_BASE_URL || \"/api\"",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "DYNAMIC_URL",
+        "message": "Route 'url' requires Exact route binding/encoding required for url",
+        "file": "frontend/src/utils/fetchHelper.js"
+      },
+      {
+        "code": "UNSUPPORTED_CLIENT_WRAPPER",
+        "message": "Computed/spread fetch options are unresolved",
+        "file": "frontend/src/utils/fetchHelper.js"
+      },
+      {
+        "code": "UNRESOLVED_HTTP_WRAPPER",
+        "message": "Endpoint path is resolved; dynamic query values, keys and constraints require qualification",
+        "file": "frontend/src/utils/locationTime.js"
+      },
+      {
+        "code": "UNRESOLVED_HTTP_WRAPPER",
+        "message": "Endpoint path is resolved; dynamic query values, keys and constraints require qualification",
+        "file": "frontend/src/utils/locationTime.js"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency react@18.2.0: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/components/ProductsGrid.jsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency react-router-dom@6.30.2: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/App.jsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency react-hot-toast@2.6.0: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/App.jsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency axios@1.13.2: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/api/axios.js"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency lucide-react@0.562.0: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/pages/AdminDashboard.jsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency prop-types@15.8.1: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/common/Card.jsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency vitest@4.0.18: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/__tests__/BuyAgainCard.test.tsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency @testing-library/react@16.3.2: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/__tests__/BuyAgainCard.test.tsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency react-dom@18.2.0: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/main.jsx"
+      },
+      {
+        "code": "UNRESOLVED_TS_TYPE",
+        "message": "Dependency react-intersection-observer@10.0.0: Exact integrity-addressed archive is absent from the configured npm cache",
+        "file": "frontend/src/pages/Home.jsx"
+      }
+    ]
+  },
+  "integrity": {
+    "sha256": "179c0312bb67a61b1db658dfdeda3e795104829085ab336a3893567a55df8ad9"
+  },
+  "payload": {
+    "dependencyContext": {
+      "version": "SAJIMORA_DEPENDENCY_CONTEXT_V1",
+      "compilerVersion": "5.9.3",
+      "projects": [
+        {
+          "configFile": null,
+          "compilerVersion": "5.9.3",
+          "resolverMode": "Node10",
+          "options": {
+            "moduleResolution": 2,
+            "allowJs": true,
+            "target": 9
+          },
+          "configs": [],
+          "references": [],
+          "missingEvidence": [],
+          "optionsHash": "19c8e6af30ef0e9b0ef64e0c2b8318edd1560dfbcf21da20ce8198faef94dbc5"
+        },
+        {
+          "configFile": "frontend/tsconfig.json",
+          "compilerVersion": "5.9.3",
+          "resolverMode": "Bundler",
+          "options": {
+            "moduleResolution": 100,
+            "allowJs": true,
+            "target": 7,
+            "useDefineForClassFields": true,
+            "lib": [
+              "lib.es2020.d.ts",
+              "lib.dom.d.ts",
+              "lib.dom.iterable.d.ts"
+            ],
+            "module": 99,
+            "skipLibCheck": true,
+            "types": [
+              "vite/client"
+            ],
+            "allowImportingTsExtensions": true,
+            "resolveJsonModule": true,
+            "isolatedModules": true,
+            "noEmit": true,
+            "jsx": 4,
+            "strict": true,
+            "noUnusedLocals": false,
+            "noUnusedParameters": false,
+            "noFallthroughCasesInSwitch": true,
+            "checkJs": false,
+            "configFilePath": "/frontend/tsconfig.json"
+          },
+          "configs": [
+            {
+              "file": "frontend/tsconfig.json",
+              "sha256": "6157d2066cbe5edf0eed36d6bee9388e96dc372c672ac35bc584006ae3af3799"
+            },
+            {
+              "file": "frontend/tsconfig.node.json",
+              "sha256": "b27ebb2af012ca1b0f5a03ec79491f1fd30868daec4c5ecc9783cde7105fb3df"
+            }
+          ],
+          "references": [
+            "frontend/tsconfig.node.json"
+          ],
+          "missingEvidence": [],
+          "optionsHash": "b80ccf86a9c4128120d9109a410d1c0a8a04797bff4a92bf48a3009a74fec53d"
+        }
+      ],
+      "standardLibraries": [
+        {
+          "compilerVersion": "5.9.3",
+          "defaultLibrary": "frontend/node_modules/typescript/lib/lib.es2020.full.d.ts",
+          "declarations": [
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.decorators.d.ts",
+              "sha256": "8e7f8264d0fb4c5339605a15daadb037bf238c10b654bb3eee14208f860a32ea"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.decorators.legacy.d.ts",
+              "sha256": "782dec38049b92d4e85c1585fbea5474a219c6984a35b004963b00beb1aab538"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.dom.asynciterable.d.ts",
+              "sha256": "d7a3c8b952931daebdfc7a2897c53c0a1c73624593fa070e46bd537e64dcd20a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.dom.d.ts",
+              "sha256": "080941d9f9ff9307f7e27a83bcd888b7c8270716c39af943532438932ec1d0b9"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.dom.iterable.d.ts",
+              "sha256": "2e80ee7a49e8ac312cc11b77f1475804bee36b3b2bc896bead8b6e1266befb43"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.collection.d.ts",
+              "sha256": "dc2df20b1bcdc8c2d34af4926e2c3ab15ffe1160a63e58b7e09833f616efff44"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.core.d.ts",
+              "sha256": "c57796738e7f83dbc4b8e65132f11a377649c00dd3eee333f672b8f0a6bea671"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.d.ts",
+              "sha256": "45b7ab580deca34ae9729e97c13cfd999df04416a79116c3bfb483804f85ded4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.generator.d.ts",
+              "sha256": "515d0b7b9bea2e31ea4ec968e9edd2c39d3eebf4a2d5cbd04e88639819ae3b71"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.iterable.d.ts",
+              "sha256": "0559b1f683ac7505ae451f9a96ce4c3c92bdc71411651ca6ddb0e88baaaad6a3"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.promise.d.ts",
+              "sha256": "0dc1e7ceda9b8b9b455c3a2d67b0412feab00bd2f66656cd8850e8831b08b537"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.proxy.d.ts",
+              "sha256": "ce691fb9e5c64efb9547083e4a34091bcbe5bdb41027e310ebba8f7d96a98671"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.reflect.d.ts",
+              "sha256": "8d697a2a929a5fcb38b7a65594020fcef05ec1630804a33748829c5ff53640d0"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.symbol.d.ts",
+              "sha256": "4ff2a353abf8a80ee399af572debb8faab2d33ad38c4b4474cff7f26e7653b8d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
+              "sha256": "fb0f136d372979348d59b3f5020b4cdb81b5504192b1cacff5d1fbba29378aa1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.array.include.d.ts",
+              "sha256": "d15bea3d62cbbdb9797079416b8ac375ae99162a7fba5de2c6c505446486ac0a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.d.ts",
+              "sha256": "3facaf05f0c5fc569c5649dd359892c98a85557e3e0c847964caeb67076f4d75"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.full.d.ts",
+              "sha256": "807e0e0bdc67605dd28efe18f20ab5fcd75d944ef95936120702335f9379094b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.intl.d.ts",
+              "sha256": "68d18b664c9d32a7336a70235958b8997ebc1c3b8505f4f1ae2b7e7753b87618"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.arraybuffer.d.ts",
+              "sha256": "eb3d66c8327153d8fa7dd03f9c58d351107fe824c79e9b56b462935176cdf12a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.d.ts",
+              "sha256": "e44bb8bbac7f10ecc786703fe0a6a4b952189f908707980ba8f3c8975a760962"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.date.d.ts",
+              "sha256": "38f0219c9e23c915ef9790ab1d680440d95419ad264816fa15009a8851e79119"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.full.d.ts",
+              "sha256": "1d242d5c24cf285c88bc4fb93c5ff903de8319064e282986edeb6247ba028d5e"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.intl.d.ts",
+              "sha256": "4de680d5bb41c17f7f68e0419412ca23c98d5749dcaaea1896172f06435891fc"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.object.d.ts",
+              "sha256": "69ab18c3b76cd9b1be3d188eaf8bba06112ebbe2f47f6c322b5105a6fbc45a2e"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts",
+              "sha256": "a680117f487a4d2f30ea46f1b4b7f58bef1480456e18ba53ee85c2746eeca012"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.string.d.ts",
+              "sha256": "2f11ff796926e0832f9ae148008138ad583bd181899ab7dd768a2666700b1893"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
+              "sha256": "954296b30da6d508a104a3a0b5d96b76495c709785c1d11610908e63481ee667"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts",
+              "sha256": "ac9538681b19688c8eae65811b329d3744af679e0bdfa5d842d0e32524c73e1c"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.asynciterable.d.ts",
+              "sha256": "0a969edff4bd52585473d24995c5ef223f6652d6ef46193309b3921d65dd4376"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.d.ts",
+              "sha256": "5e1c4c362065a6b95ff952c0eab010f04dcd2c3494e813b493ecfd4fcb9fc0d8"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.full.d.ts",
+              "sha256": "95f1023b824c2c511c48f1201e2d1188bcb0ca1138a309a870b956d2e92e44ab"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.intl.d.ts",
+              "sha256": "9e9fbd7030c440b33d021da145d3232984c8bb7916f277e8ffd3dc2e3eae2bdb"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.promise.d.ts",
+              "sha256": "811ec78f7fefcabbda4bfa93b3eb67d9ae166ef95f9bff989d964061cbf81a0c"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.regexp.d.ts",
+              "sha256": "717937616a17072082152a2ef351cb51f98802fb4b2fdabd32399843875974ca"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.array.d.ts",
+              "sha256": "d7e7d9b7b50e5f22c915b525acc5a49a7a6584cf8f62d0569e557c5cfc4b2ac2"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.d.ts",
+              "sha256": "68d73b4a11549f9c0b7d352d10e91e5dca8faa3322bfb77b661839c42b1ddec7"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.full.d.ts",
+              "sha256": "08f6861df84fba9719c14d5adc3ba40be9f0c687639e6c4df3c05b9301b8ff94"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.intl.d.ts",
+              "sha256": "74f7fa2d027d5b33eb0471c8e82a6c87216223181ec31247c357a3e8e2fddc5b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.object.d.ts",
+              "sha256": "71c37f4c9543f31dfced6c7840e068c5a5aacb7b89111a4364b1d5276b852557"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.string.d.ts",
+              "sha256": "576711e016cf4f1804676043e6a0a5414252560eb57de9faceee34d79798c850"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.symbol.d.ts",
+              "sha256": "89c1b1281ba7b8a96efc676b11b264de7a8374c5ea1e6617f11880a13fc56dc6"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.bigint.d.ts",
+              "sha256": "d6d7ae4d1f1f3772e2a3cde568ed08991a8ae34a080ff1151af28b7f798e22ca"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.d.ts",
+              "sha256": "5efce4fc3c29ea84e8928f97adec086e3dc876365e0982cc8479a07954a3efd4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.date.d.ts",
+              "sha256": "063600664504610fe3e99b717a1223f8b1900087fab0b4cad1496a114744f8df"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.full.d.ts",
+              "sha256": "1305d1e76ca44e30fb8b2b8075fa522b83f60c0bcf5d4326a9d2cf79b53724f8"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.intl.d.ts",
+              "sha256": "639e512c0dfc3fad96a84caad71b8834d66329a1f28dc95e3946c9b58176c73a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.number.d.ts",
+              "sha256": "368af93f74c9c932edd84c58883e736c9e3d53cec1fe24c0b0ff451f529ceab1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.promise.d.ts",
+              "sha256": "934019d7e3c81950f9a8426d093458b65d5aff2c7c1511233c0fd5b941e608ab"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.sharedmemory.d.ts",
+              "sha256": "52ada8e0b6e0482b728070b7639ee42e83a9b1c22d205992756fe020fd9f4a47"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.string.d.ts",
+              "sha256": "3bdefe1bfd4d6dee0e26f928f93ccc128f1b64d5d501ff4a8cf3c6371200e5e6"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts",
+              "sha256": "59fb2c069260b4ba00b5643b907ef5d5341b167e7d1dbf58dfd895658bda2867"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.d.ts",
+              "sha256": "feecb1be483ed332fad555aff858affd90a48ab19ba7272ee084704eb7167569"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.full.d.ts",
+              "sha256": "4a66df3ab5de5cfcda11538cffddd67ff6a174e003788e270914c1e0248483cf"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.intl.d.ts",
+              "sha256": "965f36eae237dd74e6cca203a43e9ca801ce38824ead814728a2807b1910117d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.promise.d.ts",
+              "sha256": "af3dd424cf267428f30ccfc376f47a2c0114546b55c44d8c0f1d57d841e28d74"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.string.d.ts",
+              "sha256": "995c005ab91a498455ea8dfb63aa9f83fa2ea793c3d8aa344be4a1678d06d399"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.weakref.d.ts",
+              "sha256": "959d36cddf5e7d572a65045b876f2956c973a586da58e5d26cde519184fd9b8a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.array.d.ts",
+              "sha256": "3925a6c820dcb1a06506c90b1577db1fdbf7705d65b62b99dce4be75c637e26b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.d.ts",
+              "sha256": "ee7bad0c15b58988daa84371e0b89d313b762ab83cb5b31b8a2d1162e8eb41c2"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.error.d.ts",
+              "sha256": "0a3d63ef2b853447ec4f749d3f368ce642264246e02911fcb1590d8c161b8005"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.full.d.ts",
+              "sha256": "3cbad9a1ba4453443026ed38e4b8be018abb26565fa7c944376463ad9df07c41"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.intl.d.ts",
+              "sha256": "8cdf8847677ac7d20486e54dd3fcf09eda95812ac8ace44b4418da1bbbab6eb8"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.object.d.ts",
+              "sha256": "8444af78980e3b20b49324f4a16ba35024fef3ee069a0eb67616ea6ca821c47a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.regexp.d.ts",
+              "sha256": "b4b67b1a91182421f5df999988c690f14d813b9850b40acd06ed44691f6727ad"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.string.d.ts",
+              "sha256": "3287d9d085fbd618c3971944b65b4be57859f5415f495b33a6adc994edd2f004"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.array.d.ts",
+              "sha256": "df83c2a6c73228b625b0beb6669c7ee2a09c914637e2d35170723ad49c0f5cd4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.collection.d.ts",
+              "sha256": "436aaf437562f276ec2ddbee2f2cdedac7664c1e4c1d2c36839ddd582eeb3d0a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.d.ts",
+              "sha256": "27bdc30a0e32783366a5abeda841bc22757c1797de8681bbe81fbc735eeb1c10"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.full.d.ts",
+              "sha256": "785921608325fa246b450f05b238f4b3ed659f1099af278ce9ebbc9416a13f1d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.intl.d.ts",
+              "sha256": "8e3c06ea092138bf9fa5e874a1fdbc9d54805d074bee1de31b99a11e2fec239d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.arraybuffer.d.ts",
+              "sha256": "87dc0f382502f5bbce5129bdc0aea21e19a3abbc19259e0b43ae038a9fc4e326"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.collection.d.ts",
+              "sha256": "b1cb28af0c891c8c96b2d6b7be76bd394fddcfdb4709a20ba05a7c1605eea0f9"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.d.ts",
+              "sha256": "8fd575e12870e9944c7e1d62e1f5a73fcf23dd8d3a321f2a2c74c20d022283fe"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.full.d.ts",
+              "sha256": "b3e9cef4eed59f8a2249ed834ba4aabe9d0d4e9037d4679487fa17dad99004a3"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.object.d.ts",
+              "sha256": "2fef54945a13095fdb9b84f705f2b5994597640c46afeb2ce78352fab4cb3279"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.promise.d.ts",
+              "sha256": "ac77cb3e8c6d3565793eb90a8373ee8033146315a3dbead3bde8db5eaf5e5ec6"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.regexp.d.ts",
+              "sha256": "56e4ed5aab5f5920980066a9409bfaf53e6d21d3f8d020c17e4de584d29600ad"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.sharedmemory.d.ts",
+              "sha256": "4ece9f17b3866cc077099c73f4983bddbcb1dc7ddb943227f1ec070f529dedd1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.string.d.ts",
+              "sha256": "0a6282c8827e4b9a95f4bf4f5c205673ada31b982f50572d27103df8ceb8013c"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es5.d.ts",
+              "sha256": "c430d44666289dae81f30fa7b2edebf186ecc91a2d4c71266ea6ae76388792e1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es6.d.ts",
+              "sha256": "df039a67536fe2acc3affdcbfb645892f842db36fe599e8e652e2f0c640a90d1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.array.d.ts",
+              "sha256": "1c9319a09485199c1f7b0498f2988d6d2249793ef67edda49d1e584746be9032"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.collection.d.ts",
+              "sha256": "e3a2a0cee0f03ffdde24d89660eba2685bfbdeae955a6c67e8c4c9fd28928eeb"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.d.ts",
+              "sha256": "2ab096661c711e4a81cc464fa1e6feb929a54f5340b46b0a07ac6bbf857471f0"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.decorators.d.ts",
+              "sha256": "d4b1d2c51d058fc21ec2629fff7a76249dec2e36e12960ea056e3ef89174080f"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.disposable.d.ts",
+              "sha256": "51ad4c928303041605b4d7ae32e0c1ee387d43a24cd6f1ebf4a2699e1076d4fa"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.error.d.ts",
+              "sha256": "73f78680d4c08509933daf80947902f6ff41b6230f94dd002ae372620adb0f60"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.float16.d.ts",
+              "sha256": "196cb558a13d4533a5163286f30b0509ce0210e4b316c56c38d4c0fd2fb38405"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.full.d.ts",
+              "sha256": "bde31fd423cd93b0eff97197a3f66df7c93e8c0c335cbeb113b7ff1ac35c23f4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.intl.d.ts",
+              "sha256": "811c71eee4aa0ac5f7adf713323a5c41b0cf6c4e17367a34fbce379e12bbf0a4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.iterator.d.ts",
+              "sha256": "22adec94ef7047a6c9d1af3cb96be87a335908bf9ef386ae9fd50eeb37f44c47"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.promise.d.ts",
+              "sha256": "60037901da1a425516449b9a20073aa03386cce92f7a1fd902d7602be3a7c2e9"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.sharedmemory.d.ts",
+              "sha256": "c5239f5c01bcfa9cd32f37c496cf19c61d69d37e48be9de612b541aac915805b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.scripthost.d.ts",
+              "sha256": "cd034f499c6cdca722b60c04b5b1b78e058487a7085a8e0d6fb50809947ee573"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.asynciterable.d.ts",
+              "sha256": "ca417afee74054e99d5a8252b35bef26ca6e2942d67d343fce6b42fc9f432993"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.d.ts",
+              "sha256": "6d08cde2bfb6ff909efbf7cb7d6d55be412cf4b9f48fd0430185986973fa91f5"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
+              "sha256": "80e18897e5884b6723488d4f5652167e7bb5024f946743134ecc4aa4ee731f89"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.iterable.d.ts",
+              "sha256": "d6c6331ce67c41b2ad5bfb0c8c022403980b479a377a44da8f16b61120418f66"
+            }
+          ],
+          "missingEvidence": []
+        }
+      ],
+      "packages": [
+        {
+          "name": "typescript",
+          "version": "5.9.3",
+          "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+          "lockHash": "dafa17a0af1c1738143741442efc8430f6b93b7bf182c48cdf7439102fb60ec4",
+          "origin": "VERIFIED_ARCHIVE",
+          "declarations": [
+            {
+              "file": "frontend/node_modules/typescript/lib/cs/diagnosticMessages.generated.json",
+              "sha256": "5b30e58d35f877521e14c16551c86320b2ed19ddb70fe5f41841b561d27f18c2"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/de/diagnosticMessages.generated.json",
+              "sha256": "a4031a8028febc35f92ba317104878d93f02c1750e6ee16351c2270ab4dff517"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/es/diagnosticMessages.generated.json",
+              "sha256": "3c7844125e1f2a3a2227e16dd1fed75218a3454919706b34cd8a5da9d43cda22"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/fr/diagnosticMessages.generated.json",
+              "sha256": "9fc1836d7575840a8b7a63dacdedd99e90e4144c0bbe29a4b7fa78a86e0e8bf5"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/it/diagnosticMessages.generated.json",
+              "sha256": "a740fe2b2338d72a8d165fb8c7c22ac1393a18b6aa7f1ed6d45b79887867f98a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/ja/diagnosticMessages.generated.json",
+              "sha256": "ae1a2d439bfb60b9fa32408bde0e9ec39840a33d621014fcb5b2fb4e69a606de"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/ko/diagnosticMessages.generated.json",
+              "sha256": "31b27d2d556fc037eeac1672f771bf940ec70afba342e977faa75a2fa292a8be"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/pl/diagnosticMessages.generated.json",
+              "sha256": "0645575abe920de1ee4cf3f2f70c7abc7f6691daa01cf1e9ad6b1ce53917c9ff"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/pt-br/diagnosticMessages.generated.json",
+              "sha256": "34a649eb937cd70fe7b15663c2e5479e753d42df0e5c2933636789b60c2c939d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/ru/diagnosticMessages.generated.json",
+              "sha256": "29bb8ea9d44f55bb7acdedfac0a57865ea40552f004d0d6e3b96746ac76666cc"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/tr/diagnosticMessages.generated.json",
+              "sha256": "9466915f3e0cdb2625495bbe9c02c8b7ef9e3543fffae957ba034655563abf65"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/zh-cn/diagnosticMessages.generated.json",
+              "sha256": "6bd4ae6aea0991f6b73c46ec79ebb643b280a07e4808be363b07d01d2f6d399d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/zh-tw/diagnosticMessages.generated.json",
+              "sha256": "c35cf732ff01539090a3622b7a07f7bb4cadb28f6f13048b366012c458329be1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/package.json",
+              "sha256": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/typesMap.json",
+              "sha256": "4143fb8b1c5d4421dfa19a4b80ddf2da375fc0835a349c3b18519fda5955e1d9"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.d.ts",
+              "sha256": "a7297ff837fcdf174a9524925966429eb8e5feecc2cc55cc06574e6b092c1eaa"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.decorators.d.ts",
+              "sha256": "8e7f8264d0fb4c5339605a15daadb037bf238c10b654bb3eee14208f860a32ea"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.decorators.legacy.d.ts",
+              "sha256": "782dec38049b92d4e85c1585fbea5474a219c6984a35b004963b00beb1aab538"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.dom.asynciterable.d.ts",
+              "sha256": "d7a3c8b952931daebdfc7a2897c53c0a1c73624593fa070e46bd537e64dcd20a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.dom.d.ts",
+              "sha256": "080941d9f9ff9307f7e27a83bcd888b7c8270716c39af943532438932ec1d0b9"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.dom.iterable.d.ts",
+              "sha256": "2e80ee7a49e8ac312cc11b77f1475804bee36b3b2bc896bead8b6e1266befb43"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.collection.d.ts",
+              "sha256": "dc2df20b1bcdc8c2d34af4926e2c3ab15ffe1160a63e58b7e09833f616efff44"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.core.d.ts",
+              "sha256": "c57796738e7f83dbc4b8e65132f11a377649c00dd3eee333f672b8f0a6bea671"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.d.ts",
+              "sha256": "45b7ab580deca34ae9729e97c13cfd999df04416a79116c3bfb483804f85ded4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.generator.d.ts",
+              "sha256": "515d0b7b9bea2e31ea4ec968e9edd2c39d3eebf4a2d5cbd04e88639819ae3b71"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.iterable.d.ts",
+              "sha256": "0559b1f683ac7505ae451f9a96ce4c3c92bdc71411651ca6ddb0e88baaaad6a3"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.promise.d.ts",
+              "sha256": "0dc1e7ceda9b8b9b455c3a2d67b0412feab00bd2f66656cd8850e8831b08b537"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.proxy.d.ts",
+              "sha256": "ce691fb9e5c64efb9547083e4a34091bcbe5bdb41027e310ebba8f7d96a98671"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.reflect.d.ts",
+              "sha256": "8d697a2a929a5fcb38b7a65594020fcef05ec1630804a33748829c5ff53640d0"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.symbol.d.ts",
+              "sha256": "4ff2a353abf8a80ee399af572debb8faab2d33ad38c4b4474cff7f26e7653b8d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
+              "sha256": "fb0f136d372979348d59b3f5020b4cdb81b5504192b1cacff5d1fbba29378aa1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.array.include.d.ts",
+              "sha256": "d15bea3d62cbbdb9797079416b8ac375ae99162a7fba5de2c6c505446486ac0a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.d.ts",
+              "sha256": "3facaf05f0c5fc569c5649dd359892c98a85557e3e0c847964caeb67076f4d75"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.full.d.ts",
+              "sha256": "807e0e0bdc67605dd28efe18f20ab5fcd75d944ef95936120702335f9379094b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2016.intl.d.ts",
+              "sha256": "68d18b664c9d32a7336a70235958b8997ebc1c3b8505f4f1ae2b7e7753b87618"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.arraybuffer.d.ts",
+              "sha256": "eb3d66c8327153d8fa7dd03f9c58d351107fe824c79e9b56b462935176cdf12a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.d.ts",
+              "sha256": "e44bb8bbac7f10ecc786703fe0a6a4b952189f908707980ba8f3c8975a760962"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.date.d.ts",
+              "sha256": "38f0219c9e23c915ef9790ab1d680440d95419ad264816fa15009a8851e79119"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.full.d.ts",
+              "sha256": "1d242d5c24cf285c88bc4fb93c5ff903de8319064e282986edeb6247ba028d5e"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.intl.d.ts",
+              "sha256": "4de680d5bb41c17f7f68e0419412ca23c98d5749dcaaea1896172f06435891fc"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.object.d.ts",
+              "sha256": "69ab18c3b76cd9b1be3d188eaf8bba06112ebbe2f47f6c322b5105a6fbc45a2e"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts",
+              "sha256": "a680117f487a4d2f30ea46f1b4b7f58bef1480456e18ba53ee85c2746eeca012"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.string.d.ts",
+              "sha256": "2f11ff796926e0832f9ae148008138ad583bd181899ab7dd768a2666700b1893"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
+              "sha256": "954296b30da6d508a104a3a0b5d96b76495c709785c1d11610908e63481ee667"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts",
+              "sha256": "ac9538681b19688c8eae65811b329d3744af679e0bdfa5d842d0e32524c73e1c"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.asynciterable.d.ts",
+              "sha256": "0a969edff4bd52585473d24995c5ef223f6652d6ef46193309b3921d65dd4376"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.d.ts",
+              "sha256": "5e1c4c362065a6b95ff952c0eab010f04dcd2c3494e813b493ecfd4fcb9fc0d8"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.full.d.ts",
+              "sha256": "95f1023b824c2c511c48f1201e2d1188bcb0ca1138a309a870b956d2e92e44ab"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.intl.d.ts",
+              "sha256": "9e9fbd7030c440b33d021da145d3232984c8bb7916f277e8ffd3dc2e3eae2bdb"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.promise.d.ts",
+              "sha256": "811ec78f7fefcabbda4bfa93b3eb67d9ae166ef95f9bff989d964061cbf81a0c"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2018.regexp.d.ts",
+              "sha256": "717937616a17072082152a2ef351cb51f98802fb4b2fdabd32399843875974ca"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.array.d.ts",
+              "sha256": "d7e7d9b7b50e5f22c915b525acc5a49a7a6584cf8f62d0569e557c5cfc4b2ac2"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.d.ts",
+              "sha256": "68d73b4a11549f9c0b7d352d10e91e5dca8faa3322bfb77b661839c42b1ddec7"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.full.d.ts",
+              "sha256": "08f6861df84fba9719c14d5adc3ba40be9f0c687639e6c4df3c05b9301b8ff94"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.intl.d.ts",
+              "sha256": "74f7fa2d027d5b33eb0471c8e82a6c87216223181ec31247c357a3e8e2fddc5b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.object.d.ts",
+              "sha256": "71c37f4c9543f31dfced6c7840e068c5a5aacb7b89111a4364b1d5276b852557"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.string.d.ts",
+              "sha256": "576711e016cf4f1804676043e6a0a5414252560eb57de9faceee34d79798c850"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2019.symbol.d.ts",
+              "sha256": "89c1b1281ba7b8a96efc676b11b264de7a8374c5ea1e6617f11880a13fc56dc6"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.bigint.d.ts",
+              "sha256": "d6d7ae4d1f1f3772e2a3cde568ed08991a8ae34a080ff1151af28b7f798e22ca"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.d.ts",
+              "sha256": "5efce4fc3c29ea84e8928f97adec086e3dc876365e0982cc8479a07954a3efd4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.date.d.ts",
+              "sha256": "063600664504610fe3e99b717a1223f8b1900087fab0b4cad1496a114744f8df"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.full.d.ts",
+              "sha256": "1305d1e76ca44e30fb8b2b8075fa522b83f60c0bcf5d4326a9d2cf79b53724f8"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.intl.d.ts",
+              "sha256": "639e512c0dfc3fad96a84caad71b8834d66329a1f28dc95e3946c9b58176c73a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.number.d.ts",
+              "sha256": "368af93f74c9c932edd84c58883e736c9e3d53cec1fe24c0b0ff451f529ceab1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.promise.d.ts",
+              "sha256": "934019d7e3c81950f9a8426d093458b65d5aff2c7c1511233c0fd5b941e608ab"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.sharedmemory.d.ts",
+              "sha256": "52ada8e0b6e0482b728070b7639ee42e83a9b1c22d205992756fe020fd9f4a47"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.string.d.ts",
+              "sha256": "3bdefe1bfd4d6dee0e26f928f93ccc128f1b64d5d501ff4a8cf3c6371200e5e6"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts",
+              "sha256": "59fb2c069260b4ba00b5643b907ef5d5341b167e7d1dbf58dfd895658bda2867"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.d.ts",
+              "sha256": "feecb1be483ed332fad555aff858affd90a48ab19ba7272ee084704eb7167569"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.full.d.ts",
+              "sha256": "4a66df3ab5de5cfcda11538cffddd67ff6a174e003788e270914c1e0248483cf"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.intl.d.ts",
+              "sha256": "965f36eae237dd74e6cca203a43e9ca801ce38824ead814728a2807b1910117d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.promise.d.ts",
+              "sha256": "af3dd424cf267428f30ccfc376f47a2c0114546b55c44d8c0f1d57d841e28d74"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.string.d.ts",
+              "sha256": "995c005ab91a498455ea8dfb63aa9f83fa2ea793c3d8aa344be4a1678d06d399"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2021.weakref.d.ts",
+              "sha256": "959d36cddf5e7d572a65045b876f2956c973a586da58e5d26cde519184fd9b8a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.array.d.ts",
+              "sha256": "3925a6c820dcb1a06506c90b1577db1fdbf7705d65b62b99dce4be75c637e26b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.d.ts",
+              "sha256": "ee7bad0c15b58988daa84371e0b89d313b762ab83cb5b31b8a2d1162e8eb41c2"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.error.d.ts",
+              "sha256": "0a3d63ef2b853447ec4f749d3f368ce642264246e02911fcb1590d8c161b8005"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.full.d.ts",
+              "sha256": "3cbad9a1ba4453443026ed38e4b8be018abb26565fa7c944376463ad9df07c41"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.intl.d.ts",
+              "sha256": "8cdf8847677ac7d20486e54dd3fcf09eda95812ac8ace44b4418da1bbbab6eb8"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.object.d.ts",
+              "sha256": "8444af78980e3b20b49324f4a16ba35024fef3ee069a0eb67616ea6ca821c47a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.regexp.d.ts",
+              "sha256": "b4b67b1a91182421f5df999988c690f14d813b9850b40acd06ed44691f6727ad"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2022.string.d.ts",
+              "sha256": "3287d9d085fbd618c3971944b65b4be57859f5415f495b33a6adc994edd2f004"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.array.d.ts",
+              "sha256": "df83c2a6c73228b625b0beb6669c7ee2a09c914637e2d35170723ad49c0f5cd4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.collection.d.ts",
+              "sha256": "436aaf437562f276ec2ddbee2f2cdedac7664c1e4c1d2c36839ddd582eeb3d0a"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.d.ts",
+              "sha256": "27bdc30a0e32783366a5abeda841bc22757c1797de8681bbe81fbc735eeb1c10"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.full.d.ts",
+              "sha256": "785921608325fa246b450f05b238f4b3ed659f1099af278ce9ebbc9416a13f1d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2023.intl.d.ts",
+              "sha256": "8e3c06ea092138bf9fa5e874a1fdbc9d54805d074bee1de31b99a11e2fec239d"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.arraybuffer.d.ts",
+              "sha256": "87dc0f382502f5bbce5129bdc0aea21e19a3abbc19259e0b43ae038a9fc4e326"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.collection.d.ts",
+              "sha256": "b1cb28af0c891c8c96b2d6b7be76bd394fddcfdb4709a20ba05a7c1605eea0f9"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.d.ts",
+              "sha256": "8fd575e12870e9944c7e1d62e1f5a73fcf23dd8d3a321f2a2c74c20d022283fe"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.full.d.ts",
+              "sha256": "b3e9cef4eed59f8a2249ed834ba4aabe9d0d4e9037d4679487fa17dad99004a3"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.object.d.ts",
+              "sha256": "2fef54945a13095fdb9b84f705f2b5994597640c46afeb2ce78352fab4cb3279"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.promise.d.ts",
+              "sha256": "ac77cb3e8c6d3565793eb90a8373ee8033146315a3dbead3bde8db5eaf5e5ec6"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.regexp.d.ts",
+              "sha256": "56e4ed5aab5f5920980066a9409bfaf53e6d21d3f8d020c17e4de584d29600ad"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.sharedmemory.d.ts",
+              "sha256": "4ece9f17b3866cc077099c73f4983bddbcb1dc7ddb943227f1ec070f529dedd1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es2024.string.d.ts",
+              "sha256": "0a6282c8827e4b9a95f4bf4f5c205673ada31b982f50572d27103df8ceb8013c"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es5.d.ts",
+              "sha256": "c430d44666289dae81f30fa7b2edebf186ecc91a2d4c71266ea6ae76388792e1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.es6.d.ts",
+              "sha256": "df039a67536fe2acc3affdcbfb645892f842db36fe599e8e652e2f0c640a90d1"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.array.d.ts",
+              "sha256": "1c9319a09485199c1f7b0498f2988d6d2249793ef67edda49d1e584746be9032"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.collection.d.ts",
+              "sha256": "e3a2a0cee0f03ffdde24d89660eba2685bfbdeae955a6c67e8c4c9fd28928eeb"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.d.ts",
+              "sha256": "2ab096661c711e4a81cc464fa1e6feb929a54f5340b46b0a07ac6bbf857471f0"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.decorators.d.ts",
+              "sha256": "d4b1d2c51d058fc21ec2629fff7a76249dec2e36e12960ea056e3ef89174080f"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.disposable.d.ts",
+              "sha256": "51ad4c928303041605b4d7ae32e0c1ee387d43a24cd6f1ebf4a2699e1076d4fa"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.error.d.ts",
+              "sha256": "73f78680d4c08509933daf80947902f6ff41b6230f94dd002ae372620adb0f60"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.float16.d.ts",
+              "sha256": "196cb558a13d4533a5163286f30b0509ce0210e4b316c56c38d4c0fd2fb38405"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.full.d.ts",
+              "sha256": "bde31fd423cd93b0eff97197a3f66df7c93e8c0c335cbeb113b7ff1ac35c23f4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.intl.d.ts",
+              "sha256": "811c71eee4aa0ac5f7adf713323a5c41b0cf6c4e17367a34fbce379e12bbf0a4"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.iterator.d.ts",
+              "sha256": "22adec94ef7047a6c9d1af3cb96be87a335908bf9ef386ae9fd50eeb37f44c47"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.promise.d.ts",
+              "sha256": "60037901da1a425516449b9a20073aa03386cce92f7a1fd902d7602be3a7c2e9"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.esnext.sharedmemory.d.ts",
+              "sha256": "c5239f5c01bcfa9cd32f37c496cf19c61d69d37e48be9de612b541aac915805b"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.scripthost.d.ts",
+              "sha256": "cd034f499c6cdca722b60c04b5b1b78e058487a7085a8e0d6fb50809947ee573"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.asynciterable.d.ts",
+              "sha256": "ca417afee74054e99d5a8252b35bef26ca6e2942d67d343fce6b42fc9f432993"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.d.ts",
+              "sha256": "6d08cde2bfb6ff909efbf7cb7d6d55be412cf4b9f48fd0430185986973fa91f5"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
+              "sha256": "80e18897e5884b6723488d4f5652167e7bb5024f946743134ecc4aa4ee731f89"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/lib.webworker.iterable.d.ts",
+              "sha256": "d6c6331ce67c41b2ad5bfb0c8c022403980b479a377a44da8f16b61120418f66"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/tsserverlibrary.d.ts",
+              "sha256": "73b15a0b7cf5c6df9076b9408c5ce682f11813453bf54c54cb284f075b5224cf"
+            },
+            {
+              "file": "frontend/node_modules/typescript/lib/typescript.d.ts",
+              "sha256": "e134052a6b1ded61693b4037f615dc72f14e2881e79c1ddbff6c514c8a516b05"
+            }
+          ]
+        }
+      ],
+      "requests": [
+        {
+          "package": "react",
+          "importer": "frontend/src/components/ProductsGrid.jsx",
+          "importers": [
+            "frontend/src/components/ProductsGrid.jsx",
+            "frontend/src/App.jsx",
+            "frontend/src/pages/Login.jsx",
+            "frontend/src/context/AuthContext.jsx",
+            "frontend/src/api/axios.js",
+            "frontend/src/api/urls.js",
+            "frontend/src/pages/AdminDashboard.jsx",
+            "frontend/src/services/adminapi.js",
+            "frontend/src/common/Card.jsx",
+            "frontend/src/common/Badge.jsx",
+            "frontend/src/pages/AdminProducts.jsx",
+            "frontend/src/common/Button.jsx",
+            "frontend/src/pages/AdminProductEdit.jsx",
+            "frontend/src/components/admin/ProductForm.jsx",
+            "frontend/src/pages/AdminProductVariants.jsx",
+            "frontend/src/components/admin/VariantEditor.jsx",
+            "frontend/src/layouts/user/UserLayout.jsx",
+            "frontend/src/layouts/user/HeaderBar.jsx",
+            "frontend/src/context/CartContext.jsx",
+            "frontend/src/api/apiError.ts",
+            "frontend/src/utils/locationTime.js",
+            "frontend/src/ui/labels.js",
+            "frontend/src/components/SceneryBackground.jsx",
+            "frontend/src/ifli/index.ts",
+            "frontend/src/ifli/useIFLI.ts",
+            "frontend/src/ifli/IntentEngine.ts",
+            "frontend/src/ifli/types.ts",
+            "frontend/src/ifli/config.ts",
+            "frontend/src/ifli/detectors/index.ts",
+            "frontend/src/ifli/rules/complementRules.ts",
+            "frontend/src/ifli/SurfaceGenerator.ts",
+            "frontend/src/ifli/components/index.ts",
+            "frontend/src/ifli/components/SurfaceZone.tsx",
+            "frontend/src/ifli/components/SurfaceContainer.jsx",
+            "frontend/src/ifli/components/IFLISurfaceRenderer.jsx",
+            "frontend/src/layouts/admin/AdminLayout.jsx",
+            "frontend/src/layouts/admin/AdminSidebar.jsx",
+            "frontend/src/routes/ProtectedRoute.jsx",
+            "frontend/src/pages/AdminCategories.jsx",
+            "frontend/src/pages/AdminOrders.jsx",
+            "frontend/src/pages/AdminOrderDetail.jsx",
+            "frontend/src/pages/AdminInventory.jsx",
+            "frontend/src/pages/Register.jsx",
+            "frontend/src/pages/UserDashboard.jsx",
+            "frontend/src/features/products/ProductGrid.jsx",
+            "frontend/src/features/products/ProductCard.jsx",
+            "frontend/src/utils/price.js",
+            "frontend/src/services/groceryApi.js",
+            "frontend/src/components/ProductSkeletonGrid.jsx",
+            "frontend/src/features/recipes/RecipeList.jsx",
+            "frontend/src/features/recipes/recipes.js",
+            "frontend/src/features/recipes/RecipeCard.jsx",
+            "frontend/src/components/dashboard/QuickActions.jsx",
+            "frontend/src/components/dashboard/ProductsSection.jsx",
+            "frontend/src/components/dashboard/CategoryTabs.jsx",
+            "frontend/src/components/dashboard/DashboardFooter.jsx",
+            "frontend/src/components/dashboard/HomeDashboardSections.jsx",
+            "frontend/src/components/dashboard/BuyAgainCard.jsx",
+            "frontend/src/components/cart/ConfirmAddToCartModal.jsx",
+            "frontend/src/hooks/useHomeDashboard.ts",
+            "frontend/src/api/homeDashboardApi.ts",
+            "frontend/src/types/homeDashboard.ts",
+            "frontend/src/pages/CategoriesPage.jsx",
+            "frontend/src/features/discovery/CategoryGrid.jsx",
+            "frontend/src/features/discovery/categories.js",
+            "frontend/src/features/discovery/CategoryCard.jsx",
+            "frontend/src/pages/CartPage.jsx",
+            "frontend/src/pages/CheckoutPage.jsx",
+            "frontend/src/api/ordersApi.ts",
+            "frontend/src/pages/ProductDetailPage.jsx",
+            "frontend/src/pages/OrderSuccess.jsx",
+            "frontend/src/pages/OrdersPage.jsx",
+            "frontend/src/__tests__/BuyAgainCard.test.tsx",
+            "frontend/src/__tests__/checkout.orderFlow.test.jsx",
+            "frontend/src/__tests__/homeDashboardSections.test.tsx",
+            "frontend/src/__tests__/fixtures/recommendations.fixture.ts",
+            "frontend/src/__tests__/userDashboard.order.test.tsx",
+            "frontend/src/components/ShoppingCart.jsx",
+            "frontend/src/components/dashboard/DashboardProductCard.jsx",
+            "frontend/src/utils/priceUtils.js",
+            "frontend/src/utils/productUi.js",
+            "frontend/src/context/__tests__/CartContext.test.jsx",
+            "frontend/src/layouts/user/Sidebar.jsx",
+            "frontend/src/layouts/user/sidebar.config.js",
+            "frontend/src/layouts/user/SidebarItem.jsx",
+            "frontend/src/main.jsx",
+            "frontend/src/pages/Home.jsx",
+            "frontend/src/utils/stockUi.js",
+            "frontend/src/pages/Products.jsx",
+            "frontend/src/services/authServices.ts",
+            "frontend/src/utils/fetchHelper.js"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "18.2.0",
+          "integrity": "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "react-router-dom",
+          "importer": "frontend/src/App.jsx",
+          "importers": [
+            "frontend/src/App.jsx",
+            "frontend/src/pages/Login.jsx",
+            "frontend/src/pages/AdminDashboard.jsx",
+            "frontend/src/pages/AdminProducts.jsx",
+            "frontend/src/pages/AdminProductEdit.jsx",
+            "frontend/src/pages/AdminProductVariants.jsx",
+            "frontend/src/layouts/user/UserLayout.jsx",
+            "frontend/src/layouts/user/HeaderBar.jsx",
+            "frontend/src/ifli/useIFLI.ts",
+            "frontend/src/ifli/components/SurfaceContainer.jsx",
+            "frontend/src/ifli/components/IFLISurfaceRenderer.jsx",
+            "frontend/src/layouts/admin/AdminLayout.jsx",
+            "frontend/src/layouts/admin/AdminSidebar.jsx",
+            "frontend/src/routes/ProtectedRoute.jsx",
+            "frontend/src/pages/AdminOrders.jsx",
+            "frontend/src/pages/AdminOrderDetail.jsx",
+            "frontend/src/pages/Register.jsx",
+            "frontend/src/pages/UserDashboard.jsx",
+            "frontend/src/features/products/ProductCard.jsx",
+            "frontend/src/components/dashboard/ProductsSection.jsx",
+            "frontend/src/features/discovery/CategoryGrid.jsx",
+            "frontend/src/pages/CartPage.jsx",
+            "frontend/src/pages/CheckoutPage.jsx",
+            "frontend/src/pages/ProductDetailPage.jsx",
+            "frontend/src/pages/OrderSuccess.jsx",
+            "frontend/src/pages/OrdersPage.jsx",
+            "frontend/src/__tests__/checkout.orderFlow.test.jsx",
+            "frontend/src/components/dashboard/DashboardProductCard.jsx",
+            "frontend/src/layouts/user/Sidebar.jsx",
+            "frontend/src/main.jsx"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "6.30.2",
+          "integrity": "sha512-l2OwHn3UUnEVUqc6/1VMmR1cvZryZ3j3NzapC2eUXO1dB0sYp5mvwdjiXhpUbRb21eFow3qSxpP8Yv6oAU824Q==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "react-hot-toast",
+          "importer": "frontend/src/App.jsx",
+          "importers": [
+            "frontend/src/App.jsx",
+            "frontend/src/pages/AdminProducts.jsx",
+            "frontend/src/pages/AdminProductEdit.jsx",
+            "frontend/src/components/admin/ProductForm.jsx",
+            "frontend/src/pages/AdminProductVariants.jsx",
+            "frontend/src/components/admin/VariantEditor.jsx",
+            "frontend/src/layouts/user/HeaderBar.jsx",
+            "frontend/src/context/CartContext.jsx",
+            "frontend/src/pages/AdminOrders.jsx",
+            "frontend/src/pages/AdminOrderDetail.jsx",
+            "frontend/src/pages/AdminInventory.jsx",
+            "frontend/src/pages/Register.jsx",
+            "frontend/src/pages/UserDashboard.jsx",
+            "frontend/src/features/recipes/RecipeCard.jsx",
+            "frontend/src/components/dashboard/BuyAgainCard.jsx",
+            "frontend/src/pages/CheckoutPage.jsx"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "2.6.0",
+          "integrity": "sha512-bH+2EBMZ4sdyou/DPrfgIouFpcRLCJ+HoCA32UoAYHn6T3Ur5yfcDCeSr5mwldl6pFOsiocmrXMuoCJ1vV8bWg==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "axios",
+          "importer": "frontend/src/api/axios.js",
+          "importers": [
+            "frontend/src/api/axios.js",
+            "frontend/src/services/adminapi.js"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "1.13.2",
+          "integrity": "sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "lucide-react",
+          "importer": "frontend/src/pages/AdminDashboard.jsx",
+          "importers": [
+            "frontend/src/pages/AdminDashboard.jsx",
+            "frontend/src/layouts/user/UserLayout.jsx",
+            "frontend/src/layouts/user/HeaderBar.jsx",
+            "frontend/src/ifli/components/SurfaceZone.tsx",
+            "frontend/src/ifli/components/IFLISurfaceRenderer.jsx",
+            "frontend/src/layouts/admin/AdminSidebar.jsx",
+            "frontend/src/pages/Register.jsx",
+            "frontend/src/pages/UserDashboard.jsx",
+            "frontend/src/components/dashboard/HomeDashboardSections.jsx",
+            "frontend/src/components/dashboard/BuyAgainCard.jsx",
+            "frontend/src/components/cart/ConfirmAddToCartModal.jsx",
+            "frontend/src/pages/CartPage.jsx",
+            "frontend/src/pages/CheckoutPage.jsx",
+            "frontend/src/layouts/user/sidebar.config.js"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "0.562.0",
+          "integrity": "sha512-82hOAu7y0dbVuFfmO4bYF1XEwYk/mEbM5E+b1jgci/udUBEE/R7LF5Ip0CCEmXe8AybRM8L+04eP+LGZeDvkiw==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "prop-types",
+          "importer": "frontend/src/common/Card.jsx",
+          "importers": [
+            "frontend/src/common/Card.jsx",
+            "frontend/src/common/Badge.jsx",
+            "frontend/src/common/Button.jsx",
+            "frontend/src/layouts/admin/AdminLayout.jsx",
+            "frontend/src/components/ProductSkeletonGrid.jsx",
+            "frontend/src/features/discovery/CategoryCard.jsx",
+            "frontend/src/layouts/user/Sidebar.jsx",
+            "frontend/src/layouts/user/SidebarItem.jsx"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "15.8.1",
+          "integrity": "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "vitest",
+          "importer": "frontend/src/__tests__/BuyAgainCard.test.tsx",
+          "importers": [
+            "frontend/src/__tests__/BuyAgainCard.test.tsx",
+            "frontend/src/__tests__/checkout.orderFlow.test.jsx",
+            "frontend/src/__tests__/homeDashboardSections.test.tsx",
+            "frontend/src/__tests__/userDashboard.order.test.tsx",
+            "frontend/src/context/__tests__/CartContext.test.jsx"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "4.0.18",
+          "integrity": "sha512-hOQuK7h0FGKgBAas7v0mSAsnvrIgAvWmRFjmzpJ7SwFHH3g1k2u37JtYwOwmEKhK6ZO3v9ggDBBm0La1LCK4uQ==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "@testing-library/react",
+          "importer": "frontend/src/__tests__/BuyAgainCard.test.tsx",
+          "importers": [
+            "frontend/src/__tests__/BuyAgainCard.test.tsx",
+            "frontend/src/__tests__/checkout.orderFlow.test.jsx",
+            "frontend/src/__tests__/homeDashboardSections.test.tsx",
+            "frontend/src/__tests__/userDashboard.order.test.tsx",
+            "frontend/src/context/__tests__/CartContext.test.jsx"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "16.3.2",
+          "integrity": "sha512-XU5/SytQM+ykqMnAnvB2umaJNIOsLF3PVv//1Ew4CTcpz0/BRyy/af40qqrt7SjKpDdT1saBMc42CUok5gaw+g==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "react-dom",
+          "importer": "frontend/src/main.jsx",
+          "importers": [
+            "frontend/src/main.jsx"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "18.2.0",
+          "integrity": "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        },
+        {
+          "package": "react-intersection-observer",
+          "importer": "frontend/src/pages/Home.jsx",
+          "importers": [
+            "frontend/src/pages/Home.jsx",
+            "frontend/src/pages/Products.jsx"
+          ],
+          "lockFile": "frontend/package-lock.json",
+          "version": "10.0.0",
+          "integrity": "sha512-JJRgcnFQoVXmbE5+GXr1OS1NDD1gHk0HyfpLcRf0575IbJz+io8yzs4mWVlfaqOQq1FiVjLvuYAdEEcrrCfveg==",
+          "reason": "Exact integrity-addressed archive is absent from the configured npm cache"
+        }
+      ]
+    },
+    "clientContracts": [
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "596f7c7f9286d0f498357f8d2fd2e17bebe6d7f6ce4302d998c88eac317ee467",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "OBJECT",
+          "name": "HomeDashboard",
+          "properties": [
+            {
+              "wireName": "monthlyStock",
+              "type": {
+                "kind": "ARRAY",
+                "elementType": {
+                  "kind": "OBJECT",
+                  "name": "MonthlyStock",
+                  "properties": [
+                    {
+                      "wireName": "productVariantId",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "number"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 16,
+                        "astIdentity": "MonthlyStock.productVariantId"
+                      }
+                    },
+                    {
+                      "wireName": "monthlyUsage",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "number"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 17,
+                        "astIdentity": "MonthlyStock.monthlyUsage"
+                      }
+                    }
+                  ],
+                  "strict": false,
+                  "provenance": {
+                    "language": "TYPESCRIPT",
+                    "file": "frontend/src/types/homeDashboard.ts",
+                    "line": 15,
+                    "astIdentity": "MonthlyStock"
+                  }
+                }
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": [],
+              "provenance": {
+                "language": "TYPESCRIPT",
+                "file": "frontend/src/types/homeDashboard.ts",
+                "line": 45,
+                "astIdentity": "HomeDashboard.monthlyStock"
+              }
+            },
+            {
+              "wireName": "buyAgain",
+              "type": {
+                "kind": "ARRAY",
+                "elementType": {
+                  "kind": "OBJECT",
+                  "name": "BuyAgain",
+                  "properties": [
+                    {
+                      "wireName": "productVariantId",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "number"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 25,
+                        "astIdentity": "BuyAgain.productVariantId"
+                      }
+                    },
+                    {
+                      "wireName": "orderCount",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "number"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 26,
+                        "astIdentity": "BuyAgain.orderCount"
+                      }
+                    },
+                    {
+                      "wireName": "lastOrderedAt",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "string"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 27,
+                        "astIdentity": "BuyAgain.lastOrderedAt"
+                      }
+                    }
+                  ],
+                  "strict": false,
+                  "provenance": {
+                    "language": "TYPESCRIPT",
+                    "file": "frontend/src/types/homeDashboard.ts",
+                    "line": 24,
+                    "astIdentity": "BuyAgain"
+                  }
+                }
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": [],
+              "provenance": {
+                "language": "TYPESCRIPT",
+                "file": "frontend/src/types/homeDashboard.ts",
+                "line": 46,
+                "astIdentity": "HomeDashboard.buyAgain"
+              }
+            },
+            {
+              "wireName": "lowStock",
+              "type": {
+                "kind": "ARRAY",
+                "elementType": {
+                  "kind": "OBJECT",
+                  "name": "LowStock",
+                  "properties": [
+                    {
+                      "wireName": "productVariantId",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "number"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 35,
+                        "astIdentity": "LowStock.productVariantId"
+                      }
+                    },
+                    {
+                      "wireName": "stock",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "number"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 36,
+                        "astIdentity": "LowStock.stock"
+                      }
+                    },
+                    {
+                      "wireName": "threshold",
+                      "type": {
+                        "kind": "PRIMITIVE",
+                        "scalar": "number"
+                      },
+                      "optional": false,
+                      "nullable": false,
+                      "validationConstraints": [],
+                      "provenance": {
+                        "language": "TYPESCRIPT",
+                        "file": "frontend/src/types/homeDashboard.ts",
+                        "line": 37,
+                        "astIdentity": "LowStock.threshold"
+                      }
+                    }
+                  ],
+                  "strict": false,
+                  "provenance": {
+                    "language": "TYPESCRIPT",
+                    "file": "frontend/src/types/homeDashboard.ts",
+                    "line": 34,
+                    "astIdentity": "LowStock"
+                  }
+                }
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": [],
+              "provenance": {
+                "language": "TYPESCRIPT",
+                "file": "frontend/src/types/homeDashboard.ts",
+                "line": 47,
+                "astIdentity": "HomeDashboard.lowStock"
+              }
+            }
+          ],
+          "strict": false,
+          "provenance": {
+            "language": "TYPESCRIPT",
+            "file": "frontend/src/types/homeDashboard.ts",
+            "line": 44,
+            "astIdentity": "HomeDashboard"
+          }
+        },
+        "decoderKind": "INFERRED_TYPE",
+        "consumers": [
+          {
+            "file": "frontend/src/api/homeDashboardApi.ts",
+            "line": 22,
+            "usage": "api.get(/home-dashboard)"
+          },
+          {
+            "file": "frontend/src/api/homeDashboardApi.ts",
+            "line": 22,
+            "usage": "response = await api.get<HomeDashboard>(\"/home-dashboard\")"
+          },
+          {
+            "file": "frontend/src/api/homeDashboardApi.ts",
+            "line": 23,
+            "usage": "return response.data;"
+          },
+          {
+            "file": "frontend/src/hooks/useHomeDashboard.ts",
+            "line": 61,
+            "usage": "result = await fetchHomeDashboard()"
+          },
+          {
+            "file": "frontend/src/hooks/useHomeDashboard.ts",
+            "line": 65,
+            "usage": "data: result"
+          },
+          {
+            "file": "frontend/src/hooks/useHomeDashboard.ts",
+            "line": 70,
+            "usage": "setData(result)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Response method reference escapes captured calls",
+          "Response passed to an opaque function",
+          "Returned response has an unqualified external entry point",
+          "Unqualified response use: PropertyAssignment"
+        ],
+        "sourceFile": "frontend/src/api/homeDashboardApi.ts",
+        "sourceLine": 22
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "021c715ab820b57515cdbd4712445efed273c11879cf2c770979ec958a9bd2fe",
+        "consumerTraversalComplete": false,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding undefined lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "OBJECT",
+          "properties": [
+            {
+              "wireName": "orderId",
+              "type": {
+                "kind": "UNION",
+                "types": [
+                  {
+                    "kind": "PRIMITIVE",
+                    "scalar": "string"
+                  },
+                  {
+                    "kind": "PRIMITIVE",
+                    "scalar": "number"
+                  }
+                ]
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            },
+            {
+              "wireName": "totalAmount",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "number"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            },
+            {
+              "wireName": "status",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "string"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            }
+          ]
+        },
+        "decoderKind": "TYPE_ASSERTION",
+        "consumers": [
+          {
+            "file": "frontend/src/api/ordersApi.ts",
+            "line": 21,
+            "usage": "api.post(/orders)"
+          },
+          {
+            "file": "frontend/src/api/ordersApi.ts",
+            "line": 21,
+            "usage": "res = await api.post(\"/orders\", undefined, { withCredentials: true })"
+          },
+          {
+            "file": "frontend/src/api/ordersApi.ts",
+            "line": 22,
+            "usage": "return res.data as OrderCreateResponse;"
+          },
+          {
+            "file": "frontend/src/pages/CheckoutPage.jsx",
+            "line": 35,
+            "usage": "order = await createOrder()"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Response method reference escapes captured calls",
+          "Returned response has an unqualified external entry point"
+        ],
+        "sourceFile": "frontend/src/api/ordersApi.ts",
+        "sourceLine": 21
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "021c715ab820b57515cdbd4712445efed273c11879cf2c770979ec958a9bd2fe",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "ARRAY",
+          "elementType": {
+            "kind": "OBJECT",
+            "properties": [
+              {
+                "wireName": "orderId",
+                "type": {
+                  "kind": "UNION",
+                  "types": [
+                    {
+                      "kind": "PRIMITIVE",
+                      "scalar": "string"
+                    },
+                    {
+                      "kind": "PRIMITIVE",
+                      "scalar": "number"
+                    }
+                  ]
+                },
+                "optional": false,
+                "nullable": false,
+                "validationConstraints": []
+              },
+              {
+                "wireName": "totalAmount",
+                "type": {
+                  "kind": "PRIMITIVE",
+                  "scalar": "number"
+                },
+                "optional": false,
+                "nullable": false,
+                "validationConstraints": []
+              },
+              {
+                "wireName": "status",
+                "type": {
+                  "kind": "PRIMITIVE",
+                  "scalar": "string"
+                },
+                "optional": false,
+                "nullable": false,
+                "validationConstraints": []
+              },
+              {
+                "wireName": "createdAt",
+                "type": {
+                  "kind": "PRIMITIVE",
+                  "scalar": "string"
+                },
+                "optional": false,
+                "nullable": false,
+                "validationConstraints": []
+              }
+            ]
+          }
+        },
+        "decoderKind": "TYPE_ASSERTION",
+        "consumers": [
+          {
+            "file": "frontend/src/api/ordersApi.ts",
+            "line": 30,
+            "usage": "api.get(/orders/me)"
+          },
+          {
+            "file": "frontend/src/api/ordersApi.ts",
+            "line": 30,
+            "usage": "res = await api.get(\"/orders/me\", { withCredentials: true })"
+          },
+          {
+            "file": "frontend/src/api/ordersApi.ts",
+            "line": 31,
+            "usage": "return res.data as OrderSummaryResponse[];"
+          },
+          {
+            "file": "frontend/src/pages/OrdersPage.jsx",
+            "line": 22,
+            "usage": "list = await getMyOrders()"
+          },
+          {
+            "file": "frontend/src/pages/OrdersPage.jsx",
+            "line": 24,
+            "usage": "Array.isArray(list)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Response method reference escapes captured calls",
+          "Response passed to an opaque function",
+          "Returned response has an unqualified external entry point",
+          "Unqualified response use: ConditionalExpression"
+        ],
+        "sourceFile": "frontend/src/api/ordersApi.ts",
+        "sourceLine": 30
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "940acc49aa7911e248993824fe67c93fd94c530033c9351f91b1f991ca72fb44",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 18,
+            "usage": "fetch(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 18,
+            "usage": "res = await fetch(buildApiUrl(`/products/grouped?page=${page}&size=${pageSize}`))"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 19,
+            "usage": "res.ok"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 20,
+            "usage": "res.json()"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 20,
+            "usage": "data = await res.json()"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 21,
+            "usage": "data.content"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 23,
+            "usage": "data.last"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 21,
+            "usage": "data.content || []"
+          },
+          {
+            "file": "frontend/src/components/ProductsGrid.jsx",
+            "line": 23,
+            "usage": "newProducts.length === 0 || data.last"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/components/ProductsGrid.jsx:18",
+          "Unqualified response use: BinaryExpression"
+        ],
+        "sourceFile": "frontend/src/components/ProductsGrid.jsx",
+        "sourceLine": 18
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "89028bc7bde71b41a42e029387204503261435320eceab34da4d669e346c038a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 13,
+            "usage": "api.get(/user/me)"
+          },
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 13,
+            "usage": "res = await api.get(\"/user/me\")"
+          },
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 14,
+            "usage": "setUser(res.data)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/context/AuthContext.jsx:13",
+          "Response passed to an opaque function"
+        ],
+        "sourceFile": "frontend/src/context/AuthContext.jsx",
+        "sourceLine": 13
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "89028bc7bde71b41a42e029387204503261435320eceab34da4d669e346c038a",
+        "consumerTraversalComplete": true,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding credentials lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 30,
+            "usage": "api.post(/auth/login)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/context/AuthContext.jsx:30"
+        ],
+        "sourceFile": "frontend/src/context/AuthContext.jsx",
+        "sourceLine": 30
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "89028bc7bde71b41a42e029387204503261435320eceab34da4d669e346c038a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 31,
+            "usage": "api.get(/user/me)"
+          },
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 31,
+            "usage": "res = await api.get(\"/user/me\")"
+          },
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 32,
+            "usage": "setUser(res.data)"
+          },
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 33,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/context/AuthContext.jsx:31",
+          "Response passed to an opaque function",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/context/AuthContext.jsx",
+        "sourceLine": 31
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "89028bc7bde71b41a42e029387204503261435320eceab34da4d669e346c038a",
+        "consumerTraversalComplete": true,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/AuthContext.jsx",
+            "line": 42,
+            "usage": "api.post(/auth/logout)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/context/AuthContext.jsx:42"
+        ],
+        "sourceFile": "frontend/src/context/AuthContext.jsx",
+        "sourceLine": 42
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "60ed6588631a980e085f8c48ffe57eb48aeaca69b8d1bc8a2dca26965b4a396f",
+        "consumerTraversalComplete": true,
+        "httpMethod": "PUT",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "HTTP payload expression is not resolved"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 57,
+            "usage": "api.put(<dynamic>)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for PUT <dynamic> at frontend/src/context/CartContext.jsx:57"
+        ],
+        "sourceFile": "frontend/src/context/CartContext.jsx",
+        "sourceLine": 57
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "60ed6588631a980e085f8c48ffe57eb48aeaca69b8d1bc8a2dca26965b4a396f",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 152,
+            "usage": "api.get(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 152,
+            "usage": "res = await api.get(`/cart/${user.id}`)"
+          },
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 153,
+            "usage": "normalize(res.data)"
+          },
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 82,
+            "usage": "Array.isArray(data)"
+          },
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 84,
+            "usage": "data?.items"
+          },
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 84,
+            "usage": "data?.cartItems"
+          },
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 84,
+            "usage": "data?.data"
+          },
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 84,
+            "usage": "data?.items ?? data?.cartItems"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/context/CartContext.jsx:152",
+          "Response passed to an opaque function",
+          "Unqualified response use: BinaryExpression",
+          "Unqualified response use: ConditionalExpression"
+        ],
+        "sourceFile": "frontend/src/context/CartContext.jsx",
+        "sourceLine": 152
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "60ed6588631a980e085f8c48ffe57eb48aeaca69b8d1bc8a2dca26965b4a396f",
+        "consumerTraversalComplete": true,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "HTTP payload expression is not resolved"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 240,
+            "usage": "api.post(<dynamic>)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/context/CartContext.jsx:240"
+        ],
+        "sourceFile": "frontend/src/context/CartContext.jsx",
+        "sourceLine": 240
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "60ed6588631a980e085f8c48ffe57eb48aeaca69b8d1bc8a2dca26965b4a396f",
+        "consumerTraversalComplete": true,
+        "httpMethod": "PUT",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "HTTP payload expression is not resolved"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 407,
+            "usage": "api.put(<dynamic>)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for PUT <dynamic> at frontend/src/context/CartContext.jsx:407"
+        ],
+        "sourceFile": "frontend/src/context/CartContext.jsx",
+        "sourceLine": 407
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "60ed6588631a980e085f8c48ffe57eb48aeaca69b8d1bc8a2dca26965b4a396f",
+        "consumerTraversalComplete": true,
+        "httpMethod": "DELETE",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/context/CartContext.jsx",
+            "line": 454,
+            "usage": "api.delete(<dynamic>)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for DELETE <dynamic> at frontend/src/context/CartContext.jsx:454"
+        ],
+        "sourceFile": "frontend/src/context/CartContext.jsx",
+        "sourceLine": 454
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "1f78771f9f93ee3a808e31e0f421d2b40827ce6d55eca892ea520dfe05445e92",
+        "consumerTraversalComplete": true,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/layouts/admin/AdminLayout.jsx",
+            "line": 24,
+            "usage": "api.post(/auth/logout)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/layouts/admin/AdminLayout.jsx:24"
+        ],
+        "sourceFile": "frontend/src/layouts/admin/AdminLayout.jsx",
+        "sourceLine": 24
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "f9d0d80f0882537c50e0701bbde7857b56edce11fe152cd0b356737fdf2b6c3c",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 171,
+            "usage": "api.get(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 171,
+            "usage": "res = await api.get(`/products/${productId}`)"
+          },
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 172,
+            "usage": "raw = res.data"
+          },
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 175,
+            "usage": "...raw"
+          },
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 176,
+            "usage": "raw.variants"
+          },
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 176,
+            "usage": "raw.productVariants"
+          },
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 176,
+            "usage": "raw.variantDtos"
+          },
+          {
+            "file": "frontend/src/pages/ProductDetailPage.jsx",
+            "line": 176,
+            "usage": "raw.variants || raw.productVariants"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/pages/ProductDetailPage.jsx:171",
+          "Unqualified response use: BinaryExpression",
+          "Unqualified response use: SpreadAssignment"
+        ],
+        "sourceFile": "frontend/src/pages/ProductDetailPage.jsx",
+        "sourceLine": 171
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "62631942517f984885616e3d0316a82a75b532274eed2a4683fa05cb357895ed",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/pages/Products.jsx",
+            "line": 27,
+            "usage": "api.get(/products/grouped)"
+          },
+          {
+            "file": "frontend/src/pages/Products.jsx",
+            "line": 27,
+            "usage": "res = await api.get(\"/products/grouped\", { params: { page, size: 20 }, })"
+          },
+          {
+            "file": "frontend/src/pages/Products.jsx",
+            "line": 31,
+            "usage": "{ content, last } = res.data"
+          },
+          {
+            "file": "frontend/src/pages/Products.jsx",
+            "line": 31,
+            "usage": "content"
+          },
+          {
+            "file": "frontend/src/pages/Products.jsx",
+            "line": 31,
+            "usage": "last"
+          },
+          {
+            "file": "frontend/src/pages/Products.jsx",
+            "line": 33,
+            "usage": "...content"
+          },
+          {
+            "file": "frontend/src/pages/Products.jsx",
+            "line": 35,
+            "usage": "if (last) { setHasMore(false); } else { setPage(prev => prev + 1); }"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/pages/Products.jsx:27",
+          "Unqualified response use: IfStatement",
+          "Unqualified response use: SpreadElement"
+        ],
+        "sourceFile": "frontend/src/pages/Products.jsx",
+        "sourceLine": 27
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "91f59a956ce6dc572043edbf3c7ed4349ef47cbf7dd0a39d61f6a9f0281fb98e",
+        "consumerTraversalComplete": true,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding formData lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/pages/Register.jsx",
+            "line": 20,
+            "usage": "api.post(/auth/register)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/pages/Register.jsx:20"
+        ],
+        "sourceFile": "frontend/src/pages/Register.jsx",
+        "sourceLine": 20
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 12,
+            "usage": "api.get(/admin/dashboard/stats)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 12,
+            "usage": "res = await api.get(\"/admin/dashboard/stats\")"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 13,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:12",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 12
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 19,
+            "usage": "api.get(/categories)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 19,
+            "usage": "res = await api.get(\"/categories\")"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 20,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:19",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 19
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding data lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 24,
+            "usage": "api.post(/admin/categories)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 24,
+            "usage": "res = await api.post(\"/admin/categories\", data)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 25,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:24",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 24
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "PUT",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding data lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 29,
+            "usage": "api.put(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 29,
+            "usage": "res = await api.put(`/admin/categories/${id}`, data)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 30,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:29",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 29
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": true,
+        "httpMethod": "DELETE",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 34,
+            "usage": "api.delete(<dynamic>)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:34"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 34
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 45,
+            "usage": "api.get(/admin/products?${queryValue})"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 45,
+            "usage": "res = await api.get(`/admin/products?${params.toString()}`)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 46,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:45",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 45
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 50,
+            "usage": "api.get(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 50,
+            "usage": "res = await api.get(`/admin/products/${productId}`)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 51,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:50",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 50
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding payload lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 55,
+            "usage": "api.post(/admin/products)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 55,
+            "usage": "res = await api.post(`/admin/products`, payload)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 56,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:55",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 55
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "PUT",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding payload lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 60,
+            "usage": "api.put(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 60,
+            "usage": "res = await api.put(`/admin/products/${productId}`, payload)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 61,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:60",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 60
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": true,
+        "httpMethod": "DELETE",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 65,
+            "usage": "api.delete(<dynamic>)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:65"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 65
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding payload lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 69,
+            "usage": "api.post(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 69,
+            "usage": "res = await api.post(`/admin/products/${productId}/variants`, payload)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 70,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/services/adminapi.js:69",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 69
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "PUT",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding payload lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 74,
+            "usage": "api.put(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 74,
+            "usage": "res = await api.put(`/admin/products/variants/${variantId}`, payload)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 75,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for PUT <dynamic> at frontend/src/services/adminapi.js:74",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 74
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": true,
+        "httpMethod": "DELETE",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 79,
+            "usage": "api.delete(<dynamic>)"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for DELETE <dynamic> at frontend/src/services/adminapi.js:79"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 79
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 91,
+            "usage": "api.get(/admin/orders?${queryValue})"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 91,
+            "usage": "res = await api.get(`/admin/orders?${params.toString()}`)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 92,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:91",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 91
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 96,
+            "usage": "api.get(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 96,
+            "usage": "res = await api.get(`/admin/orders/${id}`)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 97,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:96",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 96
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "PATCH",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding newStatus lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 101,
+            "usage": "api.patch(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 101,
+            "usage": "res = await api.patch(`/admin/orders/${id}/status`, newStatus, { headers: { \"Content-Type\": \"application/json\" }, })"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 104,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for PATCH <dynamic> at frontend/src/services/adminapi.js:101",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 101
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "433456dd2dd2f4f74e2c816e21c2f2645bb2c1e55a849dbd0317e70b1331310a",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 110,
+            "usage": "api.get(/admin/inventory/low-stock)"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 110,
+            "usage": "res = await api.get(\"/admin/inventory/low-stock\")"
+          },
+          {
+            "file": "frontend/src/services/adminapi.js",
+            "line": 111,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/adminapi.js:110",
+          "Response return from callback or anonymous wrapper requires reconciliation"
+        ],
+        "sourceFile": "frontend/src/services/adminapi.js",
+        "sourceLine": 110
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "cc03dee77735556dc35a575955f19d45f699f6742a7451fa3507d548ca950fdf",
+        "consumerTraversalComplete": false,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "OBJECT",
+          "properties": [
+            {
+              "wireName": "username",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "string"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            },
+            {
+              "wireName": "password",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "string"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            }
+          ]
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/authServices.ts",
+            "line": 7,
+            "usage": "fetch(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/authServices.ts",
+            "line": 7,
+            "usage": "res = await fetch(`${API_BASE_URL}/auth/login`, { method: \"POST\", headers: { \"Content-Type\": \"application/json\", }, body"
+          },
+          {
+            "file": "frontend/src/services/authServices.ts",
+            "line": 16,
+            "usage": "res.ok"
+          },
+          {
+            "file": "frontend/src/services/authServices.ts",
+            "line": 20,
+            "usage": "res.json()"
+          },
+          {
+            "file": "frontend/src/services/authServices.ts",
+            "line": 20,
+            "usage": "return res.json();"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/services/authServices.ts:7",
+          "Returned response has an unqualified external entry point"
+        ],
+        "sourceFile": "frontend/src/services/authServices.ts",
+        "sourceLine": 7
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "8c6f6bbe5fbdbd888e2e805040b60c750fc270a728e591391f15f9bcbe7d2058",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 6,
+            "usage": "api.get(/products/grouped)"
+          },
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 6,
+            "usage": "res = await api.get(\"/products/grouped\", { params: { page, size, category } })"
+          },
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 10,
+            "usage": "return res.data;"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 59,
+            "usage": "data = await fetchGroceries(pageNum, 20, currentCategory)"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 60,
+            "usage": "data.content"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 63,
+            "usage": "data.last"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 63,
+            "usage": "data.totalPages"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 63,
+            "usage": "data.number"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 60,
+            "usage": "data.content || []"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 63,
+            "usage": "!data.last"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 63,
+            "usage": "data.totalPages > data.number + 1"
+          },
+          {
+            "file": "frontend/src/features/products/ProductGrid.jsx",
+            "line": 63,
+            "usage": "data.number + 1"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/groceryApi.js:6",
+          "Response method reference escapes captured calls",
+          "Returned response has an unqualified external entry point",
+          "Unqualified response use: BinaryExpression",
+          "Unqualified response use: PrefixUnaryExpression"
+        ],
+        "sourceFile": "frontend/src/services/groceryApi.js",
+        "sourceLine": 6
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "8c6f6bbe5fbdbd888e2e805040b60c750fc270a728e591391f15f9bcbe7d2058",
+        "consumerTraversalComplete": false,
+        "httpMethod": "POST",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding product lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 14,
+            "usage": "api.post(/products)"
+          },
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 14,
+            "usage": "return api.post(\"/products\", product);"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for POST <dynamic> at frontend/src/services/groceryApi.js:14",
+          "Returned response has an unqualified external entry point"
+        ],
+        "sourceFile": "frontend/src/services/groceryApi.js",
+        "sourceLine": 14
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "8c6f6bbe5fbdbd888e2e805040b60c750fc270a728e591391f15f9bcbe7d2058",
+        "consumerTraversalComplete": false,
+        "httpMethod": "DELETE",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 18,
+            "usage": "api.delete(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 18,
+            "usage": "return api.delete(`/products/${id}`);"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for DELETE <dynamic> at frontend/src/services/groceryApi.js:18",
+          "Returned response has an unqualified external entry point"
+        ],
+        "sourceFile": "frontend/src/services/groceryApi.js",
+        "sourceLine": 18
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "8c6f6bbe5fbdbd888e2e805040b60c750fc270a728e591391f15f9bcbe7d2058",
+        "consumerTraversalComplete": false,
+        "httpMethod": "PUT",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": {
+          "kind": "UNKNOWN",
+          "reason": "Payload binding data lacks a qualified type"
+        },
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 22,
+            "usage": "api.put(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 22,
+            "usage": "return api.put(`/products/${id}`, data);"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for PUT <dynamic> at frontend/src/services/groceryApi.js:22",
+          "Returned response has an unqualified external entry point"
+        ],
+        "sourceFile": "frontend/src/services/groceryApi.js",
+        "sourceLine": 22
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "8c6f6bbe5fbdbd888e2e805040b60c750fc270a728e591391f15f9bcbe7d2058",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 28,
+            "usage": "api.get(/categories)"
+          },
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 28,
+            "usage": "res = await api.get(\"/categories\")"
+          },
+          {
+            "file": "frontend/src/services/groceryApi.js",
+            "line": 29,
+            "usage": "return res.data;"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET <dynamic> at frontend/src/services/groceryApi.js:28",
+          "Returned response has an unqualified external entry point"
+        ],
+        "sourceFile": "frontend/src/services/groceryApi.js",
+        "sourceLine": 28
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "a9a8524fec6f0f24c7a9e26fd6b09afca65a17935c4863e0048effa56eb8d80b",
+        "consumerTraversalComplete": false,
+        "httpMethod": "<dynamic>",
+        "normalizedRoute": "<dynamic>",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 12,
+            "usage": "fetch(<dynamic>)"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 12,
+            "usage": "response = await fetch(url, { credentials: \"include\", ...options, })"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 18,
+            "usage": "response.status"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 24,
+            "usage": "response.ok"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 26,
+            "usage": "response.status"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 26,
+            "usage": "response.statusText"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 31,
+            "usage": "response.headers"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 37,
+            "usage": "response.json()"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 37,
+            "usage": "data = await response.json()"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 38,
+            "usage": "return data;"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 50,
+            "usage": "return apiFetch(url, { method: \"GET\" });"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 57,
+            "usage": "return apiFetch(url, { method: \"POST\", headers: { \"Content-Type\": \"application/json\" }, body: JSON.stringify(body), });"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 68,
+            "usage": "return apiFetch(url, { method: \"POST\", headers: { \"Content-Type\": \"application/x-www-form-urlencoded\" }, body: new URLSe"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 79,
+            "usage": "return apiFetch(url, { method: \"PUT\", headers: { \"Content-Type\": \"application/json\" }, body: JSON.stringify(body), });"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 90,
+            "usage": "return apiFetch(url, { method: \"DELETE\" });"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 99,
+            "usage": "data = await apiGet(buildApiUrl(\"/admin/dashboard/stats\"))"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 128,
+            "usage": "user = await apiGet(buildApiUrl(\"/user/me\"))"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 100,
+            "usage": "setStats(data)"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 129,
+            "usage": "user.roles"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 129,
+            "usage": "user.roles?.includes"
+          },
+          {
+            "file": "frontend/src/utils/fetchHelper.js",
+            "line": 129,
+            "usage": "user.roles?.includes(\"ROLE_ADMIN\")"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for <dynamic> <dynamic> at frontend/src/utils/fetchHelper.js:12",
+          "Response method reference escapes captured calls",
+          "Response method return/effects require an operation summary",
+          "Response passed to an opaque function",
+          "Returned response has an unqualified external entry point"
+        ],
+        "sourceFile": "frontend/src/utils/fetchHelper.js",
+        "sourceLine": 12
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "092cdcaada87a4462283ba415a733ad88e45c1b6b00195ac8290204f6e99b3a3",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${queryValue}&longitude=${queryValue}&localityLanguage=en",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 101,
+            "usage": "fetch(https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${queryValue}&longitude=${queryValue}&localityLanguage=en)"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 101,
+            "usage": "res = await fetch(url)"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 102,
+            "usage": "res.ok"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 103,
+            "usage": "res.json()"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 103,
+            "usage": "data = await res.json()"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 106,
+            "usage": "data.city"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 107,
+            "usage": "data.locality"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 108,
+            "usage": "data.localityInfo"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 111,
+            "usage": "data.principalSubdivision"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 106,
+            "usage": "data.city || data.locality"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 108,
+            "usage": "data.localityInfo?.administrative"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 111,
+            "usage": "data.principalSubdivision || null"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 108,
+            "usage": "data.localityInfo?.administrative?.[0]"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 108,
+            "usage": "data.localityInfo?.administrative?.[0]?.name"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${queryValue}&longitude=${queryValue}&localityLanguage=en at frontend/src/utils/locationTime.js:101",
+          "Unqualified response use: BinaryExpression"
+        ],
+        "sourceFile": "frontend/src/utils/locationTime.js",
+        "sourceLine": 101
+      },
+      {
+        "targetServiceId": "grocery-backend",
+        "sourceSha256": "092cdcaada87a4462283ba415a733ad88e45c1b6b00195ac8290204f6e99b3a3",
+        "consumerTraversalComplete": false,
+        "httpMethod": "GET",
+        "normalizedRoute": "https://timeapi.io/api/TimeZone/coordinate?latitude=${queryValue}&longitude=${queryValue}",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "UNKNOWN",
+          "reason": "Response type could not be resolved from call context"
+        },
+        "decoderKind": "UNKNOWN",
+        "consumers": [
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 126,
+            "usage": "fetch(https://timeapi.io/api/TimeZone/coordinate?latitude=${queryValue}&longitude=${queryValue})"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 126,
+            "usage": "res = await fetch(url)"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 127,
+            "usage": "res.ok"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 128,
+            "usage": "res.json()"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 128,
+            "usage": "data = await res.json()"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 131,
+            "usage": "data.timeZone"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 132,
+            "usage": "data.timeZoneName"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 133,
+            "usage": "data.ianaTimeZoneId"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 134,
+            "usage": "data.tz"
+          },
+          {
+            "file": "frontend/src/utils/locationTime.js",
+            "line": 131,
+            "usage": "data.timeZone || data.timeZoneName"
+          }
+        ],
+        "unresolvedEvidence": [
+          "Unresolved response type for GET https://timeapi.io/api/TimeZone/coordinate?latitude=${queryValue}&longitude=${queryValue} at frontend/src/utils/locationTime.js:126",
+          "Unqualified response use: BinaryExpression"
+        ],
+        "sourceFile": "frontend/src/utils/locationTime.js",
+        "sourceLine": 126
+      }
+    ],
+    "path_pool": [
+      "$.cartItems",
+      "$.city",
+      "$.content",
+      "$.data",
+      "$.ianaTimeZoneId",
+      "$.items",
+      "$.last",
+      "$.locality",
+      "$.localityInfo",
+      "$.localityInfo.administrative",
+      "$.localityInfo.administrative[]",
+      "$.localityInfo.administrative[].name",
+      "$.number",
+      "$.principalSubdivision",
+      "$.productVariants",
+      "$.roles",
+      "$.roles.includes",
+      "$.timeZone",
+      "$.timeZoneName",
+      "$.totalPages",
+      "$.tz",
+      "$.variantDtos",
+      "$.variants",
+      "@transport.headers",
+      "@transport.ok",
+      "@transport.status",
+      "@transport.statusText",
+      "frontend/src/api/homeDashboardApi.ts",
+      "frontend/src/api/ordersApi.ts",
+      "frontend/src/components/ProductsGrid.jsx",
+      "frontend/src/context/AuthContext.jsx",
+      "frontend/src/context/CartContext.jsx",
+      "frontend/src/features/products/ProductGrid.jsx",
+      "frontend/src/hooks/useHomeDashboard.ts",
+      "frontend/src/layouts/admin/AdminLayout.jsx",
+      "frontend/src/pages/CheckoutPage.jsx",
+      "frontend/src/pages/OrdersPage.jsx",
+      "frontend/src/pages/ProductDetailPage.jsx",
+      "frontend/src/pages/Products.jsx",
+      "frontend/src/pages/Register.jsx",
+      "frontend/src/services/adminapi.js",
+      "frontend/src/services/authServices.ts",
+      "frontend/src/services/groceryApi.js",
+      "frontend/src/utils/fetchHelper.js",
+      "frontend/src/utils/locationTime.js"
+    ]
+  }
+}

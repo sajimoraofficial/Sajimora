@@ -1,0 +1,68 @@
+{
+  "envelopeVersion": "SAJIMORA_CONTRACT_ARTIFACT_V1",
+  "reportSchemaVersion": "SAJIMORA_CROSS_LANGUAGE_IMPACT_V1",
+  "kind": "FRONTEND_CONTRACT",
+  "snapshot": {
+    "repositoryId": "github.com/example/monorepo",
+    "serviceId": "frontend-app",
+    "apiVersion": "v1",
+    "parentCommit": "abc1234def5678901234567890123456789abcde",
+    "candidateSnapshot": "sha:fe0000000004444"
+  },
+  "profile": {
+    "toolVersion": "0.1.0-test",
+    "clientProfile": "MULTI_CLIENT_V1",
+    "configFingerprint": null
+  },
+  "completeness": {
+    "complete": true,
+    "unresolvedEndpoints": [],
+    "blockers": []
+  },
+  "integrity": {
+    "sha256": "e4a9e42c4cbc297686029bb852581493f80bbc3bcdc14f9b62e0e425d479a2db"
+  },
+  "payload": {
+    "clientContracts": [
+      {
+        "targetServiceId": "user-service",
+        "targetApiVersion": "v1",
+        "sourceSha256": "bbbb2222cccc3333dddd4444eeee5555ffff6666aaaa1111bbbb2222cccc3333",
+        "consumerTraversalComplete": true,
+        "httpMethod": "GET",
+        "normalizedRoute": "http://user-service.internal/api/users",
+        "requestBody": null,
+        "expectedResponse": {
+          "kind": "OBJECT",
+          "properties": [
+            {
+              "wireName": "id",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "number"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            },
+            {
+              "wireName": "name",
+              "type": {
+                "kind": "PRIMITIVE",
+                "scalar": "string"
+              },
+              "optional": false,
+              "nullable": false,
+              "validationConstraints": []
+            }
+          ]
+        },
+        "decoderKind": "INFERRED_TYPE",
+        "consumers": [],
+        "unresolvedEvidence": [],
+        "sourceFile": "src/api/userClient.ts",
+        "sourceLine": 12
+      }
+    ]
+  }
+}

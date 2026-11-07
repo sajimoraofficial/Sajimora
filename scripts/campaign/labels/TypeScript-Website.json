@@ -1,0 +1,112 @@
+[
+  {
+    "commitSha": "0994ee75cf7b99f3f735a23abcf79f27402c1057",
+    "parentSha": "0994ee75cf7b99f3f735a23abcf79f27402c1057^",
+    "targetSymbol": "EditorExamples",
+    "targetFile": "packages/typescriptlang-org/src/components/index/EditorExamples.tsx",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Component render refactor without altering props interface or exported React element contract.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "0daa298f2f4526f8c66baff00b8df0290e37a4d4",
+    "parentSha": "0daa298f2f4526f8c66baff00b8df0290e37a4d4^",
+    "targetSymbol": "createPages",
+    "targetFile": "packages/typescriptlang-org/gatsby-node.js",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Internal Gatsby page generation logic updated; external build system hooks preserve required signature.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "119f931a639c9215a27311fde459c6db0b8718e4",
+    "parentSha": "119f931a639c9215a27311fde459c6db0b8718e4^",
+    "targetSymbol": "AllFilenames",
+    "targetFile": "packages/documentation/scripts/types/AllFilenames.d.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Declaration file expanded string union literal with new docs pages; consumers remain type-compatible.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "1843cf45e06193b3dc072088785fe2bfad477de5",
+    "parentSha": "1843cf45e06193b3dc072088785fe2bfad477de5^",
+    "targetSymbol": "createVirtualTypeScriptEnvironment",
+    "targetFile": "packages/typescript-vfs/src/index.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Virtual environment factory signature preserved; optional configuration property added.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "1e398d648b3e670423b477f18b64ed1a41943792",
+    "parentSha": "1e398d648b3e670423b477f18b64ed1a41943792^",
+    "targetSymbol": "TSConfigReference",
+    "targetFile": "packages/typescriptlang-org/src/templates/tsconfigReference.tsx",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "TSConfig reference page template layout adjustment preserves page context props.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "20724842b6eaf09f5c5d0ee40272c5569fe5c37d",
+    "parentSha": "20724842b6eaf09f5c5d0ee40272c5569fe5c37d^",
+    "targetSymbol": "createSandbox",
+    "targetFile": "packages/sandbox/src/index.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Sandbox initialization parameters handle default options gracefully without breaking existing callers.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "290290d351ce303ae31168350649705aa5274e3b",
+    "parentSha": "290290d351ce303ae31168350649705aa5274e3b^",
+    "targetSymbol": "Sidebar",
+    "targetFile": "packages/typescriptlang-org/src/components/layout/Sidebar.tsx",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Sidebar component rendering updated for navigation items; prop contract unchanged.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "471221d325c5664d3d4bfc30dfd8d2e882a007f1",
+    "parentSha": "471221d325c5664d3d4bfc30dfd8d2e882a007f1^",
+    "targetSymbol": "AllFilenames",
+    "targetFile": "packages/documentation/scripts/types/AllFilenames.d.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Declaration file updated with additional document paths; preserved structural type compatibility.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "472056a59a15e72411e2eb91afe3efd1988a90f0",
+    "parentSha": "472056a59a15e72411e2eb91afe3efd1988a90f0^",
+    "targetSymbol": "dangerfile",
+    "targetFile": "dangerfile.ts",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Danger CI checks script updated internal formatting rules; CI entrypoint behavior preserved.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  },
+  {
+    "commitSha": "5d0a1d07010d3053f3859f6f0a0d0b1d954a93ca",
+    "parentSha": "5d0a1d07010d3053f3859f6f0a0d0b1d954a93ca^",
+    "targetSymbol": "SidebarItem",
+    "targetFile": "packages/typescriptlang-org/src/components/layout/Sidebar.tsx",
+    "expectedVerdict": "PRESERVED",
+    "rationale": "Sidebar item subcomponent refactored styling state; props signature unchanged.",
+    "selectionMethod": "Deterministic SHA-based ordering (lexicographical)",
+    "labeler": "human",
+    "labelBasis": "manual repository inspection"
+  }
+]

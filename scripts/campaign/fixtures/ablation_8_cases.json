@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "V33_DIRECT_IMPORT_ABLATION_8_CASES_V1",
+  "status": "FIXTURE_SPECIFICATION_ONLY",
+  "defaultFeatureFlag": "ENABLE_TARGET_SCOPED_ADMISSION=false",
+  "cases": [
+    { "id": "CASE-1A", "baseQuery": "Q036", "blocker": "AMBIGUOUS_DECLARATION_GROUP", "expected": "PRESERVED", "kind": "POSITIVE_BASELINE" },
+    { "id": "CASE-1B", "baseQuery": "Q036", "blocker": "AMBIGUOUS_DECLARATION_GROUP", "expected": "VIOLATED", "kind": "NEGATIVE_SYNTHETIC", "mutation": "add-required-parameter" },
+    { "id": "CASE-2A", "baseQuery": "Q071", "blocker": "ENVIRONMENT_INPUT_MISSING", "expected": "PRESERVED", "kind": "POSITIVE_BASELINE" },
+    { "id": "CASE-2B", "baseQuery": "Q071", "blocker": "ENVIRONMENT_INPUT_MISSING", "expected": "VIOLATED", "kind": "NEGATIVE_SYNTHETIC", "mutation": "incompatible-return-contract" },
+    { "id": "CASE-3A", "baseQuery": "Q089", "blocker": "UNSUPPORTED_SYNTAX", "expected": "PRESERVED", "kind": "POSITIVE_BASELINE" },
+    { "id": "CASE-3B", "baseQuery": "Q089", "blocker": "UNSUPPORTED_SYNTAX", "expected": "VIOLATED", "kind": "NEGATIVE_SYNTHETIC", "mutation": "narrow-parameter-type" },
+    { "id": "CASE-4A", "baseQuery": "Q001", "blocker": "UNSUPPORTED_BINDING", "expected": "PRESERVED", "kind": "POSITIVE_BASELINE" },
+    { "id": "CASE-4B", "baseQuery": "Q001", "blocker": "UNSUPPORTED_BINDING", "expected": "VIOLATED", "kind": "NEGATIVE_SYNTHETIC", "mutation": "remove-required-return-property" }
+  ],
+  "promotionRequirements": {
+    "allCertifiedResultsPassAllGates": true,
+    "proofPathViolations": 0,
+    "groundTruthFalsePositives": 0,
+    "unresolvedTransitiveDependencies": 0,
+    "flagOffMustMatchRecordedBaseline": true
+  }
+}

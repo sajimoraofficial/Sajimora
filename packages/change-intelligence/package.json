@@ -1,0 +1,19 @@
+{
+  "name": "@sajimora/change-intelligence",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "tsx tests/ecm.test.ts && tsx tests/evaluation_tool.test.ts && tsx tests/git_filter.test.ts && tsx tests/diff.test.ts && tsx tests/reconciliation.test.ts && tsx tests/boundary.test.ts && tsx tests/verdict.test.ts && tsx tests/invariants.test.ts && tsx tests/security.test.ts && tsx tests/ledger.test.ts && tsx tests/persistence.test.ts && tsx tests/vcs_agnostic.test.ts"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "spec": "SAJIMORA_JACKSON_TEMPORAL_V1",
+  "note": "Expected wire types for each Java temporal type under each configuration. These expectations must be validated against the pinned Jackson + JavaTimeModule versions before Gate G3.",
+  "validationStatus": "NOT_VALIDATED",
+  "configurations": [
+    {
+      "configDescription": "WRITE_DATES_AS_TIMESTAMPS=false (or @JsonFormat(shape=STRING))",
+      "configKey": "timestamps_disabled",
+      "entries": [
+        {"javaType": "java.time.Instant", "wireType": {"kind": "PRIMITIVE", "scalar": "string"}, "example": "2026-10-17T12:00:00Z"},
+        {"javaType": "java.util.Date", "wireType": {"kind": "PRIMITIVE", "scalar": "string"}, "example": "2026-10-17T12:00:00.000+00:00"},
+        {"javaType": "java.time.LocalDate", "wireType": {"kind": "PRIMITIVE", "scalar": "string"}, "example": "2026-10-17"},
+        {"javaType": "java.time.LocalTime", "wireType": {"kind": "PRIMITIVE", "scalar": "string"}, "example": "13:12:14"},
+        {"javaType": "java.time.LocalDateTime", "wireType": {"kind": "PRIMITIVE", "scalar": "string"}, "example": "2026-10-17T13:12:14"},
+        {"javaType": "java.time.OffsetDateTime", "wireType": {"kind": "PRIMITIVE", "scalar": "string"}, "example": "2026-10-17T13:12:14+05:30"}
+      ]
+    },
+    {
+      "configDescription": "WRITE_DATES_AS_TIMESTAMPS=true (Jackson default)",
+      "configKey": "timestamps_enabled",
+      "requiresPinnedVersionValidation": true,
+      "entries": [
+        {"javaType": "java.time.Instant", "wireType": {"kind": "PRIMITIVE", "scalar": "number"}, "example": 1234567890.123456789, "notes": "epoch seconds with decimal nanoseconds"},
+        {"javaType": "java.util.Date", "wireType": {"kind": "PRIMITIVE", "scalar": "number"}, "example": 1761436934000, "notes": "epoch milliseconds"},
+        {"javaType": "java.time.LocalDate", "wireType": {"kind": "ARRAY", "elementType": {"kind": "PRIMITIVE", "scalar": "number"}}, "example": [2026, 10, 17], "notes": "3-element array: [year, month, day]"},
+        {"javaType": "java.time.LocalTime", "wireType": {"kind": "ARRAY", "elementType": {"kind": "PRIMITIVE", "scalar": "number"}}, "example": [13, 12, 14], "notes": "3 or 4-element array; nanosecond element omitted when zero"},
+        {"javaType": "java.time.LocalDateTime", "wireType": {"kind": "ARRAY", "elementType": {"kind": "PRIMITIVE", "scalar": "number"}}, "example": [2026, 10, 17, 13, 12, 14], "notes": "6 or 7 elements; nanosecond element omitted when zero"},
+        {"javaType": "java.time.OffsetDateTime", "wireType": {"kind": "PRIMITIVE", "scalar": "number"}, "example": 1234567890.123, "notes": "epoch seconds — REQUIRES PINNED VERSION VALIDATION", "requiresValidation": true},
+        {"javaType": "java.time.Period", "wireType": "UNRESOLVED_JACKSON_CONFIG", "notes": "Period serialization is version-sensitive; emit UNRESOLVED_JACKSON_CONFIG until validated"}
+      ]
+    }
+  ]
+}

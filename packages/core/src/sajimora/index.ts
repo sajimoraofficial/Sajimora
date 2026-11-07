@@ -1,0 +1,22 @@
+export * from './types/symbol';
+export * from './types/obligation';
+export * from './types/closure';
+export * from './types/usage';
+export * from './types/compatibility';
+export * from './types/identity';
+export * from './types/mutation';
+export * from './types/binding';
+export * from './types/verdict';
+export * from './types/program';
+export * from './types/relation';
+export * from './types/witness';
+export * from './types/proofTree';
+export * from './algebra/completeness';
+export * from './authority/VerdictAuthority';
+export * from './adapters';
+export { LanguageContractIR } from './types/relation';
+export * from './compatibility/CompatibilityEvaluator';
+export * from './compatibility/SemanticScopeCalculator';
+// J-2: Java type IR — strictly additive, no existing exports affected
+export * from './types/java';
+export * from './verification';

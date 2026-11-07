@@ -1,0 +1,17 @@
+import { CertifiedCampaignAdapter } from './CertifiedCampaignAdapter';
+import { HistoricalObligationGenerator } from '../../packages/analysis/src/sajimora/certified/obligations/HistoricalObligationGenerator';
+import { CoverageProducer } from '../../packages/analysis/src/sajimora/certified/coverage/CoverageProducer';
+import { ArtifactDomain, SAJIMORA_CERTIFIED_EVIDENCE_V1 } from '../../packages/core/src/sajimora/certified/protocol';
+import { computeDomainSeparatedHash } from '../../packages/core/src/sajimora/certified/canonicalEncoding';
+import { F0BindingVerifier } from '../../packages/analysis/src/sajimora/certified/fragment/F0BindingVerifier';
+import { F0RestrictedResolver } from '../../packages/analysis/src/sajimora/certified/closure/F0RestrictedResolver';
+import ts from 'typescript';
+const parent=[{path:'provider.ts',content:'export function calc(): number { return 1; }\n'},{path:'consumer.ts',content:'import { calc } from "./provider.js";\nexport const result: number = calc();\n'},{path:'tsconfig.json',content:'{}'}];
+const candidate=[{path:'provider.ts',content:'export function calc(): number { return 2; }\n'},{path:'consumer.ts',content:parent[1].content},{path:'tsconfig.json',content:'{}'}];
+const p=CertifiedCampaignAdapter.createVirtualEnvironment(parent,'p','TS-AUD-001',['provider.ts','consumer.ts']);
+const c=CertifiedCampaignAdapter.createVirtualEnvironment(candidate,'c','TS-AUD-001',['provider.ts','consumer.ts']);
+const ref={domain:ArtifactDomain.IDENTITY as const,digest:computeDomainSeparatedHash(ArtifactDomain.IDENTITY,SAJIMORA_CERTIFIED_EVIDENCE_V1,Buffer.from('audit-id'))};
+const result=HistoricalObligationGenerator.generateObligations(p.manifest,c.manifest,p.sealedFs,c.sealedFs,'calc',ref,ref);
+const coverage=CoverageProducer.produceCoverage(p.manifest,c.manifest,p.sealedFs,'calc',ref,new (require('../../packages/core/src/sajimora/certified/canonicalEncoding').CanonicalSet)([]),result.obligations);
+const sf=ts.createSourceFile('consumer.ts',parent[1].content,ts.ScriptTarget.Latest,true);const bind=F0BindingVerifier.extractModuleBindings({projectId:'p0',fileId:'consumer.ts'},sf);const resolver=new F0RestrictedResolver(p.sealedFs);let call:ts.CallExpression|undefined;const visit=(n:ts.Node):void=>{if(ts.isCallExpression(n))call=n;ts.forEachChild(n,visit)};visit(sf);const key=`consumer.ts:${call!.getStart(sf)}:${call!.getEnd()}:${call!.kind}`;
+console.log(JSON.stringify({callKey:key,bindings:bind.bindings?{imports:[...bind.bindings.imports],symbols:[...bind.bindings.symbols.keys()]}:bind.result,resolution:resolver.resolve('./provider.js','consumer.ts'),occurrences:result.occurrences.map(x=>({anchor:x.occurrenceAnchor,relations:x.requiredRelations.map(r=>r.kind)})),obligations:result.obligations.map(x=>({anchor:x.historicalOccurrenceAnchor,relations:[...x.requiredRelations].map((r:any)=>r.kind)})),ledger:[...coverage.contextDispositionLedger]},null,2));
