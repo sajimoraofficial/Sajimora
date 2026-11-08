@@ -26,6 +26,8 @@ pub const ARTIFACT_MANIFEST_VERSION_V2: &str = "SAJIMORA_MANIFEST_V2";
 /// rejects anything else, so a lane cannot be silently mislabelled.
 pub const FRAMEWORK_SPRING_MVC: &str = "SPRING_MVC";
 pub const FRAMEWORK_NESTJS: &str = "NESTJS";
+pub const FRAMEWORK_JAX_RS: &str = "JAX_RS";
+pub const FRAMEWORK_KOA: &str = "KOA";
 
 // ---------------------------------------------------------------------------
 // Producer kind

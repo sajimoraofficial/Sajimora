@@ -75,6 +75,8 @@ fn validate_profile(profile: &ExtractionProfile, kind: &ArtifactKind) -> Result<
     const SUPPORTED_FRAMEWORKS: &[&str] = &[
         crate::envelope::FRAMEWORK_SPRING_MVC,
         crate::envelope::FRAMEWORK_NESTJS,
+        crate::envelope::FRAMEWORK_JAX_RS,
+        crate::envelope::FRAMEWORK_KOA,
     ];
     const SUPPORTED_CODECS: &[&str] = &["JACKSON_DEFAULT_V1", "JSON_STRINGIFY_V1"];
     const SUPPORTED_CLIENTS: &[&str] = &["STATIC_FETCH_V1", "MULTI_CLIENT_V1"];
