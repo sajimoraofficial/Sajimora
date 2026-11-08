@@ -397,21 +397,6 @@ impl TypeScriptRouteExtractor {
                     export_maps: Some(&self.export_maps),
                 }
                 .map(type_name, &primary.file, primary.line)
-            } else if primary.http_method == "DELETE" {
-                WireType::Primitive(PrimitiveWireType {
-                    scalar: PrimitiveScalar::Void,
-                    format: None,
-                    provenance: Some(SourceProvenance {
-                        sha256: None,
-                        language: SourceLanguage::TypeScript,
-                        file: primary.file.clone(),
-                        line: primary.line,
-                        column: None,
-                        ast_identity: Some("HTTP DELETE expects void response body".to_string()),
-                        annotation_or_schema: None,
-                        evidence_classification: None,
-                    }),
-                })
             } else {
                 WireType::Unknown(UnknownWireType {
                     reason: "Response type could not be resolved from call context".to_string(),
@@ -456,7 +441,7 @@ impl TypeScriptRouteExtractor {
 
             let decoder_kind = if primary.non_json_response_type.is_some() {
                 DecoderKind::Unknown
-            } else if primary.response_type.is_some() || primary.http_method == "DELETE" {
+            } else if primary.response_type.is_some() {
                 DecoderKind::InferredType
             } else {
                 DecoderKind::Unknown
@@ -4202,6 +4187,35 @@ fn inspect_call_expression(
         args_node
             .named_child(body_index)
             .map(|n| slice_node(n, content).trim().to_string())
+    } else if http_method == "DELETE" {
+        args_node.named_child(body_index).and_then(|options| {
+            if options.kind() == "object" {
+                let mut cursor = options.walk();
+                for child in options.children(&mut cursor) {
+                    if child.kind() == "pair" {
+                        if let (Some(key_node), Some(val_node)) = (
+                            child.child_by_field_name("key"),
+                            child.child_by_field_name("value"),
+                        ) {
+                            let key = slice_node(key_node, content)
+                                .trim()
+                                .trim_matches(|c| c == '"' || c == '\'');
+                            if key == "data" || key == "body" {
+                                return Some(slice_node(val_node, content).trim().to_string());
+                            }
+                        }
+                    } else if child.kind() == "shorthand_property_identifier"
+                        || child.kind() == "shorthand_property_identifier_pattern"
+                    {
+                        let key = slice_node(child, content).trim();
+                        if key == "data" || key == "body" {
+                            return Some(key.to_string());
+                        }
+                    }
+                }
+            }
+            None
+        })
     } else {
         None
     };
@@ -4388,7 +4402,7 @@ fn inspect_http_resource(
             endpoint_arg: Some((url_node.start_byte(), url_node.end_byte())),
         });
     }
-    let request_body_arg = if ["POST", "PUT", "PATCH"].contains(&http_method.as_str()) {
+    let request_body_arg = if ["POST", "PUT", "PATCH", "DELETE"].contains(&http_method.as_str()) {
         request_body_arg
     } else {
         None
@@ -4560,7 +4574,7 @@ fn inspect_request_object_fetch(
         });
     }
     let http_method = method_from_options(arguments, 1, content);
-    let request_body_arg = if ["POST", "PUT", "PATCH"].contains(&http_method.as_str()) {
+    let request_body_arg = if ["POST", "PUT", "PATCH", "DELETE"].contains(&http_method.as_str()) {
         request_init_body(arguments, content)
     } else {
         None
@@ -4810,40 +4824,53 @@ fn parse_config_object<'a>(arg: Node<'a>, content: &str) -> Option<ConfigObjectC
     let mut saw_http_key = false;
     let mut cursor = arg.walk();
     for child in arg.children(&mut cursor) {
-        if child.kind() != "pair" {
-            continue;
-        }
-        let (Some(key_node), Some(value_node)) = (
-            child.child_by_field_name("key"),
-            child.child_by_field_name("value"),
-        ) else {
-            continue;
-        };
-        let key_text = slice_node(key_node, content);
-        let key = key_text.trim().trim_matches(|c| c == '"' || c == '\'');
-        match key {
-            "url" => {
-                config.url = Some(value_node);
-                saw_http_key = true;
-            }
-            "method" | "type" => {
-                saw_http_key = true;
-                if value_node.kind() == "string" {
-                    let verb = unquote_str(slice_node(value_node, content)).to_ascii_uppercase();
-                    if ["GET", "POST", "PUT", "DELETE", "PATCH"].contains(&verb.as_str()) {
-                        config.method = Some(verb);
+        if child.kind() == "pair" {
+            let (Some(key_node), Some(value_node)) = (
+                child.child_by_field_name("key"),
+                child.child_by_field_name("value"),
+            ) else {
+                continue;
+            };
+            let key_text = slice_node(key_node, content);
+            let key = key_text.trim().trim_matches(|c| c == '"' || c == '\'');
+            match key {
+                "url" => {
+                    config.url = Some(value_node);
+                    saw_http_key = true;
+                }
+                "method" | "type" => {
+                    saw_http_key = true;
+                    if value_node.kind() == "string" {
+                        let verb = unquote_str(slice_node(value_node, content)).to_ascii_uppercase();
+                        if ["GET", "POST", "PUT", "DELETE", "PATCH"].contains(&verb.as_str()) {
+                            config.method = Some(verb);
+                        } else {
+                            config.method_is_dynamic = true;
+                        }
                     } else {
                         config.method_is_dynamic = true;
                     }
-                } else {
-                    config.method_is_dynamic = true;
                 }
+                "data" | "body" => config.data = Some(value_node),
+                "responseType" => {
+                    config.non_json_response_type = non_json_response_type_value(value_node, content)
+                }
+                _ => {}
             }
-            "data" | "body" => config.data = Some(value_node),
-            "responseType" => {
-                config.non_json_response_type = non_json_response_type_value(value_node, content)
+        } else if child.kind() == "shorthand_property_identifier"
+            || child.kind() == "shorthand_property_identifier_pattern"
+        {
+            let key = slice_node(child, content).trim();
+            match key {
+                "url" => {
+                    config.url = Some(child);
+                    saw_http_key = true;
+                }
+                "data" | "body" => {
+                    config.data = Some(child);
+                }
+                _ => {}
             }
-            _ => {}
         }
     }
     if saw_http_key {
@@ -4930,7 +4957,7 @@ fn inspect_config_object_call(
         }
     }
 
-    let request_body_arg = if ["POST", "PUT", "PATCH"].contains(&http_method.as_str()) {
+    let request_body_arg = if ["POST", "PUT", "PATCH", "DELETE"].contains(&http_method.as_str()) {
         config
             .data
             .map(|n| slice_node(n, content).trim().to_string())

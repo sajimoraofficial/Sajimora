@@ -666,15 +666,35 @@ impl Engine {
                         if let Some(body) = &cand_ep.body {
                             if consumer.request_body.is_none() {
                                 if !matches!(body, WireType::Optional(_)) {
-                                    findings.push(self.make_finding(
-                                        cand_ep,
-                                        consumer,
-                                        "$",
-                                        "absent",
-                                        "required",
-                                        "frontend missing required request body",
-                                        target_env,
-                                    ));
+                                    if consumer.decoder_kind == DecoderKind::Unknown
+                                        || consumer.consumer_traversal_complete != Some(true)
+                                        || !consumer.unresolved_evidence.is_empty()
+                                        || consumer.observed_request_body.is_some()
+                                    {
+                                        let detail = format!(
+                                            "{}:{}: Request body expression could not be statically resolved from client call",
+                                            consumer.source_file, consumer.source_line
+                                        );
+                                        self.abstain_endpoint(
+                                            ReasonCode::RequestBodyExpressionUnresolved,
+                                            detail,
+                                            &consumer.source_file,
+                                            Some(consumer.source_line),
+                                            ReasonSource::Consumer,
+                                            &cand_ep.identity.http_method,
+                                            &cand_ep.identity.normalized_route.raw_path,
+                                        );
+                                    } else {
+                                        findings.push(self.make_finding(
+                                            cand_ep,
+                                            consumer,
+                                            "$",
+                                            "absent",
+                                            "required",
+                                            "frontend missing required request body",
+                                            target_env,
+                                        ));
+                                    }
                                 }
                             } else if let Some(req_body) = &consumer.request_body {
                                 self.compare_wire_types(
@@ -1049,15 +1069,35 @@ impl Engine {
                         if let Some(body) = &j_ep.body {
                             if cand_client.request_body.is_none() {
                                 if !matches!(body, WireType::Optional(_)) {
-                                    findings.push(self.make_finding(
-                                        j_ep,
-                                        cand_client,
-                                        "$",
-                                        "absent",
-                                        "required",
-                                        "frontend missing required request body",
-                                        target_env,
-                                    ));
+                                    if cand_client.decoder_kind == DecoderKind::Unknown
+                                        || cand_client.consumer_traversal_complete != Some(true)
+                                        || !cand_client.unresolved_evidence.is_empty()
+                                        || cand_client.observed_request_body.is_some()
+                                    {
+                                        let detail = format!(
+                                            "{}:{}: Request body expression could not be statically resolved from client call",
+                                            cand_client.source_file, cand_client.source_line
+                                        );
+                                        self.abstain_endpoint(
+                                            ReasonCode::RequestBodyExpressionUnresolved,
+                                            detail,
+                                            &cand_client.source_file,
+                                            Some(cand_client.source_line),
+                                            ReasonSource::Consumer,
+                                            &j_ep.identity.http_method,
+                                            &j_ep.identity.normalized_route.raw_path,
+                                        );
+                                    } else {
+                                        findings.push(self.make_finding(
+                                            j_ep,
+                                            cand_client,
+                                            "$",
+                                            "absent",
+                                            "required",
+                                            "frontend missing required request body",
+                                            target_env,
+                                        ));
+                                    }
                                 }
                             } else if let Some(req_body) = &cand_client.request_body {
                                 self.compare_wire_types(
