@@ -1635,7 +1635,8 @@ fn parse_blocker_code(code: &str) -> BlockerCode {
     if code.starts_with("JAVA_") {
         return BlockerCode::JavaParseError;
     }
-    BlockerCode::ToolFailure
+    // Any unclassified extraction warning is unresolved evidence, not a fatal engine crash.
+    BlockerCode::UnresolvedTsClient
 }
 
 /// Compare the service ids a consumer artifact declares against the producer it is being
