@@ -333,6 +333,10 @@ pub enum BlockerCode {
     UnresolvedJavaGeneric,
     #[serde(rename = "UNSUPPORTED_LOMBOK_ACCESSOR")]
     UnsupportedLombokAccessor,
+    #[serde(rename = "JAVA_PARSE_ERROR")]
+    JavaParseError,
+    #[serde(rename = "JAVA_PARSE_FAILED")]
+    JavaParseFailed,
     #[serde(rename = "UNRESOLVED_TS_CLIENT")]
     UnresolvedTsClient,
     #[serde(rename = "UNRESOLVED_TS_TYPE")]

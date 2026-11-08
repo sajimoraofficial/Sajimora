@@ -195,13 +195,14 @@ def analyze_repository(repo_info: Dict[str, Any], idx: int, total: int) -> Dict[
                 if os.path.exists(fe_contract):
                     with open(fe_contract, "r", encoding="utf-8") as ff:
                         fdata = json.load(ff)
-                        consumers_count = len(fdata.get("payload", {}).get("consumers", []))
+                        fe_payload = fdata.get("payload", {})
+                        consumers_count = len(fe_payload.get("clientContracts", [])) or len(fe_payload.get("consumers", []))
         except Exception as e:
             print(f"       [Error parsing report: {e}]")
             
     # Purge cloned repository to keep disk clean
     shutil.rmtree(clone_path, ignore_errors=True)
-    print(f"       -> Endpoints: {endpoints_count} | Verdict: {verdict} | Unknowns cataloged: {len(unknowns_catalog)}")
+    print(f"       -> Endpoints: {endpoints_count} | Consumers: {consumers_count} | Verdict: {verdict} | Unknowns cataloged: {len(unknowns_catalog)}")
     
     return {
         "id": repo_id,

@@ -1629,8 +1629,13 @@ fn route_starts_with_unresolved_prefix(route: &str) -> bool {
 fn parse_blocker_code(code: &str) -> BlockerCode {
     // Preserve every qualified V1 code. An unknown future extraction warning is
     // unresolved evidence, not an invented fatal tool failure.
-    serde_json::from_value(serde_json::Value::String(code.to_owned()))
-        .unwrap_or(BlockerCode::UnresolvedTsClient)
+    if let Ok(b) = serde_json::from_value(serde_json::Value::String(code.to_owned())) {
+        return b;
+    }
+    if code.starts_with("JAVA_") {
+        return BlockerCode::JavaParseError;
+    }
+    BlockerCode::ToolFailure
 }
 
 /// Compare the service ids a consumer artifact declares against the producer it is being

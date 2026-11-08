@@ -10944,7 +10944,21 @@ fn parse_decoded(
     service_methods: &ServiceMethodTable,
     disk_path: Option<&str>,
 ) -> (Vec<JavaClassInfo>, Option<ArtifactBlocker>) {
-    let Some(tree) = parser.parse(content, None) else {
+    // Java 23 JEP 476 introduced `import module <name>;` (e.g. `import module java.base;`).
+    // Tree-sitter-java grammar 0.23 does not yet recognise module imports, which produces
+    // an ERROR node near line 2 on thousands of modern Java 23/25 files.
+    // Replacing "import module " with "//port module " (exact 14-byte match) keeps byte
+    // offsets, column spans, and line numbers 100% identical while allowing Tree-sitter
+    // to cleanly parse all classes, annotations, and methods in the file without false blockers.
+    let normalized_storage: String;
+    let effective_content = if content.contains("import module ") {
+        normalized_storage = content.replace("import module ", "//port module ");
+        normalized_storage.as_str()
+    } else {
+        content
+    };
+
+    let Some(tree) = parser.parse(effective_content, None) else {
         return (
             Vec::new(),
             Some(source_blocker(
@@ -10977,7 +10991,7 @@ fn parse_decoded(
     (
         parse_compilation_unit(
             root,
-            content,
+            effective_content,
             rel_path,
             constants,
             service_methods,
