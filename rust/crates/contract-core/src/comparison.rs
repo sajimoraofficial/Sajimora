@@ -1679,7 +1679,13 @@ pub fn link_client_to_endpoint(
                         })
                 })
             } else {
-                false
+                let offset = a.segments.len() - b.segments.len();
+                b.segments.iter().enumerate().any(|(i, seg)| {
+                    seg.is_wildcard.unwrap_or(false)
+                        || seg.regex_constraint.as_ref().is_some_and(|rc| {
+                            a.segments.get(i + offset).and_then(|s| s.regex_constraint.as_ref()) != Some(rc)
+                        })
+                })
             }
         }
     };

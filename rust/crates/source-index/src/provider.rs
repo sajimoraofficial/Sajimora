@@ -14,7 +14,7 @@ use crate::nestjs_routes::{is_controller_ts_path, looks_like_nestjs_root};
 use crate::revision::BackendScope;
 use anyhow::{bail, Result};
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 /// Directories a provider walk never descends into. They hold build output,
 /// dependencies, or other checkouts, none of which are this module's source.
@@ -181,15 +181,49 @@ pub const UNSUPPORTED_TS_FRAMEWORKS: &[(&str, &str)] = &[
 /// (like Express, Fastify, Koa, etc.).
 /// Returns `Some((framework_name, matched_file_path))` relative to `root`.
 pub fn detect_unsupported_ts_framework(root: &Path) -> Option<(&'static str, String)> {
-    let candidates = [
-        "package.json",
-        "backend/package.json",
-        "server/package.json",
-        "api/package.json",
-    ];
+    let mut candidate_paths = vec![PathBuf::from("package.json")];
+    if let Ok(entries) = fs::read_dir(root) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                let name = entry.file_name().to_string_lossy().to_string();
+                if name.starts_with('.')
+                    || name == "node_modules"
+                    || name == "target"
+                    || name == "build"
+                    || name == "dist"
+                {
+                    continue;
+                }
+                let sub_pkg = path.join("package.json");
+                if sub_pkg.is_file() {
+                    candidate_paths.push(PathBuf::from(&name).join("package.json"));
+                }
+                // Check 1 level deeper (e.g. apps/api, packages/backend)
+                if let Ok(sub_entries) = fs::read_dir(&path) {
+                    for sub in sub_entries.flatten() {
+                        let sub_path = sub.path();
+                        if sub_path.is_dir() {
+                            let sub_name = sub.file_name().to_string_lossy().to_string();
+                            if !sub_name.starts_with('.')
+                                && sub_name != "node_modules"
+                                && sub_name != "target"
+                                && sub_path.join("package.json").is_file()
+                            {
+                                candidate_paths.push(
+                                    PathBuf::from(&name).join(&sub_name).join("package.json"),
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    for rel in &candidates {
+    for rel in &candidate_paths {
         let p = root.join(rel);
+        let rel_str = rel.to_string_lossy().replace('\\', "/");
         if let Ok(content) = fs::read_to_string(&p) {
             if let Ok(parsed) = serde_json::from_str::<serde_json::Value>(&content) {
                 for (pkg, name) in UNSUPPORTED_TS_FRAMEWORKS {
@@ -202,14 +236,14 @@ pub fn detect_unsupported_ts_framework(root: &Path) -> Option<(&'static str, Str
                         .and_then(|d| d.get(*pkg))
                         .is_some();
                     if in_deps || in_dev {
-                        return Some((*name, rel.to_string()));
+                        return Some((*name, rel_str));
                     }
                 }
             } else {
                 for (pkg, name) in UNSUPPORTED_TS_FRAMEWORKS {
                     let needle = format!("\"{}\"", pkg);
                     if content.contains(&needle) {
-                        return Some((*name, rel.to_string()));
+                        return Some((*name, rel_str));
                     }
                 }
             }

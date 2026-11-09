@@ -241,33 +241,50 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
         }
         None => {
             let default = sajimora_dir.join("frontend-contract.json");
+            let manifest_path = repo_root.join(".sajimora/init-manifest.json");
+            let fe_dir_opt = fs::read_to_string(&manifest_path)
+                .ok()
+                .and_then(|content| serde_json::from_str::<crate::init::InitManifest>(&content).ok())
+                .and_then(|manifest| manifest.roots.frontend_root.map(|r| repo_root.join(r)))
+                .filter(|p| p.is_dir())
+                .or_else(|| crate::init::detect_frontend(&repo_root));
+
             if detect_frontend_changes(&repo_root) {
-                let manifest_path = repo_root.join(".sajimora/init-manifest.json");
-                if let Ok(content) = fs::read_to_string(&manifest_path) {
-                    if let Ok(manifest) = serde_json::from_str::<crate::init::InitManifest>(&content) {
-                        if let Some(ref fe_root) = manifest.roots.frontend_root {
-                            if !args.agent && !args.json {
-                                println!("   ⚡ [Frontend Refresh] Detected TypeScript client modifications; re-extracting frontend contract.");
-                            }
-                            let fe_service_id = if default.is_file() {
-                                fs::read(&default)
-                                    .ok()
-                                    .and_then(|b| contract_core::envelope::parse_envelope(&b).ok())
-                                    .map(|e| e.snapshot.service_id)
-                                    .unwrap_or_else(|| "frontend-service".into())
-                            } else {
-                                "frontend-service".into()
-                            };
-                            let _ = crate::extract_frontend::run_inner(crate::extract_frontend::ExtractFrontendArgs {
-                                repo: repo_root.clone(),
-                                service_id: Some(fe_service_id),
-                                target_service_id: Some(service_id.clone()),
-                                ts_root: Some(repo_root.join(fe_root)),
-                                parent: "HEAD".into(),
-                                out: default.clone(),
-                            });
-                        }
+                if let Some(ref fe_dir) = fe_dir_opt {
+                    if !args.agent && !args.json {
+                        println!("   ⚡ [Frontend Refresh] Detected TypeScript client modifications; re-extracting frontend contract.");
                     }
+                    let fe_service_id = if default.is_file() {
+                        fs::read(&default)
+                            .ok()
+                            .and_then(|b| contract_core::envelope::parse_envelope(&b).ok())
+                            .map(|e| e.snapshot.service_id)
+                            .unwrap_or_else(|| "frontend-service".into())
+                    } else {
+                        "frontend-service".into()
+                    };
+                    let _ = crate::extract_frontend::run_inner(crate::extract_frontend::ExtractFrontendArgs {
+                        repo: repo_root.clone(),
+                        service_id: Some(fe_service_id),
+                        target_service_id: Some(service_id.clone()),
+                        ts_root: Some(fe_dir.clone()),
+                        parent: "HEAD".into(),
+                        out: default.clone(),
+                    });
+                }
+            } else if !default.is_file() {
+                if let Some(ref fe_dir) = fe_dir_opt {
+                    if !args.agent && !args.json {
+                        println!("   ⚡ [Frontend Auto-Extract] No frontend contract found; extracting from {:?}...", fe_dir);
+                    }
+                    let _ = crate::extract_frontend::run_inner(crate::extract_frontend::ExtractFrontendArgs {
+                        repo: repo_root.clone(),
+                        service_id: None,
+                        target_service_id: Some(service_id.clone()),
+                        ts_root: Some(fe_dir.clone()),
+                        parent: "HEAD".into(),
+                        out: default.clone(),
+                    });
                 }
             }
             if !default.is_file() {

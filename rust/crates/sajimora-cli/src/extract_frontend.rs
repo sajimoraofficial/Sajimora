@@ -61,13 +61,6 @@ pub fn run_inner(args: ExtractFrontendArgs) -> Result<PathBuf> {
         args.repo
     };
 
-    let service_id = args
-        .service_id
-        .unwrap_or_else(|| "frontend-service".to_string());
-    let target_service_id = args
-        .target_service_id
-        .unwrap_or_else(|| "backend-service".to_string());
-
     let scan_dir = if let Some(ref root) = args.ts_root {
         if root.is_relative() {
             repo_path.join(root)
@@ -75,24 +68,41 @@ pub fn run_inner(args: ExtractFrontendArgs) -> Result<PathBuf> {
             root.clone()
         }
     } else {
-        // Auto-detect frontend workspace if repo contains a dedicated client directory
-        let ui_candidates = [
-            "ui-ngx", "frontend", "client", "ui", "web", "app",
-            "webapp", "portal", "dashboard", "admin", "client-app", "frontend-app", "web-app",
-        ];
-        let mut detected = None;
-        for candidate in ui_candidates {
-            let candidate_dir = repo_path.join(candidate);
-            if candidate_dir.is_dir()
-                && (candidate_dir.join("package.json").is_file()
-                    || candidate_dir.join("tsconfig.json").is_file())
-            {
-                detected = Some(candidate_dir);
-                break;
-            }
-        }
-        detected.unwrap_or_else(|| repo_path.clone())
+        // 1. Single source of truth: Read from .sajimora/init-manifest.json if initialized
+        let manifest_path = repo_path.join(".sajimora/init-manifest.json");
+        let from_manifest = fs::read_to_string(&manifest_path)
+            .ok()
+            .and_then(|c| serde_json::from_str::<crate::init::InitManifest>(&c).ok())
+            .and_then(|m| m.roots.frontend_root)
+            .map(|fe| repo_path.join(fe))
+            .filter(|p| p.is_dir());
+
+        // 2. Generic AST-driven crawler: scans all subdirectories, monorepo packages, and root
+        from_manifest
+            .or_else(|| crate::init::detect_frontend(&repo_path))
+            .unwrap_or_else(|| repo_path.clone())
     };
+
+    let manifest_path = repo_path.join(".sajimora/init-manifest.json");
+    let manifest_roots = fs::read_to_string(&manifest_path)
+        .ok()
+        .and_then(|c| serde_json::from_str::<crate::init::InitManifest>(&c).ok())
+        .map(|m| m.roots);
+
+    let service_id = args.service_id.unwrap_or_else(|| {
+        let pkg_name = fs::read_to_string(scan_dir.join("package.json"))
+            .ok()
+            .and_then(|c| serde_json::from_str::<serde_json::Value>(&c).ok())
+            .and_then(|v| v.get("name").and_then(|n| n.as_str()).map(|s| s.to_string()));
+        pkg_name.unwrap_or_else(|| "frontend-service".to_string())
+    });
+
+    let target_service_id = args.target_service_id.unwrap_or_else(|| {
+        manifest_roots
+            .as_ref()
+            .map(|r| r.service_id.clone())
+            .unwrap_or_else(|| "backend-service".to_string())
+    });
 
     // An unreachable scan root yields zero calls rather than zero contracts, and the artifact
     // would then read as "this frontend makes no requests" with nothing to say why.
