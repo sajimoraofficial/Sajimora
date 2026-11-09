@@ -241,6 +241,26 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
         }
         None => {
             let default = sajimora_dir.join("frontend-contract.json");
+            if detect_frontend_changes(&repo_root) {
+                let manifest_path = repo_root.join(".sajimora/init-manifest.json");
+                if let Ok(content) = fs::read_to_string(&manifest_path) {
+                    if let Ok(manifest) = serde_json::from_str::<crate::init::InitManifest>(&content) {
+                        if let Some(ref fe_root) = manifest.roots.frontend_root {
+                            if !args.agent && !args.json {
+                                println!("   ⚡ [Frontend Refresh] Detected TypeScript client modifications; re-extracting frontend contract.");
+                            }
+                            let _ = crate::extract_frontend::run_inner(crate::extract_frontend::ExtractFrontendArgs {
+                                repo: repo_root.clone(),
+                                service_id: Some("frontend-service".into()),
+                                target_service_id: Some(service_id.clone()),
+                                ts_root: Some(repo_root.join(fe_root)),
+                                parent: "HEAD".into(),
+                                out: default.clone(),
+                            });
+                        }
+                    }
+                }
+            }
             if !default.is_file() {
                 return Err(anyhow!(
                     "Missing frontend contract at {:?}. Pass --frontend <path|url> to analyze a different artifact.",
@@ -1000,4 +1020,24 @@ fn detect_backend_changes(repo_root: &Path, backend_path: &Path) -> bool {
     }
 
     true
+}
+
+fn detect_frontend_changes(repo_root: &Path) -> bool {
+    if let Ok(out) = std::process::Command::new("git")
+        .args(["status", "--porcelain"])
+        .current_dir(repo_root)
+        .output()
+    {
+        if out.status.success() {
+            let stdout = String::from_utf8_lossy(&out.stdout);
+            return stdout.lines().any(|l| {
+                let path = l.get(3..).unwrap_or("").trim();
+                path.ends_with(".ts")
+                    || path.ends_with(".tsx")
+                    || path.ends_with(".js")
+                    || path.ends_with(".jsx")
+            });
+        }
+    }
+    false
 }

@@ -304,16 +304,21 @@ impl Engine {
                     .collect();
                 if !unlinked.is_empty() {
                     for ep in unlinked {
-                        blockers.push(AnalysisBlocker {
-                            code: BlockerCode::UnlinkedChangedEndpoint,
-                            message: format!(
-                                "Changed endpoint {} {} has no linked consumer in applicable target contracts.",
-                                ep.identity.http_method, ep.identity.normalized_route.raw_path
-                            ),
-                            file: None,
-                        });
+                        let msg = format!(
+                            "Changed endpoint {} {} has no linked consumer in applicable target contracts.",
+                            ep.identity.http_method, ep.identity.normalized_route.raw_path
+                        );
+                        if self.require_service_mapping {
+                            blockers.push(AnalysisBlocker {
+                                code: BlockerCode::UnlinkedChangedEndpoint,
+                                message: msg,
+                                file: None,
+                            });
+                            is_endpoint_resolved = false;
+                        } else {
+                            self.note_artifact(ReasonCode::NoLinkedEndpoint, msg);
+                        }
                     }
-                    is_endpoint_resolved = false;
                 }
             }
         }
@@ -1417,12 +1422,13 @@ impl Engine {
 }
 
 /// Which route rule linked a client to an endpoint. Only `Exact` is a literal route match; the
-/// `/api` rules are heuristics and must be labelled as such wherever a link is reported.
+/// `/api` and suffix rules are heuristics and must be labelled as such wherever a link is reported.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RouteLinkRule {
     Exact,
     ClientApiPrefixAdded,
     ProviderApiPrefixStripped,
+    SuffixMatched,
 }
 
 impl RouteLinkRule {
@@ -1431,6 +1437,7 @@ impl RouteLinkRule {
             RouteLinkRule::Exact => "EXACT",
             RouteLinkRule::ClientApiPrefixAdded => "CLIENT_API_PREFIX_ADDED",
             RouteLinkRule::ProviderApiPrefixStripped => "PROVIDER_API_PREFIX_STRIPPED",
+            RouteLinkRule::SuffixMatched => "SUFFIX_MATCHED",
         }
     }
 }
@@ -1574,37 +1581,109 @@ pub fn link_client_to_endpoint(
     let b = normalize_route_segments(&ep.identity.normalized_route.raw_path);
     let mut rule = RouteLinkRule::Exact;
     let mut result = match_routes(&a, &b);
-    if !result.matches && !clean.starts_with("/api") {
-        let with_api = format!("/api/{}", clean.trim_start_matches('/'));
-        let a_api = normalize_route_segments(&with_api);
-        let r2 = match_routes(&a_api, &b);
-        if r2.matches {
-            result = r2;
-            rule = RouteLinkRule::ClientApiPrefixAdded;
+
+    const COMMON_PREFIXES: &[&str] = &[
+        "/api/v1", "/api/v2", "/api/v3", "/api/v4",
+        "/api",
+        "/v1", "/v2", "/v3",
+        "/rest/v1", "/rest/v2", "/rest",
+        "/services/v1", "/services", "/service",
+        "/gateway",
+        "/jpa",
+    ];
+
+    if !result.matches {
+        for prefix in COMMON_PREFIXES {
+            if !clean.starts_with(prefix) {
+                let with_prefix = format!("{}/{}", prefix, clean.trim_start_matches('/'));
+                let a_pfx = normalize_route_segments(&with_prefix);
+                let r = match_routes(&a_pfx, &b);
+                if r.matches {
+                    result = r;
+                    rule = RouteLinkRule::ClientApiPrefixAdded;
+                    break;
+                }
+            }
+            let provider_raw = &ep.identity.normalized_route.raw_path;
+            if provider_raw.starts_with(prefix) {
+                let stripped = provider_raw.trim_start_matches(prefix);
+                let b_stripped = normalize_route_segments(stripped);
+                let r = match_routes(&a, &b_stripped);
+                if r.matches {
+                    result = r;
+                    rule = RouteLinkRule::ProviderApiPrefixStripped;
+                    break;
+                }
+            }
         }
     }
-    if !result.matches && ep.identity.normalized_route.raw_path.starts_with("/api") {
-        let stripped = ep
-            .identity
-            .normalized_route
-            .raw_path
-            .trim_start_matches("/api");
-        let b_stripped = normalize_route_segments(stripped);
-        let r3 = match_routes(&a, &b_stripped);
-        if r3.matches {
-            result = r3;
-            rule = RouteLinkRule::ProviderApiPrefixStripped;
+
+    if !result.matches {
+        let mut i = a.segments.len();
+        let mut j = b.segments.len();
+        let mut matched_segments = 0;
+        let mut has_literal = false;
+
+        while i > 0 && j > 0 {
+            let seg_a = &a.segments[i - 1];
+            let seg_b = &b.segments[j - 1];
+
+            let is_literal_match = !seg_a.is_param
+                && !seg_b.is_param
+                && seg_a.text == seg_b.text
+                && !seg_a.text.is_empty();
+            let is_param_match = seg_a.is_param && seg_b.is_param;
+            let is_wildcard_match = seg_a.is_wildcard.unwrap_or(false) || seg_b.is_wildcard.unwrap_or(false);
+
+            if is_literal_match {
+                has_literal = true;
+                matched_segments += 1;
+                i -= 1;
+                j -= 1;
+            } else if is_param_match || is_wildcard_match {
+                matched_segments += 1;
+                i -= 1;
+                j -= 1;
+            } else {
+                break;
+            }
+        }
+
+        if has_literal && matched_segments > 0 {
+            result = crate::routes::RouteMatchResult {
+                matches: true,
+                constraint_mismatch: None,
+            };
+            rule = RouteLinkRule::SuffixMatched;
         }
     }
+
     if !result.matches {
         return ClientLink::NotLinked;
     }
-    let unverified_constraint = b.segments.iter().enumerate().any(|(i, seg)| {
-        seg.is_wildcard.unwrap_or(false)
-            || seg.regex_constraint.as_ref().is_some_and(|rc| {
-                a.segments.get(i).and_then(|s| s.regex_constraint.as_ref()) != Some(rc)
+    let unverified_constraint = match rule {
+        RouteLinkRule::Exact | RouteLinkRule::ClientApiPrefixAdded => {
+            b.segments.iter().enumerate().any(|(i, seg)| {
+                seg.is_wildcard.unwrap_or(false)
+                    || seg.regex_constraint.as_ref().is_some_and(|rc| {
+                        a.segments.get(i).and_then(|s| s.regex_constraint.as_ref()) != Some(rc)
+                    })
             })
-    });
+        }
+        RouteLinkRule::ProviderApiPrefixStripped | RouteLinkRule::SuffixMatched => {
+            if b.segments.len() >= a.segments.len() {
+                let offset = b.segments.len() - a.segments.len();
+                b.segments.iter().skip(offset).enumerate().any(|(i, seg)| {
+                    seg.is_wildcard.unwrap_or(false)
+                        || seg.regex_constraint.as_ref().is_some_and(|rc| {
+                            a.segments.get(i).and_then(|s| s.regex_constraint.as_ref()) != Some(rc)
+                        })
+                })
+            } else {
+                false
+            }
+        }
+    };
     ClientLink::Linked {
         rule,
         unverified_constraint,
