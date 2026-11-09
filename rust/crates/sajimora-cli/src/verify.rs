@@ -964,6 +964,7 @@ fn detect_backend_for_verify(current_dir: &Path, repo_root: &Path) -> Result<Pat
         || current_dir.join("build.gradle").exists()
         || current_dir.join("build.gradle.kts").exists()
         || current_dir.join("src/main/java").exists()
+        || source_index::provider::has_java_source(current_dir)
         || crate::init::is_nestjs_backend(current_dir)
     {
         return Ok(current_dir.to_path_buf());

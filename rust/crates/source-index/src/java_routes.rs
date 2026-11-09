@@ -11144,6 +11144,10 @@ fn discover_source_roots(repo_root: &Path) -> (Vec<PathBuf>, Vec<String>) {
         let module_src = dir.join(JAVA_SOURCE_ROOT_SUFFIX);
         if module_src.is_dir() {
             found.push(module_src);
+        } else if dir.join("src").is_dir() && crate::provider::has_java_source(&dir.join("src")) {
+            found.push(dir.join("src"));
+        } else if crate::provider::has_java_source(&dir) {
+            found.push(dir.clone());
         }
         for declared in declared_module_paths(&dir, repo_root) {
             if fs::read_dir(&declared).is_err() {

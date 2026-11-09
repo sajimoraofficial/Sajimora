@@ -1577,6 +1577,7 @@ fn is_java_backend_root(dir: &Path) -> bool {
         || dir.join("build.gradle").exists()
         || dir.join("build.gradle.kts").exists()
         || dir.join("src/main/java").exists()
+        || source_index::provider::has_java_source(dir)
 }
 
 /// A NestJS backend module: a `package.json` plus a controller file that imports
@@ -1611,7 +1612,7 @@ fn score_backend_candidate(dir: &Path) -> u32 {
     {
         score += 25;
     }
-    if dir.join("src/main/java").exists() {
+    if dir.join("src/main/java").exists() || source_index::provider::has_java_source(dir) {
         score += 30;
     }
     if dir.join("pom.xml").exists()
