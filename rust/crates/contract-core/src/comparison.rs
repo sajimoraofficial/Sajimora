@@ -1589,7 +1589,6 @@ pub fn link_client_to_endpoint(
         "/rest/v1", "/rest/v2", "/rest",
         "/services/v1", "/services", "/service",
         "/gateway",
-        "/jpa",
     ];
 
     if !result.matches {

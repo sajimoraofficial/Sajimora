@@ -76,7 +76,10 @@ pub fn run_inner(args: ExtractFrontendArgs) -> Result<PathBuf> {
         }
     } else {
         // Auto-detect frontend workspace if repo contains a dedicated client directory
-        let ui_candidates = ["ui-ngx", "frontend", "client", "ui", "web", "app"];
+        let ui_candidates = [
+            "ui-ngx", "frontend", "client", "ui", "web", "app",
+            "webapp", "portal", "dashboard", "admin", "client-app", "frontend-app", "web-app",
+        ];
         let mut detected = None;
         for candidate in ui_candidates {
             let candidate_dir = repo_path.join(candidate);

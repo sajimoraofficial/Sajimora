@@ -249,9 +249,18 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                             if !args.agent && !args.json {
                                 println!("   ⚡ [Frontend Refresh] Detected TypeScript client modifications; re-extracting frontend contract.");
                             }
+                            let fe_service_id = if default.is_file() {
+                                fs::read(&default)
+                                    .ok()
+                                    .and_then(|b| contract_core::envelope::parse_envelope(&b).ok())
+                                    .map(|e| e.snapshot.service_id)
+                                    .unwrap_or_else(|| "frontend-service".into())
+                            } else {
+                                "frontend-service".into()
+                            };
                             let _ = crate::extract_frontend::run_inner(crate::extract_frontend::ExtractFrontendArgs {
                                 repo: repo_root.clone(),
-                                service_id: Some("frontend-service".into()),
+                                service_id: Some(fe_service_id),
                                 target_service_id: Some(service_id.clone()),
                                 ts_root: Some(repo_root.join(fe_root)),
                                 parent: "HEAD".into(),
