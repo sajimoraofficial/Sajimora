@@ -127,6 +127,7 @@ pub fn run_pipeline(allowed_roots: &[PathBuf], args: &Map<String, Value>) -> Res
             base_path: base_contract,
             candidate_path,
             target_paths: vec![frontend_contract],
+            base_target_paths: None,
             trust_policy_path: None,
             trusted_local: true,
             require_service_mapping: false,

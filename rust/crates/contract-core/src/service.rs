@@ -23,6 +23,7 @@ pub struct CheckContractEnvelopeRequest {
     pub base: ContractArtifactEnvelope,
     pub candidate: ContractArtifactEnvelope,
     pub targets: Vec<ContractArtifactEnvelope>,
+    pub base_targets: Option<Vec<ContractArtifactEnvelope>>,
     pub trust_policy_path: Option<PathBuf>,
     pub trusted_local: bool,
     pub require_service_mapping: bool,
@@ -38,6 +39,7 @@ pub struct CheckContractServiceRequest {
     pub base_path: PathBuf,
     pub candidate_path: PathBuf,
     pub target_paths: Vec<PathBuf>,
+    pub base_target_paths: Option<Vec<PathBuf>>,
     pub trust_policy_path: Option<PathBuf>,
     pub trusted_local: bool,
     pub require_service_mapping: bool,
@@ -142,6 +144,21 @@ pub fn run_check_contract_service(
         targets.push(target);
     }
 
+    // 4. Read base targets if specified
+    let mut base_targets = None;
+    if let Some(ref bt_paths) = req.base_target_paths {
+        let mut list = Vec::with_capacity(bt_paths.len());
+        for bt_path in bt_paths {
+            let bytes = read_bounded(bt_path, max_bytes)
+                .with_context(|| format!("Reading base target artifact {:?}", bt_path))?;
+            total_bytes += bytes.len();
+            let target = parse_envelope(&bytes)
+                .map_err(|e| anyhow!("Base target artifact {:?}: {}", bt_path, e))?;
+            list.push(target);
+        }
+        base_targets = Some(list);
+    }
+
     if total_bytes > MAX_AGGREGATE_ARTIFACT_BYTES {
         bail!(
             "Aggregate artifact size exceeded budget of {} bytes (read {} bytes)",
@@ -167,6 +184,7 @@ pub fn run_check_contract_service(
         &mut base,
         &mut candidate,
         &mut targets,
+        base_targets.as_deref_mut(),
         &policy,
         req.trusted_local,
         req.require_service_mapping,
@@ -210,6 +228,7 @@ pub fn run_check_contract_envelope_service(
         mut base,
         mut candidate,
         mut targets,
+        mut base_targets,
         trust_policy_path,
         trusted_local,
         require_service_mapping,
@@ -228,6 +247,7 @@ pub fn run_check_contract_envelope_service(
     for envelope in [&mut base, &mut candidate]
         .into_iter()
         .chain(targets.iter_mut())
+        .chain(base_targets.as_deref_mut().into_iter().flatten())
     {
         if envelope.raw_value.is_none() {
             envelope.raw_value = Some(serde_json::to_value(&*envelope)?);
@@ -247,6 +267,7 @@ pub fn run_check_contract_envelope_service(
         &mut base,
         &mut candidate,
         &mut targets,
+        base_targets.as_deref_mut(),
         &policy,
         trusted_local,
         require_service_mapping,
@@ -335,6 +356,7 @@ fn compare_with_baseline(
     base: &mut ContractArtifactEnvelope,
     candidate: &mut ContractArtifactEnvelope,
     targets: &mut [ContractArtifactEnvelope],
+    mut base_targets: Option<&mut [ContractArtifactEnvelope]>,
     policy: &ArtifactTrustPolicy,
     trusted_local: bool,
     require_service_mapping: bool,
@@ -344,6 +366,11 @@ fn compare_with_baseline(
     crate::expansion::expand_type_pool(candidate)?;
     for target in targets.iter_mut() {
         crate::expansion::expand_type_pool(target)?;
+    }
+    if let Some(ref mut bts) = base_targets {
+        for target in bts.iter_mut() {
+            crate::expansion::expand_type_pool(target)?;
+        }
     }
 
     // C1 FIX: Unconditionally admit and integrity-verify the candidate artifact BEFORE any shortcut.
@@ -360,10 +387,15 @@ fn compare_with_baseline(
         ));
     }
 
+    let b_targets_slice: &[ContractArtifactEnvelope] = match &base_targets {
+        Some(bts) => bts,
+        None => targets,
+    };
+
     let baseline = check_contract_refs(
         base,
         base,
-        targets,
+        b_targets_slice,
         policy,
         trusted_local,
         require_service_mapping,
@@ -374,13 +406,14 @@ fn compare_with_baseline(
     }
 
     // Re-derive identical contract from freshly recomputed canonical digests, never from unverified fields.
-    let is_identical_contract = match (
-        crate::envelope::compute_envelope_digest(candidate),
-        crate::envelope::compute_envelope_digest(base),
-    ) {
-        (Ok(cand_digest), Ok(base_digest)) => cand_digest == base_digest,
-        _ => false,
-    };
+    let is_identical_contract = base_targets.is_none()
+        && match (
+            crate::envelope::compute_envelope_digest(candidate),
+            crate::envelope::compute_envelope_digest(base),
+        ) {
+            (Ok(cand_digest), Ok(base_digest)) => cand_digest == base_digest,
+            _ => false,
+        };
 
     let mut report = if is_identical_contract {
         baseline.clone()

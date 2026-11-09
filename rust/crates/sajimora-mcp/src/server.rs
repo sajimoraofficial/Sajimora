@@ -615,6 +615,7 @@ impl SajimoraMcpServer {
             base_path: base,
             candidate_path: candidate,
             target_paths: targets,
+            base_target_paths: None,
             trust_policy_path: self.config.trust_policy_path.clone(),
             trusted_local: self.config.trusted_local,
             require_service_mapping: self.config.require_service_mapping,

@@ -443,6 +443,7 @@ fn run_inner(
         base_path: args.base,
         candidate_path: args.candidate,
         target_paths: target_paths.clone(),
+        base_target_paths: None,
         trust_policy_path: args.trust_policy,
         trusted_local: args.trusted_local,
         require_service_mapping: args.require_service_mapping,

@@ -243,6 +243,7 @@ pub fn run(args: RunArgs) -> i32 {
             base_path: base.clone(),
             candidate_path: candidate.clone(),
             target_paths: vec![frontend_file.clone()],
+            base_target_paths: None,
             trust_policy_path: None,
             trusted_local: true,
             require_service_mapping: false,

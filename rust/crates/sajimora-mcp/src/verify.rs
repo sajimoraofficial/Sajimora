@@ -297,6 +297,7 @@ pub fn run(
         base,
         candidate,
         targets,
+        base_targets: None,
         trust_policy_path: trust_policy_path.map(Path::to_path_buf),
         trusted_local,
         require_service_mapping,

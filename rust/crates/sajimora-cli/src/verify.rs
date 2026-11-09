@@ -228,7 +228,7 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
         (candidate_envelope, candidate_file)
     };
 
-    let frontend_file = match args.frontend.as_deref() {
+    let (frontend_file, base_frontend_file) = match args.frontend.as_deref() {
         Some(target) => {
             let resolved = crate::remote::resolve_contract_path(target, &repo_root, &sajimora_dir)?;
             if !resolved.is_file() {
@@ -237,7 +237,7 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                     resolved
                 ));
             }
-            resolved
+            (resolved, None)
         }
         None => {
             let default = sajimora_dir.join("frontend-contract.json");
@@ -249,10 +249,12 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                 .filter(|p| p.is_dir())
                 .or_else(|| crate::init::detect_frontend(&repo_root));
 
-            if detect_frontend_changes(&repo_root) {
+            let mut base_fe: Option<PathBuf> = None;
+
+            let fe_file = if detect_frontend_changes(&repo_root) {
                 if let Some(ref fe_dir) = fe_dir_opt {
                     if !args.agent && !args.json {
-                        println!("   ⚡ [Frontend Refresh] Detected TypeScript client modifications; re-extracting frontend contract.");
+                        println!("   ⚡ [Frontend Refresh] Detected TypeScript client modifications; extracting candidate frontend contract.");
                     }
                     let fe_service_id = if default.is_file() {
                         fs::read(&default)
@@ -263,14 +265,24 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                     } else {
                         "frontend-service".into()
                     };
+
+                    let cand_frontend = sajimora_dir.join(".tmp-extract/candidate-frontend-contract.json");
+                    let _ = fs::create_dir_all(sajimora_dir.join(".tmp-extract"));
                     let _ = crate::extract_frontend::run_inner(crate::extract_frontend::ExtractFrontendArgs {
                         repo: repo_root.clone(),
                         service_id: Some(fe_service_id),
                         target_service_id: Some(service_id.clone()),
                         ts_root: Some(fe_dir.clone()),
                         parent: "HEAD".into(),
-                        out: default.clone(),
+                        out: cand_frontend.clone(),
                     });
+
+                    if default.is_file() {
+                        base_fe = Some(default.clone());
+                    }
+                    cand_frontend
+                } else {
+                    default.clone()
                 }
             } else if !default.is_file() {
                 if let Some(ref fe_dir) = fe_dir_opt {
@@ -286,14 +298,18 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                         out: default.clone(),
                     });
                 }
-            }
-            if !default.is_file() {
+                default.clone()
+            } else {
+                default.clone()
+            };
+
+            if !fe_file.is_file() {
                 return Err(anyhow!(
                     "Missing frontend contract at {:?}. Pass --frontend <path|url> to analyze a different artifact.",
-                    default
+                    fe_file
                 ));
             }
-            default
+            (fe_file, base_fe)
         }
     };
 
@@ -314,7 +330,8 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
     let report = run_check_contract_service(CheckContractServiceRequest {
         base_path: base_file,
         candidate_path: candidate_file,
-        target_paths: vec![frontend_file],
+        target_paths: vec![frontend_file.clone()],
+        base_target_paths: base_frontend_file.map(|b| vec![b]),
         trust_policy_path: args.trust_policy.clone(),
         // Only the local, caller-invoked path runs without a policy. An
         // explicit policy is enforced against every artifact.
@@ -381,6 +398,20 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
     let report_file = sajimora_dir.join("impact-report.json");
     let report_json = serde_json::to_string_pretty(&report_value)?;
     fs::write(&report_file, &report_json)?;
+
+    // Promote candidate frontend contract to default baseline if verification passed
+    let default_fe = sajimora_dir.join("frontend-contract.json");
+    if report.verdict == CrossLanguageVerdict::LikelyPreserved
+        || report
+            .delta
+            .as_ref()
+            .map(|d| d.new_findings.is_empty())
+            .unwrap_or(false)
+    {
+        if frontend_file != default_fe && frontend_file.is_file() {
+            let _ = fs::copy(&frontend_file, &default_fe);
+        }
+    }
 
     // 6. Extract full catalog of client call sites for exhaustiveness validation
     let mut all_frontend_call_sites: Vec<String> = Vec::new();
