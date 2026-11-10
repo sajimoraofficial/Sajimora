@@ -165,6 +165,18 @@ fn test_scenario_2_husky_v9_compatibility() {
 
     let user_hook = "#!/bin/sh\nexit 0\n";
     fs::write(husky_dir.join("pre-commit"), user_hook).unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let _ = fs::set_permissions(
+            husky_dir.join("pre-commit"),
+            fs::Permissions::from_mode(0o755),
+        );
+        let _ = fs::set_permissions(
+            husky_internal.join("pre-commit"),
+            fs::Permissions::from_mode(0o755),
+        );
+    }
 
     git(repo, &["config", "core.hooksPath", ".husky/_"]);
     git(repo, &["add", "."]);

@@ -626,7 +626,7 @@ struct Worker {
     _job: Job,
 }
 impl Worker {
-    fn start(executable: &Path, database: &Path, memory_mib: usize) -> Result<Self> {
+    fn start(executable: &Path, database: &Path, _memory_mib: usize) -> Result<Self> {
         let mut command = Command::new(executable);
         command
             .arg("java-worker")

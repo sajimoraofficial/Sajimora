@@ -255,7 +255,9 @@ class OrderResponse {
         "Advisory mode must exit code 0 even on breaks: {stdout}"
     );
     assert!(
-        stdout.contains("LIKELY VIOLATED") || stdout.contains("LIKELY_VIOLATED"),
+        stdout.contains("LIKELY VIOLATED")
+            || stdout.contains("LIKELY_VIOLATED")
+            || stdout.contains("BREAKING CONTRACT REGRESSIONS"),
         "Advisory verify must catch breaking field change: {stdout}"
     );
 

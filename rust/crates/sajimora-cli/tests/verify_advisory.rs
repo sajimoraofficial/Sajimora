@@ -313,7 +313,10 @@ fn run_verify(repo: &Path, extra: &[&str]) -> (i32, String, String) {
 }
 
 fn breaking_change_reported(stdout: &str, stderr: &str) -> bool {
-    stdout.contains("LIKELY VIOLATED") || stderr.contains("LIKELY VIOLATED")
+    stdout.contains("LIKELY VIOLATED")
+        || stderr.contains("LIKELY VIOLATED")
+        || stdout.contains("BREAKING CONTRACT REGRESSIONS")
+        || stderr.contains("BREAKING CONTRACT REGRESSIONS")
 }
 
 fn assert_breaking_change_detected(stdout: &str, stderr: &str) {

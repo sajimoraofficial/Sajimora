@@ -1648,7 +1648,8 @@ pub fn link_client_to_endpoint(
             }
         }
 
-        if has_literal && matched_segments > 0 {
+        let anchor_is_literal = i < a.segments.len() && !a.segments[i].is_param && !a.segments[i].text.is_empty();
+        if has_literal && matched_segments > 0 && anchor_is_literal {
             result = crate::routes::RouteMatchResult {
                 matches: true,
                 constraint_mismatch: None,

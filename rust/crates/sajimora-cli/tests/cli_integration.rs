@@ -21,9 +21,13 @@ use std::path::PathBuf;
 use std::process::{Command, Stdio};
 
 fn binary() -> PathBuf {
+    if let Ok(bin) = std::env::var("CARGO_BIN_EXE_sajimora") {
+        return PathBuf::from(bin);
+    }
     let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let workspace = manifest.parent().unwrap().parent().unwrap();
-    workspace.join("target").join("debug").join("sajimora.exe")
+    let bin_name = if cfg!(windows) { "sajimora.exe" } else { "sajimora" };
+    workspace.join("target").join("debug").join(bin_name)
 }
 
 fn fixtures() -> PathBuf {

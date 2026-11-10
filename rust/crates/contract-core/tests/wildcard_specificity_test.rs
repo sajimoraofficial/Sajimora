@@ -255,6 +255,7 @@ fn run(
         base: seal_envelope(base_env).unwrap(),
         candidate: seal_envelope(candidate_env).unwrap(),
         targets: vec![seal_envelope(target_env).unwrap()],
+        base_targets: None,
         trust_policy_path: None,
         trusted_local: true,
         require_service_mapping: false,

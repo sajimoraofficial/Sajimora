@@ -115,6 +115,7 @@ fn run(
         base_path: bench.base_path.clone(),
         candidate_path: bench.candidate_path.clone(),
         target_paths: vec![bench.target_path.clone()],
+        base_target_paths: None,
         trust_policy_path: Some(bench.policy_path.clone()),
         trusted_local: false,
         require_service_mapping: true,

@@ -52,3 +52,5 @@ artifacts/
 benchmarks/
 docs/history/
 docs/specs/
+.sajimora/
+**/.sajimora/

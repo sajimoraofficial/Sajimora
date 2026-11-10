@@ -3,6 +3,9 @@ use std::path::PathBuf;
 #[test]
 fn print_sample_telemetry() {
     let tb_path = PathBuf::from("E:\\thingsboard");
+    if !tb_path.exists() {
+        return;
+    }
     let allowed_roots = vec![tb_path.clone()];
 
     let mut what_if_args = serde_json::Map::new();

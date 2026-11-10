@@ -278,6 +278,7 @@ fn checked_with_pools(
         base,
         candidate,
         targets: vec![target],
+        base_targets: None,
         trust_policy_path: None,
         trusted_local: true,
         require_service_mapping: false,
