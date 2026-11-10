@@ -5324,18 +5324,26 @@ fn classify_http_function(
         if name == "$fetch"
             || matches!(
                 name,
-                "useFetch" | "useLazyFetch" | "useSWR" | "useSWRImmutable"
+                "useFetch" | "useLazyFetch" | "useSWR" | "useSWRImmutable" | "useSWRMutation"
             )
         {
             let imported_from_wrapper = imports.get(name).is_some_and(|binding| {
                 matches!(
                     binding.module.as_str(),
-                    "ofetch" | "#app" | "nuxt" | "nuxt/app" | "swr" | "swr/immutable"
+                    "ofetch"
+                        | "#app"
+                        | "nuxt"
+                        | "nuxt/app"
+                        | "swr"
+                        | "swr/immutable"
+                        | "swr/mutation"
                 )
             });
             if name == "$fetch" || imported_from_wrapper {
                 let method = if matches!(name, "useSWR" | "useSWRImmutable") {
                     "GET".to_string()
+                } else if name == "useSWRMutation" {
+                    "POST".to_string()
                 } else {
                     method_from_options(args_node, 1, content)
                 };
