@@ -13,7 +13,7 @@
 [![npm](https://img.shields.io/badge/npm-sajimora-CB3837.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/sajimora)
 [![Speed](https://img.shields.io/badge/AST_latency-%3C90ms-brightgreen.svg?style=flat-square)](#-performance-benchmark-thingsboard-monorepo---15m-loc)
 
-[Quickstart](#-quickstart-in-30-seconds) • [AI Agent MCP](#-mcp-server-for-ai-agents) • [CLI Commands](#-cli-commands) • [Architecture](#-architecture) • [Documentation](docs/)
+[Website](https://sajimora.com) • [Quickstart](#-quickstart-in-30-seconds) • [AI Agent MCP](#-mcp-server-for-ai-agents) • [CLI Commands](#-cli-commands) • [Architecture](#-architecture) • [Documentation](docs/)
 
 </div>
 
@@ -231,4 +231,4 @@ Add this 4-line step to your `.github/workflows/ci.yml`:
 ## 📄 License
 
 Licensed under the [Apache License, Version 2.0](LICENSE).  
-Copyright © 2026 **Sajimora Team** (`dev@sajimora.dev`).
+Copyright © 2026 **Sajimora Team** (`dev@sajimora.com`) • [sajimora.com](https://sajimora.com).

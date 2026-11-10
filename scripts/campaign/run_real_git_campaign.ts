@@ -98,7 +98,7 @@ export function createRealGitTestRepository(targetDir: string): RealGitCommitQue
     execFileSync('git', ['-C', targetDir, ...args], { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
 
   git('init');
-  git('config', 'user.email', 'benchmark@sajimora.dev');
+  git('config', 'user.email', 'benchmark@sajimora.com');
   git('config', 'user.name', 'SajimoraRealGitRunner');
   git('config', 'commit.gpgsign', 'false');
 
