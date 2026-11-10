@@ -1,0 +1,48 @@
+{
+  "name": "sajimora",
+  "version": "0.1.0",
+  "description": "Deterministic cross-language API contract verification and AST guard for Java Spring Boot and TypeScript/Angular/React",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Sajimora Team <dev@sajimora.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sajimoraofficial/sajimora.git"
+  },
+  "homepage": "https://sajimora.com",
+  "bugs": {
+    "url": "https://github.com/sajimoraofficial/sajimora/issues"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "contract-testing",
+    "spring-boot",
+    "typescript",
+    "angular",
+    "react",
+    "ast",
+    "api-diff",
+    "developer-tools"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "packaging/",
+    "scripts/",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md",
+    "README.md",
+    "smithery.yaml"
+  ],
+  "bin": {
+    "sajimora": "./bin/sajimora.cjs",
+    "sajimora-mcp": "./bin/sajimora-mcp.cjs"
+  },
+  "scripts": {
+    "test": "node bin/sajimora.cjs --version"
+  }
+}
