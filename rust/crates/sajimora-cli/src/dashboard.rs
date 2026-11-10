@@ -103,7 +103,7 @@ fn run_inner(args: DashboardArgs) -> Result<i32> {
     };
 
     let (repo_root, sajimora_dir) = find_sajimora_dir(&repo_start).ok_or_else(|| {
-        anyhow!("Could not find `.sajimora` directory. Run `sajimora init` first.")
+        anyhow!("Could not find `.sajimora` directory in this repository. Run `sajimora run` or `sajimora init` first to initialize contracts.")
     })?;
 
     let data = load_dashboard_data(&repo_root, &sajimora_dir)?;

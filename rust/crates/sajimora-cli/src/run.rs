@@ -482,6 +482,9 @@ pub fn run(args: RunArgs) -> i32 {
     let out = args
         .out
         .unwrap_or_else(|| work.join("pipeline-report.json"));
+    if let Some(parent) = out.parent() {
+        let _ = fs::create_dir_all(parent);
+    }
     if let Err(error) = serde_json::to_vec_pretty(&report)
         .map_err(anyhow::Error::from)
         .and_then(|bytes| fs::write(&out, bytes).map_err(anyhow::Error::from))

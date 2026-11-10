@@ -124,7 +124,7 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
 
     // 1. Locate .sajimora folder (current directory or parent traversal)
     let (repo_root, sajimora_dir) = find_sajimora_dir(&repo_start).ok_or_else(|| {
-        anyhow!("Could not find `.sajimora` directory. Run `sajimora init` first.")
+        anyhow!("Could not find `.sajimora` directory in this repository. Run `sajimora run` or `sajimora init` first to initialize contracts.")
     })?;
 
     // 2. Locate Backend Service Directory
@@ -146,7 +146,7 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
 
     let base_file = sajimora_dir.join("backend-contract.json");
     if !base_file.exists() {
-        return Err(anyhow!("Missing base contract at {:?}", base_file));
+        return Err(anyhow!("Missing base contract at {:?}. Run `sajimora run` first to establish your baseline contract.", base_file));
     }
 
     let service_id = if let Ok(base_bytes) = fs::read(&base_file) {
