@@ -7,7 +7,7 @@
   "author": "Sajimora Team <dev@sajimora.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sajimoraofficial/sajimora.git"
+    "url": "git+https://github.com/sajimoraofficial/sajimora.git"
   },
   "homepage": "https://sajimora.com",
   "bugs": {
@@ -39,8 +39,8 @@
     "smithery.yaml"
   ],
   "bin": {
-    "sajimora": "./bin/sajimora.cjs",
-    "sajimora-mcp": "./bin/sajimora-mcp.cjs"
+    "sajimora": "bin/sajimora.cjs",
+    "sajimora-mcp": "bin/sajimora-mcp.cjs"
   },
   "scripts": {
     "test": "node bin/sajimora.cjs --version"
