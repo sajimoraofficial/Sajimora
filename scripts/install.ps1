@@ -5,7 +5,7 @@ $ErrorActionPreference = 'Stop'
 
 Write-Host "=== Installing Sajimora Native API Gatekeeper ===" -ForegroundColor Cyan
 
-$repo = "sajimora/sajimora"
+$repo = "sajimoraofficial/sajimora"
 $tag = "v0.10.0"
 
 try {

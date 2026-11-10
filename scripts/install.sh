@@ -4,7 +4,7 @@ set -e
 # Sajimora Native Installer
 # Supports macOS (Apple Silicon & Intel) and Linux (x86_64)
 
-REPO="sajimora/sajimora"
+REPO="sajimoraofficial/sajimora"
 LATEST_TAG=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
 if [ -z "$LATEST_TAG" ]; then
