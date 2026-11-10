@@ -38,6 +38,7 @@ scripts/campaign/campaign_50_results.json
 scripts/campaign/fixtures/ablation_8_cases_comparison.json
 
 # Root trace dumps & internal research docs
+docs/
 BASELINE_AUDIT_MANIFEST_PHASE0.json
 arch5Trace.json
 artifact.json
