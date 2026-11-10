@@ -4,22 +4,24 @@ Copyright (c) 2026 Sajimora. All rights reserved.
 1. GRANT OF LICENSE
 Subject to the terms and conditions of this Agreement, Sajimora grants you a non-exclusive, 
 non-transferable, non-sublicensable, revocable limited license to download, install, and execute 
-the Sajimora CLI binary and associated artifacts ("Software") solely for:
-  (a) Non-commercial personal evaluation and testing; or
-  (b) Authorized beta testing and trial usage in development environments; or
+the Sajimora CLI binary, Model Context Protocol (MCP) server, and associated artifacts ("Software") solely for:
+  (a) Individual Developers: Free, perpetual, royalty-free use by individual developers, freelancers, 
+      students, and independent researchers for personal development, open-source work, and individual commercial projects; or
+  (b) Authorized beta testing and evaluation in development environments; or
   (c) Exercising rights granted under applicable open-source licenses for bundled or linked components.
 
-2. COMMERCIAL AND PRODUCTION USE
-Use of the Software within automated team continuous integration/continuous deployment (CI/CD) 
-pipelines, production deployment gates, or for organizational commercial benefit requires an active, 
-paid commercial subscription or express written authorization from Sajimora.
+2. TEAM, ENTERPRISE, AND ORGANIZATIONAL USE
+Use of the Software by or on behalf of any commercial entity, enterprise, company, or team comprising 
+more than one (1) developer, or deployment within corporate automated continuous integration/continuous 
+deployment (CI/CD) pipelines, production deployment gates, or enterprise server infrastructure requires 
+an active, paid commercial subscription or express written authorization from Sajimora.
 
 3. RESTRICTIONS
 You shall not, and shall not permit any third party to:
   (a) Decompile, reverse engineer, disassemble, or attempt to derive the source code of the Software 
       or any algorithms contained therein, except to the extent permitted by mandatory applicable law;
-  (b) Modify, adapt, translate, or create derivative works based upon the Software;
-  (c) Rent, lease, sell, resell, distribute, sublicense, host, or commercially exploit the Software;
+  (b) Modify, adapt, translate, or create derivative works based upon the Software for redistribution or resale;
+  (c) Rent, lease, sell, resell, distribute, sublicense, white-label, host as a competing service, or commercially exploit the Software;
   (d) Circumvent, disable, or bypass any license verification, cryptographic verification, or security 
       controls built into the Software;
   (e) Remove, alter, or obscure any proprietary copyright, trademark, or attribution notices;

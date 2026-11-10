@@ -7,7 +7,7 @@
 *The LLM Proposes. Sajimora Verifies.*
 
 [![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg?style=flat-square)](https://github.com/sajimoraofficial/sajimora/releases)
-[![License](https://img.shields.io/badge/license-Proprietary-red.svg?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-Free_for_Individuals-brightgreen.svg?style=flat-square)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2021_edition-orange.svg?style=flat-square)](https://www.rust-lang.org)
 [![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-purple.svg?style=flat-square)](https://modelcontextprotocol.io)
 [![npm](https://img.shields.io/badge/npm-sajimora-CB3837.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/sajimora)
@@ -230,10 +230,10 @@ Add this 4-line step to your `.github/workflows/ci.yml`:
 
 ## 📄 License
 
-Sajimora is proprietary software licensed under the **[Sajimora Software License Agreement](LICENSE)**:
-* **Evaluation & Beta Testing:** Free for non-commercial personal evaluation, testing, and authorized beta usage.
-* **Commercial & Production CI/CD:** Continuous integration, deployment gates, or organizational commercial use requires an active paid commercial subscription or express written authorization from Sajimora.
-* **Redistribution Restrictions:** Sublicensing, reselling, hosting, or creating derivative works for commercial exploitation is strictly prohibited.
+Sajimora is licensed under the **[Sajimora Software License Agreement](LICENSE)**:
+* **👨‍💻 Individual Developers:** **100% Free** for individual developers, freelancers, students, and open-source contributors for personal development, hobby projects, and individual commercial work.
+* **🏢 Teams & Organizations:** Use by teams, companies, or organizations with more than one (1) developer, or deployment within corporate automated CI/CD pipelines, requires an active commercial subscription or express written authorization.
+* **🚫 Redistribution Restrictions:** Forking to resell, white-label, rebrand, or host Sajimora as a competing commercial cloud service is strictly prohibited.
 
 Bundled third-party open-source components remain licensed under their respective open-source licenses as documented in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
