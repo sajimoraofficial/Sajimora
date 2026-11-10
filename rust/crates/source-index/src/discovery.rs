@@ -484,6 +484,57 @@ pub fn detect_frontend(repo_root: &Path) -> Option<PathBuf> {
 }
 
 pub fn detect_frontend_changes(repo_root: &Path) -> bool {
+    let is_frontend_input = |path: &str| -> bool {
+        path.ends_with(".ts")
+            || path.ends_with(".tsx")
+            || path.ends_with(".js")
+            || path.ends_with(".jsx")
+            || path.ends_with(".html")
+    };
+
+    // 0. If a baseline frontend contract exists, check if HEAD has moved past its commit
+    let fe_contract = repo_root.join(".sajimora/frontend-contract.json");
+    if fe_contract.exists() {
+        if let Ok(out) = std::process::Command::new("git")
+            .args(["log", "-n", "1", "--format=%H", "--", ".sajimora/frontend-contract.json"])
+            .current_dir(repo_root)
+            .output()
+        {
+            if out.status.success() {
+                let base_commit = String::from_utf8_lossy(&out.stdout).trim().to_string();
+                if !base_commit.is_empty() {
+                    if let Ok(diff_out) = std::process::Command::new("git")
+                        .args(["diff", "--name-only", &base_commit, "HEAD"])
+                        .current_dir(repo_root)
+                        .output()
+                    {
+                        if diff_out.status.success() {
+                            let stdout = String::from_utf8_lossy(&diff_out.stdout);
+                            if stdout.lines().any(|l| is_frontend_input(l.trim())) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 1. Check working tree & staged modifications against HEAD
+    if let Ok(out) = std::process::Command::new("git")
+        .args(["diff", "--name-only", "HEAD"])
+        .current_dir(repo_root)
+        .output()
+    {
+        if out.status.success() {
+            let stdout = String::from_utf8_lossy(&out.stdout);
+            if stdout.lines().any(|l| is_frontend_input(l.trim())) {
+                return true;
+            }
+        }
+    }
+
+    // 2. Check untracked files
     if let Ok(out) = std::process::Command::new("git")
         .args(["status", "--porcelain"])
         .current_dir(repo_root)
@@ -493,11 +544,7 @@ pub fn detect_frontend_changes(repo_root: &Path) -> bool {
             let stdout = String::from_utf8_lossy(&out.stdout);
             return stdout.lines().any(|l| {
                 let path = l.get(3..).unwrap_or("").trim();
-                path.ends_with(".ts")
-                    || path.ends_with(".tsx")
-                    || path.ends_with(".js")
-                    || path.ends_with(".jsx")
-                    || path.ends_with(".html")
+                is_frontend_input(path)
             });
         }
     }

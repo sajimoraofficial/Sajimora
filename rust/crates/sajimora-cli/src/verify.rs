@@ -896,10 +896,13 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
             println!("\n════════════════════════════════════════════════════════════════════════════════");
             println!("  SAJIMORA CROSS-LANGUAGE CONTRACT VERIFICATION");
             println!("════════════════════════════════════════════════════════════════════════════════");
+            let has_blockers = !report.blockers.is_empty();
             if args.strict {
-                println!("  VERDICT: ⚠️ INCONCLUSIVE (--strict mode: failing closed)");
+                println!("  VERDICT: 🛑 FAILED (--strict mode: failing closed on inconclusive analysis)");
+            } else if has_blockers {
+                println!("  VERDICT: ⚠️ INCONCLUSIVE (Analysis Blockers Present | Incomplete Evidence)");
             } else {
-                println!("  VERDICT: ✅ PASS (0 Breaking Regressions | Advisory Mode)");
+                println!("  VERDICT: ⚠️ INCONCLUSIVE (0 Breaking Regressions | Untyped Calls Present)");
             }
             println!();
             println!("  📊 Contract Verification Summary:");
@@ -911,26 +914,42 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
             if unresolved > 0 {
                 println!("     • Dynamic / Untyped Calls   : {} call sites (plain JS / unannotated wrappers)", unresolved);
             }
-            if !report.blockers.is_empty() {
+            if has_blockers {
                 println!("     • Analysis Blockers         : {} (inspect .sajimora/impact-report.json)", report.blockers.len());
+                for b in &report.blockers {
+                    println!("       - [{:?}]: {}", b.code, b.message);
+                }
             }
             println!();
-            println!("  🤖 AGENT EVIDENCE GUARANTEE: 0 BREAKING REGRESSIONS DETECTED");
+            println!("  🤖 AGENT EVIDENCE GUARANTEE: INCONCLUSIVE ANALYSIS");
             println!("     • Total Client Call Sites Checked : {} (100% repo coverage)", total_checked);
             println!("     • Broken Call Sites               : 0 violations");
             println!("     • Clean Verified Endpoints        : {} routes", linked);
             if unresolved > 0 {
                 println!("     • Untyped Dynamic Call Sites      : {} (advisory only, no breaking drift)", unresolved);
             }
-            println!("     • Recommended Agent Action        : Build and release admissible. No search needed.");
+            if has_blockers {
+                println!("     • Analysis Blockers               : {} blockers require resolution", report.blockers.len());
+            }
+            println!("     • Recommended Agent Action        : {}", if has_blockers {
+                "Inspect analysis blockers above; ensure valid backend/frontend code is present."
+            } else if args.strict {
+                "Add TypeScript type annotations to reach 100% coverage."
+            } else {
+                "Proceed with caution; untyped client calls are unverified."
+            });
             println!();
-            if args.strict {
-                println!("  🛑 Pipeline Status: FAILED (--strict mode requires 100% typed contracts)");
-                println!("     Run `sajimora doctor` to view exact type annotations needed to reach 100%.");
+            if args.strict || (has_blockers && args.fail_on_violation) {
+                println!("  🛑 Pipeline Status: FAILED (Inconclusive evidence in blocking mode)");
                 println!("════════════════════════════════════════════════════════════════════════════════\n");
                 Ok(3)
+            } else if has_blockers {
+                println!("  ⚠️ Pipeline Status: INCONCLUSIVE (Analysis Blocked)");
+                println!("     Contract extraction could not prove compatibility due to incomplete evidence.");
+                println!("════════════════════════════════════════════════════════════════════════════════\n");
+                Ok(0)
             } else {
-                println!("  🎯 Pipeline Status: PASS (Build & Release Admissible)");
+                println!("  🎯 Pipeline Status: PASS (Advisory Mode)");
                 println!("     Zero breaking changes detected between backend REST and frontend clients.");
                 if unresolved > 0 {
                     println!("     💡 ProTip: Add TypeScript interfaces to the {} untyped call sites to reach 100% coverage.", unresolved);
@@ -1037,6 +1056,46 @@ fn detect_backend_changes(repo_root: &Path, backend_path: &Path) -> bool {
     } else {
         rel_backend_str
     };
+
+    // 0. Check whether HEAD has moved past the baseline commit in Git history
+    if let Ok(out) = std::process::Command::new("git")
+        .args(["log", "-n", "1", "--format=%H", "--", ".sajimora/backend-contract.json"])
+        .current_dir(repo_root)
+        .output()
+    {
+        if out.status.success() {
+            let base_commit = String::from_utf8_lossy(&out.stdout).trim().to_string();
+            if !base_commit.is_empty() {
+                // If HEAD has commits past the baseline, diff between base_commit and HEAD
+                if let Ok(diff_out) = std::process::Command::new("git")
+                    .args(["diff", "--name-only", &base_commit, "HEAD", "--", &target_arg])
+                    .current_dir(repo_root)
+                    .output()
+                {
+                    if diff_out.status.success() {
+                        let stdout = String::from_utf8_lossy(&diff_out.stdout);
+                        for line in stdout.lines() {
+                            let trimmed = line.trim();
+                            if is_provider_input(trimmed) {
+                                return true;
+                            }
+                        }
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                // Baseline contract is uncommitted; must perform full extraction
+                return true;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
 
     // 1. Check working tree & staged modifications against HEAD
     if let Ok(out) = std::process::Command::new("git")

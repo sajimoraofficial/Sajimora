@@ -55,9 +55,16 @@ async fn main() -> anyhow::Result<()> {
     let server_handler = SajimoraMcpServer::new(config);
     let server = server_handler.serve(rmcp::transport::stdio()).await?;
 
-    // Wait until client disconnects (stdin EOF) or server closes
-    if let Err(e) = server.waiting().await {
-        eprintln!("sajimora-mcp: session ended: {}", e);
+    // Wait until client disconnects (stdin EOF), server closes, or SIGINT received
+    tokio::select! {
+        res = server.waiting() => {
+            if let Err(e) = res {
+                eprintln!("sajimora-mcp: session ended: {}", e);
+            }
+        }
+        _ = tokio::signal::ctrl_c() => {
+            eprintln!("sajimora-mcp: received interrupt signal (SIGINT), shutting down");
+        }
     }
 
     eprintln!("sajimora-mcp: server exited cleanly");
