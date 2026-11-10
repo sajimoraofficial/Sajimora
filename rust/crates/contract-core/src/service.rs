@@ -172,6 +172,7 @@ pub fn run_check_contract_service(
         &base,
         &candidate,
         &targets,
+        base_targets.as_deref(),
         trust_policy_path.as_deref(),
         req.trusted_local,
         max_bytes,
@@ -258,6 +259,7 @@ pub fn run_check_contract_envelope_service(
         &base,
         &candidate,
         &targets,
+        base_targets.as_deref(),
         trust_policy_path.as_deref(),
         trusted_local,
         max_bytes,
@@ -294,6 +296,7 @@ fn resolve_policy(
     base: &ContractArtifactEnvelope,
     candidate: &ContractArtifactEnvelope,
     targets: &[ContractArtifactEnvelope],
+    base_targets: Option<&[ContractArtifactEnvelope]>,
     trust_policy_path: Option<&Path>,
     trusted_local: bool,
     max_bytes: usize,
@@ -342,6 +345,21 @@ fn resolve_policy(
             environments: None,
             signature_format: None,
         });
+    }
+    if let Some(bts) = base_targets {
+        for target in bts {
+            producers.push(crate::admission::TrustedProducer {
+                repository_id: target.snapshot.repository_id.clone(),
+                service_id: target.snapshot.service_id.clone(),
+                public_key_pem: None,
+                trusted_digests: None,
+                public_key_id: None,
+                public_key_der_hex: None,
+                valid_until: None,
+                environments: None,
+                signature_format: None,
+            });
+        }
     }
     Ok(ArtifactTrustPolicy {
         producers,

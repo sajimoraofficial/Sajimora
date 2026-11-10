@@ -156,6 +156,9 @@ pub fn run(args: RunArgs) -> i32 {
     let base = work.join("backend-contract.json");
     let candidate = work.join("candidate-contract.json");
     let frontend_file = work.join("frontend-contract.json");
+    let cand_frontend_file = work.join(".tmp-extract/candidate-frontend-contract.json");
+    let mut base_frontend_file: Option<PathBuf> = None;
+    let mut cand_extracted_file: Option<PathBuf> = None;
     let source_root = if (provider == ProviderKind::Spring || provider == ProviderKind::JaxRs)
         && backend.join("src/main/java").is_dir()
     {
@@ -197,6 +200,14 @@ pub fn run(args: RunArgs) -> i32 {
         }
         backend_fresh = true;
         if let Some(root) = &frontend {
+            let target_out = if frontend_file.is_file() && source_index::discovery::detect_frontend_changes(&repo) {
+                let _ = fs::create_dir_all(work.join(".tmp-extract"));
+                base_frontend_file = Some(frontend_file.clone());
+                cand_extracted_file = Some(cand_frontend_file.clone());
+                cand_frontend_file.clone()
+            } else {
+                frontend_file.clone()
+            };
             let out =
                 crate::extract_frontend::run_inner(crate::extract_frontend::ExtractFrontendArgs {
                     repo: repo.clone(),
@@ -204,9 +215,9 @@ pub fn run(args: RunArgs) -> i32 {
                     target_service_id: Some(service_id.into()),
                     ts_root: Some(root.clone()),
                     parent: "HEAD".into(),
-                    out: frontend_file.clone(),
+                    out: target_out,
                 })?;
-            let envelope = parse_envelope(&fs::read(out)?)?;
+            let envelope = parse_envelope(&fs::read(&out)?)?;
             if let ArtifactPayload::Frontend(payload) = envelope.payload {
                 calls = payload.client_contracts.len();
             }
@@ -239,11 +250,16 @@ pub fn run(args: RunArgs) -> i32 {
     let mut comparison_status = "SKIPPED";
     let mut comparison_error = None;
     if extracted && backend_fresh && frontend_fresh {
+        let (targets, base_targets) = if let Some(ref cand) = cand_extracted_file {
+            (vec![cand.clone()], base_frontend_file.clone().map(|b| vec![b]))
+        } else {
+            (vec![frontend_file.clone()], None)
+        };
         match run_check_contract_service(CheckContractServiceRequest {
             base_path: base.clone(),
             candidate_path: candidate.clone(),
-            target_paths: vec![frontend_file.clone()],
-            base_target_paths: None,
+            target_paths: targets,
+            base_target_paths: base_targets,
             trust_policy_path: None,
             trusted_local: true,
             require_service_mapping: false,
@@ -263,7 +279,14 @@ pub fn run(args: RunArgs) -> i32 {
                     .as_ref()
                     .map_or(breaking, |delta| delta.new_findings.len());
                 let (status, value) = match report.verdict {
-                    CrossLanguageVerdict::LikelyPreserved => ("PASS", "LIKELY_PRESERVED"),
+                    CrossLanguageVerdict::LikelyPreserved => {
+                        if let Some(ref cand) = cand_extracted_file {
+                            if cand.is_file() {
+                                let _ = fs::copy(cand, &frontend_file);
+                            }
+                        }
+                        ("PASS", "LIKELY_PRESERVED")
+                    }
                     CrossLanguageVerdict::LikelyViolated => ("VIOLATION", "LIKELY_VIOLATED"),
                     CrossLanguageVerdict::Inconclusive => ("INCONCLUSIVE", "INCONCLUSIVE"),
                     CrossLanguageVerdict::AnalysisError => ("ERROR", "ANALYSIS_ERROR"),

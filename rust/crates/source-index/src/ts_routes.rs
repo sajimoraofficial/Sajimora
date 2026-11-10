@@ -8746,3 +8746,137 @@ fn walk_ts(
 
     Ok(())
 }
+
+pub fn merge_frontend_payload(into: &mut FrontendContractPayload, from: FrontendContractPayload) {
+    into.client_contracts.extend(from.client_contracts);
+    into.client_contracts.sort_by(|a, b| {
+        a.target_service_id
+            .cmp(&b.target_service_id)
+            .then(a.normalized_route.cmp(&b.normalized_route))
+            .then(a.http_method.cmp(&b.http_method))
+            .then(a.source_file.cmp(&b.source_file))
+            .then(a.source_line.cmp(&b.source_line))
+    });
+
+    if let Some(from_pool) = from.type_pool {
+        let pool = into
+            .type_pool
+            .get_or_insert_with(std::collections::BTreeMap::new);
+        for (name, wire) in from_pool {
+            pool.entry(name).or_insert(wire);
+        }
+    }
+
+    if let Some(from_paths) = from.path_pool {
+        let paths = into.path_pool.get_or_insert_with(Vec::new);
+        paths.extend(from_paths);
+        paths.sort();
+        paths.dedup();
+    }
+}
+
+pub fn merge_completeness(
+    mut left: ArtifactCompleteness,
+    right: ArtifactCompleteness,
+) -> ArtifactCompleteness {
+    let complete = left.complete && right.complete;
+    left.blockers.extend(right.blockers);
+    left.blockers
+        .sort_by(|a, b| (&a.file, &a.code, &a.message).cmp(&(&b.file, &b.code, &b.message)));
+    left.blockers
+        .dedup_by(|a, b| a.code == b.code && a.message == b.message && a.file == b.file);
+    left.unresolved_endpoints.extend(right.unresolved_endpoints);
+    left.unresolved_endpoints.sort();
+    left.unresolved_endpoints.dedup();
+    ArtifactCompleteness {
+        complete: complete && left.blockers.is_empty() && left.unresolved_endpoints.is_empty(),
+        unresolved_endpoints: left.unresolved_endpoints,
+        blockers: left.blockers,
+    }
+}
+
+pub fn build_merged_frontend_envelope(
+    payload: FrontendContractPayload,
+    completeness: ArtifactCompleteness,
+    service_id: &str,
+    revision: &str,
+    client_profile: &str,
+    config_fingerprint: Option<String>,
+) -> Result<ContractArtifactEnvelope> {
+    let envelope = ContractArtifactEnvelope {
+        envelope_version: ARTIFACT_ENVELOPE_VERSION_V2.to_string(),
+        report_schema_version: SCHEMA_VERSION.to_string(),
+        kind: ArtifactKind::FrontendContract,
+        snapshot: ArtifactSnapshotRef {
+            repository_id: format!("git-root:{service_id}"),
+            service_id: service_id.to_string(),
+            api_version: None,
+            parent_commit: revision.to_string(),
+            candidate_snapshot: revision.to_string(),
+            deployment_id: None,
+            environment: None,
+        },
+        profile: ExtractionProfile {
+            tool_version: "0.1.0".to_string(),
+            framework_profile: None,
+            codec_profile: None,
+            client_profile: Some(client_profile.to_string()),
+            config_fingerprint,
+        },
+        completeness,
+        signature: None,
+        issued_at_unix: None,
+        payload: ArtifactPayload::Frontend(payload),
+        integrity: None,
+        raw_value: None,
+    };
+    seal_envelope(envelope)
+}
+
+pub fn extract_frontend_envelope(
+    repo_path: &Path,
+    scan_dir: &Path,
+    service_id: &str,
+    target_service_id: &str,
+    revision: &str,
+) -> Result<ContractArtifactEnvelope> {
+    if crate::provider::has_java_source(scan_dir) {
+        if let Ok(java_extractor) =
+            crate::java_routes::JavaRouteExtractor::new(repo_path.to_path_buf(), scan_dir)
+        {
+            if java_extractor.has_client_evidence() {
+                let ts_extractor = TypeScriptRouteExtractor::new(repo_path.to_path_buf(), scan_dir)?;
+                let (mut payload, ts_completeness) =
+                    ts_extractor.extract_payload(service_id, target_service_id);
+                let ts_contracts = payload.client_contracts.len();
+                let java_config = java_extractor.config_fingerprint().to_string();
+                let (java_payload, java_completeness) =
+                    java_extractor.extract_client_payload(service_id, target_service_id);
+                let java_contracts = java_payload.client_contracts.len();
+                merge_frontend_payload(&mut payload, java_payload);
+                let completeness = merge_completeness(ts_completeness, java_completeness);
+                let (profile, fingerprint) = if java_contracts > 0 && ts_contracts == 0 {
+                    ("JAVA_HTTP_CLIENT", Some(java_config))
+                } else if java_contracts > 0 && ts_contracts > 0 {
+                    (
+                        "JAVA_AND_TYPESCRIPT",
+                        Some("mixed:native-ts-fast".to_string()),
+                    )
+                } else {
+                    ("STATIC_FETCH_V1", Some("native-ts-fast".to_string()))
+                };
+                return build_merged_frontend_envelope(
+                    payload,
+                    completeness,
+                    service_id,
+                    revision,
+                    profile,
+                    fingerprint,
+                );
+            }
+        }
+    }
+
+    let extractor = TypeScriptRouteExtractor::new(repo_path.to_path_buf(), scan_dir)?;
+    extractor.build_envelope(service_id, target_service_id, revision)
+}

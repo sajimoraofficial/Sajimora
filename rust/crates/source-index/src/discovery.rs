@@ -12,6 +12,7 @@
 //! named in the rejections so the missing evidence is visible (see `Step C`).
 
 use anyhow::Result;
+use crate::provider::ProviderKind;
 use contract_core::envelope::{parse_envelope, ContractArtifactEnvelope};
 use contract_core::service::{
     read_bounded, validate_path_under_roots, DEFAULT_MAX_ARTIFACT_BYTES,
@@ -372,4 +373,133 @@ pub fn provenance_json(discovery: &Discovery) -> Vec<Value> {
             })
         })
         .collect()
+}
+
+pub fn score_frontend_candidate(dir: &Path) -> u32 {
+    if dir.join("package.json").exists() {
+        let pkind = ProviderKind::detect_on_disk(dir);
+        if pkind == ProviderKind::NestJs || pkind == ProviderKind::NextJs || pkind == ProviderKind::Express {
+            return 0;
+        }
+    }
+    let pkg_path = dir.join("package.json");
+    let mut score = 1;
+
+    let name = dir
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("")
+        .to_lowercase();
+    if name.contains("ui")
+        || name.contains("frontend")
+        || name.contains("client")
+        || name.contains("web")
+        || name.contains("spa")
+    {
+        score += 30;
+    }
+
+    if dir.join("tsconfig.json").exists() {
+        score += 15;
+    }
+
+    if let Ok(content) = fs::read_to_string(&pkg_path) {
+        let lower = content.to_lowercase();
+        if lower.contains("@angular")
+            || lower.contains("react")
+            || lower.contains("vue")
+            || lower.contains("svelte")
+            || lower.contains("next")
+            || lower.contains("vite")
+            || lower.contains("nuxt")
+        {
+            score += 50;
+        }
+        if lower.contains("axios") || lower.contains("fetch") {
+            score += 10;
+        }
+    }
+
+    score
+}
+
+pub fn detect_frontend(repo_root: &Path) -> Option<PathBuf> {
+    let mut candidates = Vec::new();
+
+    // Check top-level directories and nested project directories
+    if let Ok(entries) = fs::read_dir(repo_root) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                let name = path.file_name().and_then(|n| n.to_str()).unwrap_or("");
+                if name.starts_with('.')
+                    || name == "node_modules"
+                    || name == "target"
+                    || name == "build"
+                    || name == "dist"
+                {
+                    continue;
+                }
+
+                if path.join("package.json").exists() {
+                    let score = score_frontend_candidate(&path);
+                    candidates.push((score, path.clone()));
+                }
+
+                // Check nested directories (e.g. apps/web, packages/client, ui/frontend)
+                if let Ok(sub_entries) = fs::read_dir(&path) {
+                    for sub in sub_entries.flatten() {
+                        let sub_path = sub.path();
+                        if sub_path.is_dir() {
+                            let sub_name =
+                                sub_path.file_name().and_then(|n| n.to_str()).unwrap_or("");
+                            if sub_name.starts_with('.')
+                                || sub_name == "node_modules"
+                                || sub_name == "target"
+                                || sub_name == "dist"
+                            {
+                                continue;
+                            }
+                            if sub_path.join("package.json").exists() {
+                                let score = score_frontend_candidate(&sub_path);
+                                candidates.push((score, sub_path));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Also consider root itself if it has package.json and frontend markers
+    if repo_root.join("package.json").exists() {
+        let score = score_frontend_candidate(repo_root);
+        if score > 30 {
+            candidates.push((score, repo_root.to_path_buf()));
+        }
+    }
+
+    candidates.sort_by(|a, b| b.0.cmp(&a.0));
+    candidates.into_iter().next().map(|(_, p)| p)
+}
+
+pub fn detect_frontend_changes(repo_root: &Path) -> bool {
+    if let Ok(out) = std::process::Command::new("git")
+        .args(["status", "--porcelain"])
+        .current_dir(repo_root)
+        .output()
+    {
+        if out.status.success() {
+            let stdout = String::from_utf8_lossy(&out.stdout);
+            return stdout.lines().any(|l| {
+                let path = l.get(3..).unwrap_or("").trim();
+                path.ends_with(".ts")
+                    || path.ends_with(".tsx")
+                    || path.ends_with(".js")
+                    || path.ends_with(".jsx")
+                    || path.ends_with(".html")
+            });
+        }
+    }
+    false
 }

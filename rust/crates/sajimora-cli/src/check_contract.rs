@@ -23,6 +23,9 @@ pub struct CheckContractArgs {
     /// Target artifact JSON file path(s) or remote HTTP/HTTPS URL(s). May be specified multiple times.
     #[arg(long = "target", required = true)]
     pub targets: Vec<String>,
+    /// Base target artifact JSON file path(s) or remote HTTP/HTTPS URL(s) for bidirectional differential ratcheting.
+    #[arg(long = "base-target")]
+    pub base_targets: Vec<String>,
     /// Trust policy JSON file path.
     #[arg(long, conflicts_with = "trusted_local")]
     pub trust_policy: Option<PathBuf>,
@@ -438,12 +441,22 @@ fn run_inner(
         let resolved = crate::remote::resolve_contract_path(t, &cwd, &cache_dir)?;
         target_paths.push(resolved);
     }
+    let mut base_target_paths = Vec::with_capacity(args.base_targets.len());
+    for t in &args.base_targets {
+        let resolved = crate::remote::resolve_contract_path(t, &cwd, &cache_dir)?;
+        base_target_paths.push(resolved);
+    }
+    let base_targets_opt = if base_target_paths.is_empty() {
+        None
+    } else {
+        Some(base_target_paths)
+    };
 
     let report = run_check_contract_service(CheckContractServiceRequest {
         base_path: args.base,
         candidate_path: args.candidate,
         target_paths: target_paths.clone(),
-        base_target_paths: None,
+        base_target_paths: base_targets_opt,
         trust_policy_path: args.trust_policy,
         trusted_local: args.trusted_local,
         require_service_mapping: args.require_service_mapping,

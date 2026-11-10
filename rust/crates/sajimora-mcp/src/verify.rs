@@ -7,7 +7,7 @@
 //! they name.
 
 use anyhow::{anyhow, Context, Result};
-use contract_core::envelope::{parse_envelope, ContractArtifactEnvelope};
+use contract_core::envelope::{parse_envelope, ArtifactKind, ContractArtifactEnvelope};
 use contract_core::report::{
     make_error_report, make_inconclusive_report, AnalysisBlocker, BlockerCode,
     CrossLanguageImpactReport, CrossLanguageVerdict, SnapshotIdentity,
@@ -276,7 +276,7 @@ pub fn run(
         .iter()
         .map(|(entry, _)| entry.clone())
         .collect();
-    let targets: Vec<ContractArtifactEnvelope> = found
+    let mut targets: Vec<ContractArtifactEnvelope> = found
         .contracts
         .iter()
         .map(|(_, envelope)| envelope.clone())
@@ -293,11 +293,60 @@ pub fn run(
         })
         .collect();
 
+    let mut base_targets: Option<Vec<ContractArtifactEnvelope>> = None;
+
+    if request.revision_mode != RevisionMode::CommitRange && discovery::detect_frontend_changes(&repo_root) {
+        let fe_dir_opt = manifest
+            .get("roots")
+            .and_then(|roots| manifest_root(roots, "frontend_root", "frontendRoot"))
+            .map(|value| repo_root.join(value.replace('\\', "/")))
+            .filter(|p| p.is_dir())
+            .or_else(|| discovery::detect_frontend(&repo_root));
+
+        if let Some(fe_dir) = fe_dir_opt {
+            let fe_service_id = targets
+                .iter()
+                .find(|t| t.kind == ArtifactKind::FrontendContract)
+                .map(|t| t.snapshot.service_id.clone())
+                .unwrap_or_else(|| {
+                    std::fs::read_to_string(fe_dir.join("package.json"))
+                        .ok()
+                        .and_then(|c| serde_json::from_str::<Value>(&c).ok())
+                        .and_then(|v| v.get("name").and_then(|n| n.as_str()).map(ToString::to_string))
+                        .unwrap_or_else(|| "frontend-service".to_string())
+                });
+
+            if let Ok(cand_envelope) = source_index::ts_routes::extract_frontend_envelope(
+                &repo_root,
+                &fe_dir,
+                &fe_service_id,
+                &service_id,
+                "HEAD",
+            ) {
+                base_targets = Some(targets.clone());
+                let single_target = targets.len() == 1;
+                let mut replaced = false;
+                for t in targets.iter_mut() {
+                    if t.kind == ArtifactKind::FrontendContract
+                        && (t.snapshot.service_id == fe_service_id || single_target)
+                    {
+                        *t = cand_envelope.clone();
+                        replaced = true;
+                        break;
+                    }
+                }
+                if !replaced {
+                    targets.push(cand_envelope);
+                }
+            }
+        }
+    }
+
     let report = run_check_contract_envelope_service(CheckContractEnvelopeRequest {
         base,
         candidate,
         targets,
-        base_targets: None,
+        base_targets,
         trust_policy_path: trust_policy_path.map(Path::to_path_buf),
         trusted_local,
         require_service_mapping,

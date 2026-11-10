@@ -5,12 +5,6 @@
 
 use anyhow::{anyhow, Result};
 use clap::Args;
-use contract_core::envelope::{
-    seal_envelope, ArtifactCompleteness, ArtifactKind, ArtifactPayload, ArtifactSnapshotRef,
-    ContractArtifactEnvelope, ExtractionProfile, FrontendContractPayload,
-    ARTIFACT_ENVELOPE_VERSION_V2,
-};
-use contract_core::report::SCHEMA_VERSION;
 use std::fs;
 use std::path::PathBuf;
 
@@ -112,154 +106,17 @@ pub fn run_inner(args: ExtractFrontendArgs) -> Result<PathBuf> {
         }
     }
 
-    let envelope = if source_index::provider::has_java_source(&scan_dir) {
-        if let Ok(java_extractor) =
-            source_index::java_routes::JavaRouteExtractor::new(repo_path.clone(), &scan_dir)
-        {
-            if java_extractor.has_client_evidence() {
-                eprintln!(
-                    "Detected Java HTTP client evidence (declarative interfaces or imperative RestTemplate/WebClient/RestClient/OkHttp/java.net.http/Jersey calls); merging with TypeScript consumers"
-                );
-                let ts_extractor = source_index::ts_routes::TypeScriptRouteExtractor::new(
-                    repo_path.clone(),
-                    &scan_dir,
-                )?;
-                let (mut payload, ts_completeness) =
-                    ts_extractor.extract_payload(&service_id, &target_service_id);
-                let ts_contracts = payload.client_contracts.len();
-                let java_config = java_extractor.config_fingerprint().to_string();
-                let (java_payload, java_completeness) =
-                    java_extractor.extract_client_payload(&service_id, &target_service_id);
-                let java_contracts = java_payload.client_contracts.len();
-                merge_frontend_payload(&mut payload, java_payload);
-                let completeness = merge_completeness(ts_completeness, java_completeness);
-                let (profile, fingerprint) = if java_contracts > 0 && ts_contracts == 0 {
-                    ("JAVA_HTTP_CLIENT", Some(java_config))
-                } else if java_contracts > 0 && ts_contracts > 0 {
-                    (
-                        "JAVA_AND_TYPESCRIPT",
-                        Some("mixed:native-ts-fast".to_string()),
-                    )
-                } else {
-                    ("STATIC_FETCH_V1", Some("native-ts-fast".to_string()))
-                };
-                build_merged_frontend_envelope(
-                    payload,
-                    completeness,
-                    &service_id,
-                    &args.parent,
-                    profile,
-                    fingerprint,
-                )?
-            } else {
-                let extractor = source_index::ts_routes::TypeScriptRouteExtractor::new(
-                    repo_path.clone(),
-                    &scan_dir,
-                )?;
-                extractor.build_envelope(&service_id, &target_service_id, &args.parent)?
-            }
-        } else {
-            let extractor = source_index::ts_routes::TypeScriptRouteExtractor::new(
-                repo_path.clone(),
-                &scan_dir,
-            )?;
-            extractor.build_envelope(&service_id, &target_service_id, &args.parent)?
-        }
-    } else {
-        let extractor =
-            source_index::ts_routes::TypeScriptRouteExtractor::new(repo_path.clone(), &scan_dir)?;
-        extractor.build_envelope(&service_id, &target_service_id, &args.parent)?
-    };
+    let envelope = source_index::ts_routes::extract_frontend_envelope(
+        &repo_path,
+        &scan_dir,
+        &service_id,
+        &target_service_id,
+        &args.parent,
+    )?;
     if let Some(parent) = args.out.parent() {
         fs::create_dir_all(parent)?;
     }
     let json = serde_json::to_string_pretty(&envelope)?;
     fs::write(&args.out, json)?;
     Ok(args.out)
-}
-
-fn merge_frontend_payload(into: &mut FrontendContractPayload, from: FrontendContractPayload) {
-    into.client_contracts.extend(from.client_contracts);
-    into.client_contracts.sort_by(|a, b| {
-        a.target_service_id
-            .cmp(&b.target_service_id)
-            .then(a.normalized_route.cmp(&b.normalized_route))
-            .then(a.http_method.cmp(&b.http_method))
-            .then(a.source_file.cmp(&b.source_file))
-            .then(a.source_line.cmp(&b.source_line))
-    });
-
-    if let Some(from_pool) = from.type_pool {
-        let pool = into
-            .type_pool
-            .get_or_insert_with(std::collections::BTreeMap::new);
-        for (name, wire) in from_pool {
-            pool.entry(name).or_insert(wire);
-        }
-    }
-
-    if let Some(from_paths) = from.path_pool {
-        let paths = into.path_pool.get_or_insert_with(Vec::new);
-        paths.extend(from_paths);
-        paths.sort();
-        paths.dedup();
-    }
-}
-
-fn merge_completeness(
-    mut left: ArtifactCompleteness,
-    right: ArtifactCompleteness,
-) -> ArtifactCompleteness {
-    let complete = left.complete && right.complete;
-    left.blockers.extend(right.blockers);
-    left.blockers
-        .sort_by(|a, b| (&a.file, &a.code, &a.message).cmp(&(&b.file, &b.code, &b.message)));
-    left.blockers
-        .dedup_by(|a, b| a.code == b.code && a.message == b.message && a.file == b.file);
-    left.unresolved_endpoints.extend(right.unresolved_endpoints);
-    left.unresolved_endpoints.sort();
-    left.unresolved_endpoints.dedup();
-    ArtifactCompleteness {
-        complete: complete && left.blockers.is_empty() && left.unresolved_endpoints.is_empty(),
-        unresolved_endpoints: left.unresolved_endpoints,
-        blockers: left.blockers,
-    }
-}
-
-fn build_merged_frontend_envelope(
-    payload: FrontendContractPayload,
-    completeness: ArtifactCompleteness,
-    service_id: &str,
-    revision: &str,
-    client_profile: &str,
-    config_fingerprint: Option<String>,
-) -> Result<ContractArtifactEnvelope> {
-    let envelope = ContractArtifactEnvelope {
-        envelope_version: ARTIFACT_ENVELOPE_VERSION_V2.to_string(),
-        report_schema_version: SCHEMA_VERSION.to_string(),
-        kind: ArtifactKind::FrontendContract,
-        snapshot: ArtifactSnapshotRef {
-            repository_id: format!("git-root:{service_id}"),
-            service_id: service_id.to_string(),
-            api_version: None,
-            parent_commit: revision.to_string(),
-            candidate_snapshot: revision.to_string(),
-            deployment_id: None,
-            environment: None,
-        },
-        profile: ExtractionProfile {
-            tool_version: "0.1.0".to_string(),
-            framework_profile: None,
-            codec_profile: None,
-            client_profile: Some(client_profile.to_string()),
-            config_fingerprint,
-        },
-        completeness,
-        signature: None,
-        issued_at_unix: None,
-        payload: ArtifactPayload::Frontend(payload),
-        integrity: None,
-        raw_value: None,
-    };
-    seal_envelope(envelope)
 }

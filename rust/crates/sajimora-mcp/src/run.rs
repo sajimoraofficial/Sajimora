@@ -111,6 +111,7 @@ pub fn run_pipeline(allowed_roots: &[PathBuf], args: &Map<String, Value>) -> Res
     let base_contract = sajimora_dir.join("backend-contract.json");
     let candidate_contract = sajimora_dir.join("candidate-contract.json");
     let frontend_contract = sajimora_dir.join("frontend-contract.json");
+    let cand_frontend_contract = sajimora_dir.join(".tmp-extract/candidate-frontend-contract.json");
 
     let candidate_path = if candidate_contract.exists() {
         candidate_contract
@@ -122,12 +123,20 @@ pub fn run_pipeline(allowed_roots: &[PathBuf], args: &Map<String, Value>) -> Res
     let mut breaking_count = 0;
     let mut findings_sample = Vec::new();
 
-    if base_contract.exists() && frontend_contract.exists() {
+    if base_contract.exists() && (frontend_contract.exists() || cand_frontend_contract.exists()) {
+        let (target_paths, base_target_paths) = if cand_frontend_contract.exists() && frontend_contract.exists() {
+            (vec![cand_frontend_contract], Some(vec![frontend_contract]))
+        } else if cand_frontend_contract.exists() {
+            (vec![cand_frontend_contract], None)
+        } else {
+            (vec![frontend_contract], None)
+        };
+
         let check_req = contract_core::service::CheckContractServiceRequest {
             base_path: base_contract,
             candidate_path,
-            target_paths: vec![frontend_contract],
-            base_target_paths: None,
+            target_paths,
+            base_target_paths,
             trust_policy_path: None,
             trusted_local: true,
             require_service_mapping: false,

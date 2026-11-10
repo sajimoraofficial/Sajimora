@@ -1081,21 +1081,5 @@ fn detect_backend_changes(repo_root: &Path, backend_path: &Path) -> bool {
 }
 
 fn detect_frontend_changes(repo_root: &Path) -> bool {
-    if let Ok(out) = std::process::Command::new("git")
-        .args(["status", "--porcelain"])
-        .current_dir(repo_root)
-        .output()
-    {
-        if out.status.success() {
-            let stdout = String::from_utf8_lossy(&out.stdout);
-            return stdout.lines().any(|l| {
-                let path = l.get(3..).unwrap_or("").trim();
-                path.ends_with(".ts")
-                    || path.ends_with(".tsx")
-                    || path.ends_with(".js")
-                    || path.ends_with(".jsx")
-            });
-        }
-    }
-    false
+    source_index::discovery::detect_frontend_changes(repo_root)
 }

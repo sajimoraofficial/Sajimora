@@ -596,6 +596,25 @@ impl SajimoraMcpServer {
             }
         };
 
+        let base_targets = match args.get("baseTargets").and_then(|v| v.as_array()) {
+            Some(arr) if !arr.is_empty() => {
+                let mut list = Vec::new();
+                for item in arr {
+                    if let Some(s) = item.as_str() {
+                        if !s.is_empty() {
+                            list.push(PathBuf::from(s));
+                        }
+                    }
+                }
+                if list.is_empty() {
+                    None
+                } else {
+                    Some(list)
+                }
+            }
+            _ => None,
+        };
+
         // An empty string means "no telemetry", matching the CLI default.
         let telemetry_path = match args.get("telemetry").and_then(|v| v.as_str()) {
             Some(s) if !s.is_empty() => Some(PathBuf::from(s)),
@@ -615,7 +634,7 @@ impl SajimoraMcpServer {
             base_path: base,
             candidate_path: candidate,
             target_paths: targets,
-            base_target_paths: None,
+            base_target_paths: base_targets,
             trust_policy_path: self.config.trust_policy_path.clone(),
             trusted_local: self.config.trusted_local,
             require_service_mapping: self.config.require_service_mapping,
@@ -1007,6 +1026,7 @@ fn format_mcp_report(serialized: &str, full: bool) -> String {
         "schemaVersion": report["schemaVersion"], "assurance": report["assurance"],
         "verdict": report["verdict"], "repository": report["repository"],
         "scope": report["scope"], "counts": report["counts"], "findings": findings,
+        "delta": report.get("delta").cloned().unwrap_or(serde_json::Value::Null),
         "unresolvedBlockerCount": blockers, "detail": "summary",
         "notice": "Advisory findings, not scoped proofs. Omitted blockers are not compatibility; request detail=full for all details."
     });
