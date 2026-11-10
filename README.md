@@ -7,7 +7,7 @@
 *The LLM Proposes. Sajimora Verifies.*
 
 [![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg?style=flat-square)](https://github.com/sajimoraofficial/sajimora/releases)
-[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-Proprietary-red.svg?style=flat-square)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2021_edition-orange.svg?style=flat-square)](https://www.rust-lang.org)
 [![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-purple.svg?style=flat-square)](https://modelcontextprotocol.io)
 [![npm](https://img.shields.io/badge/npm-sajimora-CB3837.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/sajimora)
@@ -230,5 +230,11 @@ Add this 4-line step to your `.github/workflows/ci.yml`:
 
 ## 📄 License
 
-Licensed under the [Apache License, Version 2.0](LICENSE).  
-Copyright © 2026 **Sajimora Team** (`dev@sajimora.com`) • [sajimora.com](https://sajimora.com).
+Sajimora is proprietary software licensed under the **[Sajimora Software License Agreement](LICENSE)**:
+* **Evaluation & Beta Testing:** Free for non-commercial personal evaluation, testing, and authorized beta usage.
+* **Commercial & Production CI/CD:** Continuous integration, deployment gates, or organizational commercial use requires an active paid commercial subscription or express written authorization from Sajimora.
+* **Redistribution Restrictions:** Sublicensing, reselling, hosting, or creating derivative works for commercial exploitation is strictly prohibited.
+
+Bundled third-party open-source components remain licensed under their respective open-source licenses as documented in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
+Copyright © 2026 **Sajimora Team** (`dev@sajimora.com`) • [sajimora.com](https://sajimora.com). All rights reserved.
