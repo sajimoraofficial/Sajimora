@@ -98,8 +98,8 @@ Add to your **`.cursor/mcp.json`** or **`claude_desktop_config.json`**:
 {
   "mcpServers": {
     "sajimora": {
-      "command": "sajimora-mcp",
-      "args": ["--trusted-local", "--allowed-root", "."]
+      "command": "npx",
+      "args": ["-y", "sajimora-mcp", "--allowed-root", "."]
     }
   }
 }
