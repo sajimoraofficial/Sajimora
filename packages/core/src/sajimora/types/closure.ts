@@ -57,6 +57,13 @@ export function normalizePath(filePath: string): string {
   if (!filePath) return '';
   // Strip BOM (U+FEFF) that some editors prepend to UTF-8 files.
   let clean = filePath.charCodeAt(0) === 0xfeff ? filePath.slice(1) : filePath;
+  // If it is a Windows absolute path (e.g. C:/ or c:\) on POSIX, do not path.resolve against POSIX CWD
+  if (/^[a-zA-Z]:[/\\]/.test(clean)) {
+    clean = clean.replace(/\\/g, '/');
+    clean = clean.replace(/\/+/g, '/');
+    clean = clean.charAt(0).toLowerCase() + clean.slice(1);
+    return clean;
+  }
   try {
     // path.resolve: makes absolute (if relative, uses CWD), resolves .., normalises.
     // path.normalize: collapses redundant separators (// → /) after resolve in case

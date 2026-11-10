@@ -11,7 +11,7 @@ const https = require('node:https');
 
 const PKG = require('../package.json');
 const VERSION = PKG.version;
-const REPO = 'Jagadeesh-Budda/Sajimora-v0.10';
+const REPO = 'sajimora/sajimora';
 
 const TARGET_MAP = {
   'darwin-arm64': { target: 'aarch64-apple-darwin', ext: 'tar.gz', suffix: '' },

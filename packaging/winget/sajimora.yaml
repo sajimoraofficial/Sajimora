@@ -7,7 +7,7 @@ ShortDescription: High-performance native cross-language API contract gatekeeper
 Installers:
   - Architecture: x64
     InstallerType: zip
-    InstallerUrl: https://github.com/Jagadeesh-Budda/Sajimora-v0.10/releases/download/v0.1.0/sajimora-v0.1.0-x86_64-pc-windows-msvc.zip
+    InstallerUrl: https://github.com/sajimora/sajimora/releases/download/v0.1.0/sajimora-v0.1.0-x86_64-pc-windows-msvc.zip
     NestedInstallerType: portable
     NestedInstallerFiles:
       - RelativeFilePath: sajimora.exe

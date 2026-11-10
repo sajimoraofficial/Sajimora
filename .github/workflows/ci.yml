@@ -49,8 +49,8 @@ jobs:
       - name: Run Advisory CLI & Hook Tests
         run: node scripts/test-runtime/run-tsx.cjs scripts/sajimora/advisoryCli.test.ts
 
-      - name: Run Rust Workspace Tests
-        run: cargo test --manifest-path rust/Cargo.toml
+      - name: Run Rust Workspace Tests & Integration Suites
+        run: cargo test --workspace --tests --manifest-path rust/Cargo.toml
 
       - name: Verify Packaging Tarball (Dry Run)
         run: npm pack --dry-run

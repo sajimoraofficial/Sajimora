@@ -36,7 +36,7 @@ Sajimora is distributed as a standalone native binary for **Windows, macOS, and 
 
 ```powershell
 # In PowerShell (Zero install dependencies)
-irm https://raw.githubusercontent.com/Jagadeesh-Budda/Sajimora-v0.10/main/scripts/install.ps1 | iex
+irm https://raw.githubusercontent.com/sajimora/sajimora/main/scripts/install.ps1 | iex
 
 # Or via Windows Package Manager
 winget install sajimora
@@ -49,13 +49,13 @@ winget install sajimora
 brew install sajimora/tap/sajimora
 
 # Or via curl
-curl -fsSL https://raw.githubusercontent.com/Jagadeesh-Budda/Sajimora-v0.10/main/scripts/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/sajimora/sajimora/main/scripts/install.sh | sh
 ```
 
 ### Linux & CI Runners (GitHub Actions / GitLab CI)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Jagadeesh-Budda/Sajimora-v0.10/main/scripts/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/sajimora/sajimora/main/scripts/install.sh | sh
 ```
 
 ### Node.js / Fullstack Monorepos (Optional)
@@ -72,7 +72,7 @@ Add 3 lines to your `.github/workflows/contract-verify.yml`:
 
 ```yaml
 - name: Verify API Contracts
-  uses: Jagadeesh-Budda/Sajimora-v0.10@main
+  uses: sajimora/sajimora@main
   with:
     fail-on-violation: true
 ```

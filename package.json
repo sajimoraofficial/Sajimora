@@ -6,9 +6,9 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jagadeesh-Budda/Sajimora-v0.10.git"
+    "url": "https://github.com/sajimora/sajimora.git"
   },
-  "homepage": "https://github.com/Jagadeesh-Budda/Sajimora-v0.10#readme",
+  "homepage": "https://github.com/sajimora/sajimora#readme",
   "keywords": [
     "mcp",
     "mcp-server",

@@ -1,11 +1,11 @@
 # Sajimora Windows Native Installer (Zero npm, Zero Node.js)
-# Usage: irm https://raw.githubusercontent.com/Jagadeesh-Budda/Sajimora-v0.10/main/scripts/install.ps1 | iex
+# Usage: irm https://raw.githubusercontent.com/sajimora/sajimora/main/scripts/install.ps1 | iex
 
 $ErrorActionPreference = 'Stop'
 
 Write-Host "=== Installing Sajimora Native API Gatekeeper ===" -ForegroundColor Cyan
 
-$repo = "Jagadeesh-Budda/Sajimora-v0.10"
+$repo = "sajimora/sajimora"
 $tag = "v0.10.0"
 
 try {
