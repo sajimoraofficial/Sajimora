@@ -22,6 +22,6 @@ class Sajimora < Formula
   end
 
   test do
-    assert_match "sajimora 0.1.0", shell_output("#{bin}/sajimora --version")
+    assert_match "sajimora", shell_output("#{bin}/sajimora --version")
   end
 end

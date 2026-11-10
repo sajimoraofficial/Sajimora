@@ -42,7 +42,7 @@ jobs:
         with:
           targets: ${{ matrix.target }}
 
-      - name: Build Release Binary
+      - name: Build Release Binaries
         run: cargo build --release --target ${{ matrix.target }} --manifest-path rust/Cargo.toml
 
       - name: Package Artifacts (Windows)
@@ -53,7 +53,10 @@ jobs:
           cp rust/target/${{ matrix.target }}/release/sajimora${{ matrix.suffix }} staging/
           cp rust/target/${{ matrix.target }}/release/sajimora-mcp${{ matrix.suffix }} staging/
           cp rust/target/${{ matrix.target }}/release/sajimora-source-pilot${{ matrix.suffix }} staging/
-          cd staging && 7z a ../sajimora-${{ github.ref_name }}-${{ matrix.target }}.zip *
+          cd staging
+          7z a ../sajimora-${{ github.ref_name }}-${{ matrix.target }}.zip *
+          cd ..
+          certutil -hashfile sajimora-${{ github.ref_name }}-${{ matrix.target }}.zip SHA256 | findstr -v "hash" | findstr -v "CertUtil" | tr -d " \r\n" > sajimora-${{ github.ref_name }}-${{ matrix.target }}.zip.sha256 || sha256sum sajimora-${{ github.ref_name }}-${{ matrix.target }}.zip > sajimora-${{ github.ref_name }}-${{ matrix.target }}.zip.sha256
 
       - name: Package Artifacts (Unix)
         if: matrix.archive == 'tar.gz'
@@ -64,11 +67,15 @@ jobs:
           cp rust/target/${{ matrix.target }}/release/sajimora-mcp staging/
           cp rust/target/${{ matrix.target }}/release/sajimora-source-pilot staging/
           tar -czvf sajimora-${{ github.ref_name }}-${{ matrix.target }}.tar.gz -C staging .
+          sha256sum sajimora-${{ github.ref_name }}-${{ matrix.target }}.tar.gz > sajimora-${{ github.ref_name }}-${{ matrix.target }}.tar.gz.sha256
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
+          prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'rc') }}
+          generate_release_notes: true
           files: |
             sajimora-${{ github.ref_name }}-${{ matrix.target }}.${{ matrix.archive }}
+            sajimora-${{ github.ref_name }}-${{ matrix.target }}.${{ matrix.archive }}.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

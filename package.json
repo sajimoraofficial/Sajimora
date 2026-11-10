@@ -1,28 +1,46 @@
 {
   "name": "sajimora",
   "version": "0.1.0",
+  "description": "Deterministic cross-language API contract verification and autonomous AST impact engine for Java Spring Boot and TypeScript/Angular/React",
   "private": false,
   "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jagadeesh-Budda/Sajimora-v0.10.git"
+  },
+  "homepage": "https://github.com/Jagadeesh-Budda/Sajimora-v0.10#readme",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "contract-testing",
+    "spring-boot",
+    "typescript",
+    "angular",
+    "react",
+    "ast",
+    "api-diff",
+    "developer-tools"
+  ],
   "engines": {
-    "node": ">=22.5.0",
-    "npm": ">=10.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
-    "dist/",
     "bin/",
+    "packaging/",
     "LICENSE",
     "THIRD-PARTY-NOTICES.md",
-    "README.md"
+    "README.md",
+    "smithery.yaml"
   ],
   "workspaces": [
     "packages/*"
   ],
   "bin": {
     "sajimora": "./bin/sajimora.cjs",
-    "sajimora-v32": "./bin/sajimora.cjs"
+    "sajimora-mcp": "./bin/sajimora-mcp.cjs"
   },
   "scripts": {
-    "prepublishOnly": "npm run build",
     "mcp:scoped": "node scripts/sajimora/mcpServer.cjs",
     "test:mcp:scoped": "node scripts/sajimora/mcpServer.test.cjs",
     "build": "tsc --noEmit --project tsconfig.json && esbuild scripts/sajimora/analyze.ts --bundle --platform=node --target=node20 --format=cjs --outfile=dist/analyze.cjs --external:tree-sitter --external:tree-sitter-java --external:@mapbox/node-pre-gyp --external:node-gyp-build",
