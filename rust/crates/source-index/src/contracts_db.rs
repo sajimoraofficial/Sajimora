@@ -53,23 +53,51 @@ pub fn canonical_route_key(route: &str) -> String {
 /// [`canonical_route_key`] idempotent.
 const PARAM_TOKEN: &str = "*PARAM*";
 
-/// Open or initialize a SQLite writer connection with WAL mode and concurrency pragmas.
-pub fn open_writer(db_path: &Path) -> Result<Connection> {
-    if let Some(parent) = db_path.parent() {
-        fs::create_dir_all(parent)?;
-    }
+fn try_open_and_init(db_path: &Path) -> Result<Connection> {
     let conn = Connection::open(db_path)
         .with_context(|| format!("Cannot open SQLite database at {:?}", db_path))?;
     conn.pragma_update(None, "journal_mode", "WAL")?;
     conn.pragma_update(None, "synchronous", "NORMAL")?;
     conn.pragma_update(None, "busy_timeout", 5000)?;
     conn.pragma_update(None, "mmap_size", 67108864)?; // 64 MB OS mmap cache
+
+    // Verify integrity of existing database file
+    let integrity: Result<String, _> = conn.query_row("PRAGMA integrity_check(1)", [], |r| r.get(0));
+    if let Ok(ref status) = integrity {
+        if status != "ok" {
+            bail!("SQLite integrity check failed: {}", status);
+        }
+    }
+
     if schema_version(&conn).unwrap_or(0) != SCHEMA_VERSION {
         reset_schema(&conn)?;
     }
     init_schema(&conn)?;
     conn.pragma_update(None, "user_version", SCHEMA_VERSION)?;
     Ok(conn)
+}
+
+/// Open or initialize a SQLite writer connection with WAL mode and concurrency pragmas.
+/// If the database cache file is corrupted (e.g. truncated page, uncommitted power loss),
+/// it automatically triggers safe self-healing recovery by clearing invalid state.
+pub fn open_writer(db_path: &Path) -> Result<Connection> {
+    if let Some(parent) = db_path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+
+    match try_open_and_init(db_path) {
+        Ok(conn) => Ok(conn),
+        Err(e) if db_path.exists() => {
+            // Self-healing: contracts.db is a rebuildable local cache.
+            // Power loss or page truncation must not permanently lock the user out.
+            eprintln!("[sajimora] Warning: Corrupted contracts database detected ({e}). Rebuilding clean cache.");
+            let _ = fs::remove_file(db_path);
+            let _ = fs::remove_file(format!("{}-wal", db_path.display()));
+            let _ = fs::remove_file(format!("{}-shm", db_path.display()));
+            try_open_and_init(db_path)
+        }
+        Err(e) => Err(e),
+    }
 }
 
 fn schema_version(conn: &Connection) -> Result<i32> {

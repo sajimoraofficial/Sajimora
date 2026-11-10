@@ -201,6 +201,14 @@ impl Engine {
             unresolved_evidence.push(detail.clone());
             self.note_artifact(ReasonCode::ArtifactIncomplete, detail);
         }
+        if !candidate.completeness.unresolved_endpoints.is_empty() {
+            is_endpoint_resolved = false;
+            for u in &candidate.completeness.unresolved_endpoints {
+                let detail = format!("Candidate artifact has unresolved endpoint: {}", u);
+                unresolved_evidence.push(detail.clone());
+                self.note_artifact(ReasonCode::RoutePlaceholderUnresolved, detail);
+            }
+        }
 
         if targets.is_empty() {
             blockers.push(AnalysisBlocker {
@@ -221,6 +229,14 @@ impl Engine {
                 );
                 unresolved_evidence.push(detail.clone());
                 self.note_artifact(ReasonCode::ArtifactIncomplete, detail);
+            }
+            if !target.completeness.unresolved_endpoints.is_empty() {
+                is_endpoint_resolved = false;
+                for u in &target.completeness.unresolved_endpoints {
+                    let detail = format!("Target artifact has unresolved endpoint: {}", u);
+                    unresolved_evidence.push(detail.clone());
+                    self.note_artifact(ReasonCode::RoutePlaceholderUnresolved, detail);
+                }
             }
 
             match (&base.kind, &candidate.kind, &target.kind) {
