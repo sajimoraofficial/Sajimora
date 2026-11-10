@@ -1,0 +1,29 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      allowedRoot:
+        type: string
+        default: "."
+        description: "Allowed filesystem root for repository analysis (default: current working directory)"
+      trustedLocal:
+        type: boolean
+        default: true
+        description: "Enable trusted local mode for rapid local development (skips signature enforcement)"
+  commandFunction: |-
+    (config) => {
+      const args = ['-y', 'sajimora', 'sajimora-mcp'];
+      if (config && config.allowedRoot) {
+        args.push('--allowed-root', config.allowedRoot);
+      } else {
+        args.push('--allowed-root', '.');
+      }
+      if (!config || config.trustedLocal !== false) {
+        args.push('--trusted-local');
+      }
+      return {
+        command: 'npx',
+        args: args
+      };
+    }
