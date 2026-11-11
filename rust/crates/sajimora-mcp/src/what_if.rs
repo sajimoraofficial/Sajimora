@@ -453,6 +453,10 @@ pub fn run_what_if(
             ),
             _ => format!("Keep the wire field '{field}' (or mark the change as a breaking API change)"),
         };
+        let consumers_preview: Vec<_> = all_affected_consumers.into_iter().take(10).collect();
+        let automated_patches_preview: Vec<_> = automated_patches.into_iter().take(3).collect();
+        let affected_files_preview: Vec<_> = affected_files.into_iter().take(10).collect();
+
         return Ok(serde_json::json!({
             "schemaVersion": "SAJIMORA_WHAT_IF_V2",
             "simulationMode": "symbolic",
@@ -465,12 +469,12 @@ pub fn run_what_if(
             "jsonPropertyRetained": false,
             "verdict": "BREAKING_CHANGE",
             "latencyMicros": elapsed_micros,
-            "telemetry": compute_savings_telemetry(affected_files.len().max(1), elapsed_micros),
+            "telemetry": compute_savings_telemetry(affected_files_preview.len().max(1), elapsed_micros),
             "rootCause": root_cause_summary,
             "breakingConsumersCount": total_breaking,
-            "affectedFiles": affected_files.into_iter().collect::<Vec<_>>(),
-            "affectedConsumers": all_affected_consumers,
-            "automatedPatches": automated_patches,
+            "affectedFiles": affected_files_preview,
+            "affectedConsumers": consumers_preview,
+            "automatedPatches": automated_patches_preview,
             "suggestedFix": suggested_fix,
             "recommendation": format!("Apply '{suggested_fix}' on {target_dto}.{field} to preserve the REST contract.")
         })
