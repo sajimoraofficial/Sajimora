@@ -550,7 +550,7 @@ fn consumer_preview(
 ) -> Vec<serde_json::Value> {
     consumers
         .iter()
-        .take(100)
+        .take(10)
         .map(|consumer| {
             let mut val = serde_json::json!({
                 "file": consumer.source_file,
