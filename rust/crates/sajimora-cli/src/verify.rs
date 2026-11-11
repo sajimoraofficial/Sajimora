@@ -10,7 +10,7 @@
 
 use anyhow::{anyhow, Result};
 use clap::Args;
-use contract_core::envelope::ContractArtifactEnvelope;
+use contract_core::envelope::{ArtifactPayload, ContractArtifactEnvelope};
 use contract_core::report::CrossLanguageVerdict;
 use contract_core::service::{run_check_contract_service, CheckContractServiceRequest};
 use source_index::provider::ProviderKind;
@@ -435,6 +435,62 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
         }
     }
 
+    // 7. Extract endpoint census (Distinct API Routes: Total, Static, Parameterized, Unresolved)
+    let (backend_total, backend_static, backend_param, backend_unresolved) =
+        if let ArtifactPayload::Backend(ref payload) = candidate_envelope.payload {
+            let mut seen_routes = std::collections::HashSet::new();
+            let mut static_count = 0;
+            let mut param_count = 0;
+            for ep in &payload.endpoints {
+                let key = (ep.identity.http_method.clone(), ep.identity.normalized_route.raw_path.clone());
+                if seen_routes.insert(key) {
+                    let is_param = ep
+                        .identity
+                        .normalized_route
+                        .segments
+                        .iter()
+                        .any(|seg| seg.is_param || seg.is_wildcard == Some(true));
+                    if is_param {
+                        param_count += 1;
+                    } else {
+                        static_count += 1;
+                    }
+                }
+            }
+            let total = seen_routes.len();
+            let unresolved_count = candidate_envelope.completeness.unresolved_endpoints.len();
+            (total, static_count, param_count, unresolved_count)
+        } else {
+            (0, 0, 0, 0)
+        };
+
+    let (frontend_total, frontend_static, frontend_param, frontend_unresolved) =
+        if let Ok(bytes) = fs::read(&frontend_for_shape) {
+            if let Ok(env) = contract_core::envelope::parse_envelope(&bytes) {
+                if let ArtifactPayload::Frontend(ref payload) = env.payload {
+                    let total = payload.client_contracts.len();
+                    let static_count = payload
+                        .client_contracts
+                        .iter()
+                        .filter(|c| {
+                            !c.normalized_route.contains('{')
+                                && !c.normalized_route.contains(':')
+                                && !c.normalized_route.contains('*')
+                        })
+                        .count();
+                    let param_count = total.saturating_sub(static_count);
+                    let unresolved_count = env.completeness.unresolved_endpoints.len();
+                    (total, static_count, param_count, unresolved_count)
+                } else {
+                    (0, 0, 0, 0)
+                }
+            } else {
+                (0, 0, 0, 0)
+            }
+        } else {
+            (0, 0, 0, 0)
+        };
+
     match report.verdict {
         CrossLanguageVerdict::LikelyPreserved => {
             let linked = report.counts.linked_endpoints;
@@ -449,6 +505,16 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                     "verdict": "PASS",
                     "exhaustiveness": "100%_EXHAUSTIVE",
                     "evidence_sufficiency": "COMPLETE",
+                    "endpoint_census": {
+                        "backend_total": backend_total,
+                        "backend_static": backend_static,
+                        "backend_parameterized": backend_param,
+                        "backend_unresolved": backend_unresolved,
+                        "frontend_total": frontend_total,
+                        "frontend_static": frontend_static,
+                        "frontend_parameterized": frontend_param,
+                        "frontend_unresolved": frontend_unresolved
+                    },
                     "total_repo_call_sites_checked": total_checked,
                     "broken_call_sites": [],
                     "unaffected_call_sites": all_frontend_call_sites,
@@ -465,7 +531,19 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
             println!("════════════════════════════════════════════════════════════════════════════════");
             println!("  VERDICT: ✅ PASS (100% Verified Preserved)");
             println!();
-            println!("  📊 Contract Verification Summary:");
+            println!("  📊 Contract Verification & Endpoint Census:");
+            if backend_total > 0 {
+                println!(
+                    "     • Backend API Endpoints     : {} total ({} static, {} parameterized, {} unresolved)",
+                    backend_total, backend_static, backend_param, backend_unresolved
+                );
+            }
+            if frontend_total > 0 {
+                println!(
+                    "     • Frontend Client Calls     : {} total ({} static, {} parameterized, {} unresolved)",
+                    frontend_total, frontend_static, frontend_param, frontend_unresolved
+                );
+            }
             println!("     • Contract Coverage Rate    : 100.0% Verified Clean");
             println!("     • Verified Clean Endpoints  : {} routes (0 contract drift detected)", linked);
             println!("     • Breaking Regressions      : 0 violations");
@@ -724,6 +802,16 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                     "verdict": "LIKELY_VIOLATED",
                     "exhaustiveness": "100%_EXHAUSTIVE",
                     "evidence_sufficiency": "COMPLETE",
+                    "endpoint_census": {
+                        "backend_total": backend_total,
+                        "backend_static": backend_static,
+                        "backend_parameterized": backend_param,
+                        "backend_unresolved": backend_unresolved,
+                        "frontend_total": frontend_total,
+                        "frontend_static": frontend_static,
+                        "frontend_parameterized": frontend_param,
+                        "frontend_unresolved": frontend_unresolved
+                    },
                     "total_repo_call_sites_checked": total_checked,
                     "broken_call_sites": broken_sites_json,
                     "unaffected_call_sites": unaffected_call_sites,
@@ -742,6 +830,18 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
             println!("  VERDICT: ❌ BREAKING CONTRACT REGRESSIONS DETECTED");
             println!("   Backend API changes break frontend client applications.");
             println!("   -------------------------------------------------------");
+            if backend_total > 0 {
+                println!(
+                    "   Backend API Endpoints        : {} total ({} static, {} parameterized, {} unresolved)",
+                    backend_total, backend_static, backend_param, backend_unresolved
+                );
+            }
+            if frontend_total > 0 {
+                println!(
+                    "   Frontend Client Calls        : {} total ({} static, {} parameterized, {} unresolved)",
+                    frontend_total, frontend_static, frontend_param, frontend_unresolved
+                );
+            }
             if has_delta && !args.strict_baseline {
                 println!(
                     "   New Breaking Findings Introduced : {}",
@@ -877,6 +977,16 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                     "verdict": if args.strict { "INCONCLUSIVE_BLOCKED" } else { "PASS_ADVISORY" },
                     "exhaustiveness": if unresolved == 0 { "100%_EXHAUSTIVE" } else { "PARTIAL_UNTYPED" },
                     "evidence_sufficiency": if unresolved == 0 { "COMPLETE" } else { "UNANNOTATED_CALLS_EXIST" },
+                    "endpoint_census": {
+                        "backend_total": backend_total,
+                        "backend_static": backend_static,
+                        "backend_parameterized": backend_param,
+                        "backend_unresolved": backend_unresolved,
+                        "frontend_total": frontend_total,
+                        "frontend_static": frontend_static,
+                        "frontend_parameterized": frontend_param,
+                        "frontend_unresolved": frontend_unresolved
+                    },
                     "total_repo_call_sites_checked": total_checked,
                     "broken_call_sites": [],
                     "unaffected_call_sites": all_frontend_call_sites,
@@ -905,7 +1015,19 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
                 println!("  VERDICT: ⚠️ INCONCLUSIVE (0 Breaking Regressions | Untyped Calls Present)");
             }
             println!();
-            println!("  📊 Contract Verification Summary:");
+            println!("  📊 Contract Verification & Endpoint Census:");
+            if backend_total > 0 {
+                println!(
+                    "     • Backend API Endpoints     : {} total ({} static, {} parameterized, {} unresolved)",
+                    backend_total, backend_static, backend_param, backend_unresolved
+                );
+            }
+            if frontend_total > 0 {
+                println!(
+                    "     • Frontend Client Calls     : {} total ({} static, {} parameterized, {} unresolved)",
+                    frontend_total, frontend_static, frontend_param, frontend_unresolved
+                );
+            }
             if total > 0 {
                 println!("     • Contract Coverage Rate    : {:.1}% Verified Clean", coverage_pct);
             }
