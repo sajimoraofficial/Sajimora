@@ -183,15 +183,21 @@ class OpenAILiveClient:
             payload["tools"] = tools
 
         url = f"{self.base_url}/chat/completions"
-        t0 = time.perf_counter()
-        resp = requests.post(url, headers=self.headers, json=payload, timeout=60)
-        dur_ms = (time.perf_counter() - t0) * 1000.0
+        for attempt in range(10):
+            t0 = time.perf_counter()
+            resp = requests.post(url, headers=self.headers, json=payload, timeout=60)
+            dur_ms = (time.perf_counter() - t0) * 1000.0
 
-        if resp.status_code != 200:
-            raise RuntimeError(f"OpenAI/OpenRouter Error {resp.status_code}: {resp.text}")
+            if resp.status_code == 429:
+                wait_s = min(10 * (attempt + 1), 60)
+                print(f"       [RateLimit 429 on {self.model}: waiting {wait_s}s before retry (attempt {attempt+1}/10)...]")
+                time.sleep(wait_s)
+                continue
 
-        data = resp.json()
-        return data, dur_ms
+            if resp.status_code != 200:
+                raise RuntimeError(f"OpenAI/OpenRouter Error {resp.status_code}: {resp.text}")
+
+            return resp.json(), dur_ms
 
 # ==============================================================================
 # Tool Schemas for Live Function Calling
@@ -483,6 +489,7 @@ def main():
     parser.add_argument("--qwen-model", default="qwen/qwen-2.5-coder-32b-instruct")
     parser.add_argument("--scenarios", default=str(SCENARIOS_FILE))
     parser.add_argument("--limit", type=int, default=20, help="Number of queries to run")
+    parser.add_argument("--max-turns", type=int, default=20, help="Maximum turns for agent loop (default 20)")
     args = parser.parse_args()
 
     print("=" * 80)
@@ -514,7 +521,7 @@ def main():
         )
         creds.refresh(Request())
         vertex_base = f"https://aiplatform.googleapis.com/v1beta1/projects/{creds.project_id}/locations/global/endpoints/openapi"
-        model_name = args.claude_model if "gemini" in args.claude_model else "google/gemini-2.5-flash"
+        model_name = args.claude_model if "gemini" in args.claude_model else "google/gemini-3.5-flash"
         claude_client = OpenAILiveClient(creds.token, base_url=vertex_base, model=model_name)
         qwen_client = None
     else:
@@ -546,9 +553,9 @@ def main():
         # 1. Claude with Grep (Live API tool loop)
         print("   -> Live API Call: Claude + Grep...")
         if args.provider == "anthropic":
-            res_cg = run_live_anthropic_session(claude_client, prompt, use_sajimora=False, mcp_client=mcp_client)
+            res_cg = run_live_anthropic_session(claude_client, prompt, use_sajimora=False, mcp_client=mcp_client, max_turns=args.max_turns)
         else:
-            res_cg = run_live_openai_session(claude_client, prompt, use_sajimora=False, mcp_client=mcp_client)
+            res_cg = run_live_openai_session(claude_client, prompt, use_sajimora=False, mcp_client=mcp_client, max_turns=args.max_turns)
 
         with open(LIVE_LOGS_DIR / "claude_grep" / f"{sid}.json", "w") as f:
             json.dump(res_cg, f, indent=2)
@@ -556,24 +563,25 @@ def main():
         # 2. Claude with Sajimora (Live API tool loop)
         print("   -> Live API Call: Claude + Sajimora...")
         if args.provider == "anthropic":
-            res_cs = run_live_anthropic_session(claude_client, prompt, use_sajimora=True, mcp_client=mcp_client)
+            res_cs = run_live_anthropic_session(claude_client, prompt, use_sajimora=True, mcp_client=mcp_client, max_turns=args.max_turns)
         else:
-            res_cs = run_live_openai_session(claude_client, prompt, use_sajimora=True, mcp_client=mcp_client)
+            res_cs = run_live_openai_session(claude_client, prompt, use_sajimora=True, mcp_client=mcp_client, max_turns=args.max_turns)
 
         with open(LIVE_LOGS_DIR / "claude_sajimora" / f"{sid}.json", "w") as f:
             json.dump(res_cs, f, indent=2)
 
         print(f"      Claude Grep Tokens: {res_cg['total_tokens']} (Turns: {res_cg['turns']}) | Claude Sajimora: {res_cs['total_tokens']} (Turns: {res_cs['turns']})")
+        time.sleep(2)
 
         # 3 & 4. Qwen 32B (if configured)
         if qwen_client:
             print("   -> Live API Call: Qwen 32B + Grep...")
-            res_qg = run_live_openai_session(qwen_client, prompt, use_sajimora=False, mcp_client=mcp_client)
+            res_qg = run_live_openai_session(qwen_client, prompt, use_sajimora=False, mcp_client=mcp_client, max_turns=args.max_turns)
             with open(LIVE_LOGS_DIR / "qwen32b_grep" / f"{sid}.json", "w") as f:
                 json.dump(res_qg, f, indent=2)
 
             print("   -> Live API Call: Qwen 32B + Sajimora...")
-            res_qs = run_live_openai_session(qwen_client, prompt, use_sajimora=True, mcp_client=mcp_client)
+            res_qs = run_live_openai_session(qwen_client, prompt, use_sajimora=True, mcp_client=mcp_client, max_turns=args.max_turns)
             with open(LIVE_LOGS_DIR / "qwen32b_sajimora" / f"{sid}.json", "w") as f:
                 json.dump(res_qs, f, indent=2)
 

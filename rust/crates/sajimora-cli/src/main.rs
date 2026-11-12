@@ -9,6 +9,7 @@
 //! Phase R1: admission validation and placeholder comparison output.
 //! Phase R3: full CLI with subprocess tests.
 
+mod ask;
 mod build_telemetry;
 mod change_evaluate;
 mod check_contract;
@@ -100,6 +101,9 @@ enum Commands {
     EndpointImpact(endpoint_impact::EndpointImpactArgs),
     /// Evaluate a declared Expected Change Model against the structural Git change set between two revisions. Writes .sajimora/change-evaluation.json; never selects tests or blocks a merge.
     ChangeEvaluate(change_evaluate::ChangeEvaluateArgs),
+    /// Ask natural language questions about contracts, pagination, and performance (100% offline, zero LLM).
+    #[command(alias = "question", alias = "explain")]
+    Ask(ask::AskArgs),
     /// Sub-second query engine for consumer contracts, routes, and DTO catalog statistics.
     #[command(alias = "find", alias = "lookup")]
     Query(query::QueryArgs),
@@ -136,6 +140,7 @@ fn main() {
         Commands::VerifyBehavior(args) => verify_behavior::run(args),
         Commands::EndpointImpact(args) => endpoint_impact::run(args),
         Commands::ChangeEvaluate(args) => change_evaluate::run(args),
+        Commands::Ask(args) => ask::run(args),
         Commands::Query(args) => query::run(args),
         Commands::WhatIf(args) => what_if::run(args),
         Commands::Run(args) => run::run(args),

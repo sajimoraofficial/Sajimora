@@ -1,0 +1,919 @@
+[
+  {
+    "id": "Q001",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "BREAKING_ENDPOINT_DELETION",
+    "evaluation_dimension": "MUTATION_VERDICT_AND_CONSUMER_IMPACT",
+    "prompt": "What-If: If backend endpoint GET /api/admin/settings/*PARAM* is deleted, which TypeScript consumers are broken?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "DELETE_ENDPOINT",
+      "route": "/api/admin/settings/*PARAM*",
+      "method": "GET",
+      "canonical_backend": {
+        "file": "application/src/main/java/org/thingsboard/server/controller/AdminController.java",
+        "line": 127,
+        "method": "GET",
+        "route": "/api/admin/settings/*PARAM*",
+        "source_excerpt": "private int vcRequestTimeout;\n\n    @ApiOperation(value = \"Get the Administration Settings object using key (getAdminSettings)\",\n            notes = \"Get the Administration Settings object using specified string key. \" +\n                    \"Referencing non-existing key will cause an error.\" + SYSTEM_OR_TENANT_AUTHORITY_PARAGRAPH + RESOURCE_READ_CHECK)\n    @PreAuthorize(\"hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN')\")"
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 1,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/admin.service.ts",
+          "line": 38,
+          "method": "GET",
+          "route": "/api/admin/settings/*PARAM*"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "DELETE_ENDPOINT",
+          "route": "/api/admin/settings/*PARAM*",
+          "method": "GET"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "application/src/main/java/org/thingsboard/server/controller/AdminController.java",
+          "line_start": 125,
+          "line_end": 130,
+          "sha256": "27e124c74c1b2bcf07b3dfd7960ee40aba81c4613ed9c703e4bfb45259c6d961"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/admin.service.ts",
+          "line_start": 37,
+          "line_end": 40,
+          "sha256": "45428ec7f89499aa0f8e6affdd43a3a720ebe1b7bed1d89966b976e48d317b0a"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q002",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "BREAKING_ENDPOINT_DELETION",
+    "evaluation_dimension": "MUTATION_VERDICT_AND_CONSUMER_IMPACT",
+    "prompt": "What-If: If backend endpoint POST /api/admin/settings/testSms is deleted, which TypeScript consumers are broken?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "DELETE_ENDPOINT",
+      "route": "/api/admin/settings/testSms",
+      "method": "POST",
+      "canonical_backend": {
+        "file": "application/src/main/java/org/thingsboard/server/controller/AdminController.java",
+        "line": 266,
+        "method": "POST",
+        "route": "/api/admin/settings/testSms",
+        "source_excerpt": "}\n\n    @ApiOperation(value = \"Send test sms (sendTestSms)\",\n            notes = \"Attempts to send test sms to the System Administrator User using SMS Settings and phone number provided as a parameters of the request. \"\n                    + SYSTEM_OR_TENANT_AUTHORITY_PARAGRAPH + RESOURCE_READ_CHECK)\n    @PreAuthorize(\"hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN')\")"
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 1,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/admin.service.ts",
+          "line": 54,
+          "method": "POST",
+          "route": "/api/admin/settings/testSms"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "DELETE_ENDPOINT",
+          "route": "/api/admin/settings/testSms",
+          "method": "POST"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "application/src/main/java/org/thingsboard/server/controller/AdminController.java",
+          "line_start": 264,
+          "line_end": 269,
+          "sha256": "1b1e80c3aa73fada95b32c25d5dba66fe5ff284ef9e9211939c1428759229675"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/admin.service.ts",
+          "line_start": 53,
+          "line_end": 56,
+          "sha256": "19810494e0364653a05ee23e2c051b07314104db491f514fa3c54c2cb4de4253"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q010",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "BREAKING_ENDPOINT_DELETION",
+    "evaluation_dimension": "MUTATION_VERDICT_AND_CONSUMER_IMPACT",
+    "prompt": "What-If: If backend endpoint POST /api/agent is deleted, which TypeScript consumers are broken?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "DELETE_ENDPOINT",
+      "route": "/api/agent",
+      "method": "POST",
+      "canonical_backend": {
+        "file": "application/src/main/java/org/thingsboard/server/controller/AgentController.java",
+        "line": 274,
+        "method": "POST",
+        "route": "/api/agent",
+        "source_excerpt": "}\n\n    @ApiOperation(value = \"Create Or Update Agent (saveAgent)\",\n            notes = \"Creates or Updates the Agent. When creating agent, platform generates Agent Id as \" + UUID_WIKI_LINK +\n                    \"The newly created Agent id will be present in the response. \" +\n                    \"Specify existing Agent id to update the agent. \" +"
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 1,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/agent.service.ts",
+          "line": 93,
+          "method": "POST",
+          "route": "/api/agent"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "DELETE_ENDPOINT",
+          "route": "/api/agent",
+          "method": "POST"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "application/src/main/java/org/thingsboard/server/controller/AgentController.java",
+          "line_start": 272,
+          "line_end": 277,
+          "sha256": "72d38ae94cee1682650cd48ae2e8987e985b70bae2e80ec2c4003090f9b1cd8e"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/agent.service.ts",
+          "line_start": 92,
+          "line_end": 95,
+          "sha256": "83afa5025fe9209824e3dbed40c1ad05e8cc79c9838bb047a182b8b92bd6f105"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q017",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "BREAKING_ENDPOINT_DELETION",
+    "evaluation_dimension": "MUTATION_VERDICT_AND_CONSUMER_IMPACT",
+    "prompt": "What-If: If backend endpoint GET /api/alarm/*PARAM*/comment is deleted, which TypeScript consumers are broken?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "DELETE_ENDPOINT",
+      "route": "/api/alarm/*PARAM*/comment",
+      "method": "GET",
+      "canonical_backend": {
+        "file": "application/src/main/java/org/thingsboard/server/controller/AlarmCommentController.java",
+        "line": 98,
+        "method": "GET",
+        "route": "/api/alarm/*PARAM*/comment",
+        "source_excerpt": "}\n\n    @ApiOperation(value = \"Get Alarm comments (getAlarmComments)\",\n            notes = \"Returns a page of alarm comments for specified alarm. \" +\n                    PAGE_DATA_PARAMETERS + TENANT_OR_CUSTOMER_AUTHORITY_PARAGRAPH)\n    @PreAuthorize(\"hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN', 'CUSTOMER_USER')\")"
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 1,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/alarm-comment.service.ts",
+          "line": 25,
+          "method": "GET",
+          "route": "/api/alarm/*PARAM*/comment"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "DELETE_ENDPOINT",
+          "route": "/api/alarm/*PARAM*/comment",
+          "method": "GET"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "application/src/main/java/org/thingsboard/server/controller/AlarmCommentController.java",
+          "line_start": 96,
+          "line_end": 101,
+          "sha256": "eae1cdd5dafbb819f2ad595cb0a7d3e22dfa0acd78cc47d3d92ccec5d23351a3"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/alarm-comment.service.ts",
+          "line_start": 24,
+          "line_end": 27,
+          "sha256": "f3a7ccf2ac952966982825145ba3c42b3dbd810db2cc151d617fe123215efaa4"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q021",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "BREAKING_ENDPOINT_DELETION",
+    "evaluation_dimension": "MUTATION_VERDICT_AND_CONSUMER_IMPACT",
+    "prompt": "What-If: If backend endpoint POST /api/asset is deleted, which TypeScript consumers are broken?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "DELETE_ENDPOINT",
+      "route": "/api/asset",
+      "method": "POST",
+      "canonical_backend": {
+        "file": "application/src/main/java/org/thingsboard/server/controller/AssetController.java",
+        "line": 129,
+        "method": "POST",
+        "route": "/api/asset",
+        "source_excerpt": "}\n\n    @ApiOperation(value = \"Create Or Update Asset (saveAsset)\",\n            notes = \"Creates or Updates the Asset. When creating asset, platform generates Asset Id as \" + UUID_WIKI_LINK +\n                    \"The newly created Asset id will be present in the response. \" +\n                    \"Specify existing Asset id to update the asset. \" +"
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 1,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/asset.service.ts",
+          "line": 99,
+          "method": "POST",
+          "route": "/api/asset"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "DELETE_ENDPOINT",
+          "route": "/api/asset",
+          "method": "POST"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "application/src/main/java/org/thingsboard/server/controller/AssetController.java",
+          "line_start": 127,
+          "line_end": 132,
+          "sha256": "d01049d60b6cb3073c16fbf0c5c3636e6fb5d41cdbb1eee576f567d971abee5b"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/asset.service.ts",
+          "line_start": 98,
+          "line_end": 101,
+          "sha256": "d6950b1fa1b6b5ecb2a55943e67e0a147decef883014b59614c9a88954d349fd"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q041",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "DTO_FIELD_MUTATION",
+    "evaluation_dimension": "DTO_ASSOCIATED_CONSUMER_RETRIEVAL. The task identifies API call sites whose declared TypeScript response type is the mutated DTO. Field-level wire-name impact is established by the ts_field_evidence reference (TS interface declaration). Per-call-site field-access tracing (e.g. code reading .email or .firstName) is NOT performed and NOT claimed. The measured capability is: given a DTO field mutation, Sajimora returns the set of API call sites bound to that DTO, allowing an engineer to audit each site for field-level impact.",
+    "prompt": "What-If: What frontend call-sites and TypeScript services are impacted if DTO 'User' field 'email' undergoes mutation action 'REMOVE_FIELD'?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "DTO_MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "REMOVE_FIELD",
+      "target_dto": "User",
+      "field": "email",
+      "canonical_backend": {
+        "file": "common/data/src/main/java/org/thingsboard/server/common/data/User.java",
+        "line": 38,
+        "source_excerpt": "private TenantId tenantId;\n    private CustomerId customerId;\n    private String email;\n    private Authority authority;\n    @NoXss"
+      },
+      "ts_field_evidence": {
+        "ts_interface": "User",
+        "field": "email",
+        "file": "ui-ngx/src/app/shared/models/user.model.ts",
+        "interface_field_line": 15,
+        "line_start": 13,
+        "line_end": 17,
+        "sha256": "f1895627530e5300ba5932487a4183767d1ec09c70ff410dfa141613b6da1885",
+        "source_excerpt": "tenantId: TenantId;\n  customerId: CustomerId;\n  email: string;\n  phone: string;\n  authority: Authority;",
+        "note": "This TS interface field declaration establishes that the wire name is 'email' in the TypeScript contract. It does not prove that individual call sites access the field directly; each call site exchanges the whole DTO."
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 3,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line": 49,
+          "method": "GET",
+          "route": "/api/user/*PARAM*"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line": 99,
+          "method": "POST",
+          "route": "/api/user"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line": 125,
+          "method": "POST",
+          "route": "/api/user/*PARAM*/userCredentialsEnabled"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "REMOVE_FIELD",
+          "targetDto": "User",
+          "field": "email"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "common/data/src/main/java/org/thingsboard/server/common/data/User.java",
+          "line_start": 36,
+          "line_end": 40,
+          "sha256": "12b4c7bf503894a515e3b2d460f05dc33adf86baa86cba9099d8b41129e72b78"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line_start": 48,
+          "line_end": 51,
+          "sha256": "749cf9cafb2d2d7e769f7bd7e9dd6028adb7fb852437e6fad843f1ae2ccb885e"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line_start": 98,
+          "line_end": 101,
+          "sha256": "23a87f0bdd8eebc875dab2111b30126082fbeadb657e3ac92e0b4ede21b52138"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line_start": 124,
+          "line_end": 127,
+          "sha256": "ece78a13f63005a9445d7fa0c19d300363e95bc707781bff13d508d033f784a6"
+        },
+        {
+          "file": "ui-ngx/src/app/shared/models/user.model.ts",
+          "line_start": 13,
+          "line_end": 17,
+          "sha256": "f1895627530e5300ba5932487a4183767d1ec09c70ff410dfa141613b6da1885",
+          "role": "ts_interface_field_declaration"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q042",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "DTO_FIELD_MUTATION",
+    "evaluation_dimension": "DTO_ASSOCIATED_CONSUMER_RETRIEVAL. The task identifies API call sites whose declared TypeScript response type is the mutated DTO. Field-level wire-name impact is established by the ts_field_evidence reference (TS interface declaration). Per-call-site field-access tracing (e.g. code reading .email or .firstName) is NOT performed and NOT claimed. The measured capability is: given a DTO field mutation, Sajimora returns the set of API call sites bound to that DTO, allowing an engineer to audit each site for field-level impact.",
+    "prompt": "What-If: What frontend call-sites and TypeScript services are impacted if DTO 'User' field 'firstName' undergoes mutation action 'RENAME_FIELD'?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "DTO_MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "RENAME_FIELD",
+      "target_dto": "User",
+      "field": "firstName",
+      "canonical_backend": {
+        "file": "common/data/src/main/java/org/thingsboard/server/common/data/User.java",
+        "line": 42,
+        "source_excerpt": "@NoXss\n    @Length(fieldName = \"first name\")\n    private String firstName;\n    @NoXss\n    @Length(fieldName = \"last name\")"
+      },
+      "ts_field_evidence": {
+        "ts_interface": "User",
+        "field": "firstName",
+        "file": "ui-ngx/src/app/shared/models/user.model.ts",
+        "interface_field_line": 18,
+        "line_start": 16,
+        "line_end": 20,
+        "sha256": "2c823efab9a53b6b9c45a8a9392d85b9a4d7b650417e6898d52e11fac98520d5",
+        "source_excerpt": "phone: string;\n  authority: Authority;\n  firstName: string;\n  lastName: string;\n  customMenuId?: CustomMenuId;",
+        "note": "This TS interface field declaration establishes that the wire name is 'firstName' in the TypeScript contract. It does not prove that individual call sites access the field directly; each call site exchanges the whole DTO."
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 3,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line": 49,
+          "method": "GET",
+          "route": "/api/user/*PARAM*"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line": 99,
+          "method": "POST",
+          "route": "/api/user"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line": 125,
+          "method": "POST",
+          "route": "/api/user/*PARAM*/userCredentialsEnabled"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "RENAME_FIELD",
+          "targetDto": "User",
+          "field": "firstName",
+          "renameTo": "givenName"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "common/data/src/main/java/org/thingsboard/server/common/data/User.java",
+          "line_start": 40,
+          "line_end": 44,
+          "sha256": "133a5f8529d5008338af3a6b7d7efb33bb97246e75bbdbf22cb2ea4324091a23"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line_start": 48,
+          "line_end": 51,
+          "sha256": "749cf9cafb2d2d7e769f7bd7e9dd6028adb7fb852437e6fad843f1ae2ccb885e"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line_start": 98,
+          "line_end": 101,
+          "sha256": "23a87f0bdd8eebc875dab2111b30126082fbeadb657e3ac92e0b4ede21b52138"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/user.service.ts",
+          "line_start": 124,
+          "line_end": 127,
+          "sha256": "ece78a13f63005a9445d7fa0c19d300363e95bc707781bff13d508d033f784a6"
+        },
+        {
+          "file": "ui-ngx/src/app/shared/models/user.model.ts",
+          "line_start": 16,
+          "line_end": 20,
+          "sha256": "2c823efab9a53b6b9c45a8a9392d85b9a4d7b650417e6898d52e11fac98520d5",
+          "role": "ts_interface_field_declaration"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q045",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "DTO_FIELD_MUTATION",
+    "evaluation_dimension": "DTO_ASSOCIATED_CONSUMER_RETRIEVAL. The task identifies API call sites whose declared TypeScript response type is the mutated DTO. Field-level wire-name impact is established by the ts_field_evidence reference (TS interface declaration). Per-call-site field-access tracing (e.g. code reading .email or .firstName) is NOT performed and NOT claimed. The measured capability is: given a DTO field mutation, Sajimora returns the set of API call sites bound to that DTO, allowing an engineer to audit each site for field-level impact.",
+    "prompt": "What-If: What frontend call-sites and TypeScript services are impacted if DTO 'Device' field 'name' undergoes mutation action 'REMOVE_FIELD'?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "DTO_MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "REMOVE_FIELD",
+      "target_dto": "Device",
+      "field": "name",
+      "canonical_backend": {
+        "file": "common/data/src/main/java/org/thingsboard/server/common/data/Device.java",
+        "line": 41,
+        "source_excerpt": "@NoXss\n    @Length(fieldName = \"name\")\n    private String name;\n    @NoXss\n    @Length(fieldName = \"type\")"
+      },
+      "ts_field_evidence": {
+        "ts_interface": "Device",
+        "field": "name",
+        "file": "ui-ngx/src/app/shared/models/device.models.ts",
+        "interface_field_line": 712,
+        "line_start": 710,
+        "line_end": 714,
+        "sha256": "9703d1fa4a53c76293cf25629af74e593e82b81342de4c69140c4b387a893ca7",
+        "source_excerpt": "tenantId?: TenantId;\n  customerId?: CustomerId;\n  name?: string;\n  type?: string;\n  label?: string;",
+        "note": "This TS interface field declaration establishes that the wire name is 'name' in the TypeScript contract. It does not prove that individual call sites access the field directly; each call site exchanges the whole DTO."
+      }
+    },
+    "expected": {
+      "verdict": "BREAKING_CHANGE",
+      "breaking_consumers_count": 3,
+      "consumers": [
+        {
+          "file": "ui-ngx/src/app/core/http/device.service.ts",
+          "line": 82,
+          "method": "GET",
+          "route": "/api/device/*PARAM*"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/device.service.ts",
+          "line": 126,
+          "method": "POST",
+          "route": "/api/device"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/device.service.ts",
+          "line": 133,
+          "method": "POST",
+          "route": "/api/device-with-credentials"
+        }
+      ],
+      "confidence": "HIGH"
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "REMOVE_FIELD",
+          "targetDto": "Device",
+          "field": "name"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "common/data/src/main/java/org/thingsboard/server/common/data/Device.java",
+          "line_start": 39,
+          "line_end": 43,
+          "sha256": "3ac589609c0a080572cc1b5ff243c2bf372819676ae6b3d80c880bd4260b2e80"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/device.service.ts",
+          "line_start": 81,
+          "line_end": 84,
+          "sha256": "1de7fda751822ccce3c708f07e2e1509013f7aaa31a035e8f53ef8c944a5d6d3"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/device.service.ts",
+          "line_start": 125,
+          "line_end": 128,
+          "sha256": "0aacc1a3881ba56373f7b3c578ab4b77d537d024e3e16cba718636cafdd7e7d9"
+        },
+        {
+          "file": "ui-ngx/src/app/core/http/device.service.ts",
+          "line_start": 132,
+          "line_end": 135,
+          "sha256": "dd187bccd14d85cd785e85f78445a0c99bc692047d7db43ad99ac2251a048b38"
+        },
+        {
+          "file": "ui-ngx/src/app/shared/models/device.models.ts",
+          "line_start": 710,
+          "line_end": 714,
+          "sha256": "9703d1fa4a53c76293cf25629af74e593e82b81342de4c69140c4b387a893ca7",
+          "role": "ts_interface_field_declaration"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q026",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "SAFE_ZERO_OBSERVED_CONSUMERS",
+    "evaluation_dimension": "MUTATION_VERDICT_AND_CONSUMER_IMPACT",
+    "prompt": "What-If: What is the cross-boundary refactoring impact if backend endpoint GET /api/admin/mail/oauth2/code is modified or deleted?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "DELETE_ENDPOINT",
+      "route": "/api/admin/mail/oauth2/code",
+      "method": "GET",
+      "canonical_backend": {
+        "file": "application/src/main/java/org/thingsboard/server/controller/AdminController.java",
+        "line": 512,
+        "method": "GET",
+        "route": "/api/admin/mail/oauth2/code",
+        "source_excerpt": "}\n\n    @GetMapping(value = \"/mail/oauth2/code\",  params = {\"code\", \"state\"})\n    public void handleMailOAuth2Callback(@RequestParam(value = \"code\") String code, @RequestParam(value = \"state\") String state,\n                                  HttpServletRequest request, HttpServletResponse response) throws Exception {\n        String redirectUrl = getMailOAuth2RedirectUrl(request);"
+      }
+    },
+    "expected": {
+      "verdict": "SAFE_NO_OBSERVED_CONSUMERS",
+      "breaking_consumers_count": 0,
+      "consumers": [],
+      "confidence": "HIGH",
+      "semantics": "No observed consumers in this repository snapshot. Does not guarantee safety across unindexed repositories or external third-party consumers."
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "DELETE_ENDPOINT",
+          "route": "/api/admin/mail/oauth2/code",
+          "method": "GET"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "application/src/main/java/org/thingsboard/server/controller/AdminController.java",
+          "line_start": 510,
+          "line_end": 515,
+          "sha256": "1d2688d4e64d88abc7b14784852c1bbaf0049edcdc66fd2ab96fff029e7ecc0e"
+        }
+      ]
+    }
+  },
+  {
+    "id": "Q027",
+    "category": "MUTATION_IMPACT_ANALYSIS",
+    "sub_category": "SAFE_ZERO_OBSERVED_CONSUMERS",
+    "evaluation_dimension": "MUTATION_VERDICT_AND_CONSUMER_IMPACT",
+    "prompt": "What-If: What is the cross-boundary refactoring impact if backend endpoint GET /api/agent/*PARAM*/upgrade/target is modified or deleted?",
+    "repo": {
+      "name": "ThingsBoard",
+      "commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea"
+    },
+    "task": {
+      "task_type": "MUTATION_IMPACT_SIMULATION",
+      "mutation_action": "DELETE_ENDPOINT",
+      "route": "/api/agent/*PARAM*/upgrade/target",
+      "method": "GET",
+      "canonical_backend": {
+        "file": "application/src/main/java/org/thingsboard/server/controller/AgentController.java",
+        "line": 137,
+        "method": "GET",
+        "route": "/api/agent/*PARAM*/upgrade/target",
+        "source_excerpt": "}\n\n    @ApiOperation(value = \"Get the agent upgrade target (getAgentUpgradeTarget)\",\n            notes = \"Returns the image reference the agent should be upgraded to, or an empty string when it \"\n                    + \"already runs the newest published image or cannot be placed in the version graph.\"\n                    + TENANT_AUTHORITY_PARAGRAPH)"
+      }
+    },
+    "expected": {
+      "verdict": "SAFE_NO_OBSERVED_CONSUMERS",
+      "breaking_consumers_count": 0,
+      "consumers": [],
+      "confidence": "HIGH",
+      "semantics": "No observed consumers in this repository snapshot. Does not guarantee safety across unindexed repositories or external third-party consumers."
+    },
+    "mcp_call": {
+      "tool": "sajimora_what_if",
+      "arguments": {
+        "repoRoot": "/home/ec2-user/thingsboard",
+        "mutation": {
+          "action": "DELETE_ENDPOINT",
+          "route": "/api/agent/*PARAM*/upgrade/target",
+          "method": "GET"
+        }
+      }
+    },
+    "mcp_response": {
+      "consumers_path": "affectedConsumers",
+      "file_key": "file",
+      "line_key": "line",
+      "verdict_path": "verdict"
+    },
+    "ground_truth": {
+      "status": "VERIFIED",
+      "verified_commit": "cd259892925ff3cc6709dae021c0d619cfdfbaea",
+      "verification_method": "independent_source_inspection",
+      "reviewer": "Principal Benchmark Engineer and Independent Static Analysis Auditor",
+      "evidence_refs": [
+        {
+          "file": "application/src/main/java/org/thingsboard/server/controller/AgentController.java",
+          "line_start": 135,
+          "line_end": 140,
+          "sha256": "f608435487a81150fa2afd18fe25cad5f21406172fe7e4c125d7b89e15fe53d8"
+        }
+      ]
+    }
+  },
+  {
+    "id": "G001",
+    "category": "UNSTRUCTURED_DOCUMENTATION_AUDIT",
+    "sub_category": "MARKDOWN_DOCS_SEARCH",
+    "prompt": "Documentation Audit: Locate all Markdown files (*.md, docs/) that reference the endpoint route /api/admin/settings.",
+    "favored_tool": "grep",
+    "reason": "Sajimora ignores markdown files; Grep audits documentation effortlessly."
+  },
+  {
+    "id": "G002",
+    "category": "INFRASTRUCTURE_CONFIGURATION_AUDIT",
+    "sub_category": "KUBERNETES_HELM_YAML_SEARCH",
+    "prompt": "Config Audit: Locate all Docker, Helm, and Kubernetes YAML files (*.yml, *.yaml) referencing the environment variable TB_SERVER.",
+    "favored_tool": "grep",
+    "reason": "Sajimora parses code ASTs, not Helm/K8s YAML; Grep is the standard for infrastructure configs."
+  },
+  {
+    "id": "G003",
+    "category": "UNIQUE_LITERAL_LOOKUP",
+    "sub_category": "SINGLE_HIT_ROUTE",
+    "prompt": "Single-Hit Literal: Find the exact TypeScript consumer for unique literal featuresInfo.",
+    "favored_tool": "grep",
+    "reason": "For 100% unique strings, Grep finds the hit on line 1 in 0.05s with negligible tokens."
+  },
+  {
+    "id": "G004",
+    "category": "API_SPECIFICATION_COLLECTIONS",
+    "sub_category": "POSTMAN_OPENAPI_JSON_SEARCH",
+    "prompt": "API Spec Audit: Find all Postman collections and Swagger/OpenAPI JSON files referencing /api/alarm.",
+    "favored_tool": "grep",
+    "reason": "Sajimora parses language ASTs; Grep audits raw JSON payload specs and test collections."
+  },
+  {
+    "id": "G005",
+    "category": "DYNAMIC_STRING_CONSTRUCTION",
+    "sub_category": "TEMPLATE_LITERAL_URL_SEARCH",
+    "prompt": "Dynamic Routing Audit: Search for TypeScript code where API paths are constructed using template literals or string concatenation with /api/.",
+    "favored_tool": "grep",
+    "reason": "Static AST analysis marks dynamic reflection as inconclusive; Grep matches raw string fragments."
+  },
+  {
+    "id": "G006",
+    "category": "CI_CD_PIPELINE_SCRIPTS",
+    "sub_category": "BASH_CURL_WORKFLOW_SEARCH",
+    "prompt": "CI Pipeline Audit: Search for all shell scripts (*.sh, *.bash) and GitHub Actions invoking curl against /api/user.",
+    "favored_tool": "grep",
+    "reason": "Sajimora does not execute shell scripts; Grep audits deployment bash scripts instantly."
+  },
+  {
+    "id": "G007",
+    "category": "LOCALIZATION_I18N_AUDIT",
+    "sub_category": "TRANSLATION_JSON_SEARCH",
+    "prompt": "i18n Localization: Locate all Angular translation JSON files in ui-ngx/src/assets/locale/ that define keys containing admin.system-settings.",
+    "favored_tool": "grep",
+    "reason": "Sajimora is an API compiler; Grep is the fastest tool for translation key lookups."
+  },
+  {
+    "id": "G008",
+    "category": "FRONTEND_STYLING_AUDIT",
+    "sub_category": "SCSS_CSS_CLASS_SEARCH",
+    "prompt": "UI Style Audit: Find all Angular HTML and SCSS files referencing the CSS class .tb-admin-panel.",
+    "favored_tool": "grep",
+    "reason": "Sajimora does not parse SCSS; Grep is the standard tool for frontend styling audits."
+  },
+  {
+    "id": "G009",
+    "category": "DATABASE_SCHEMA_MIGRATION",
+    "sub_category": "SQL_DDL_SEARCH",
+    "prompt": "Database Schema Audit: Locate all SQL migration scripts (*.sql) referencing table device_profile.",
+    "favored_tool": "grep",
+    "reason": "Sajimora parses Java entities, not SQL DDL scripts; Grep audits SQL migrations directly."
+  },
+  {
+    "id": "G010",
+    "category": "ENVIRONMENT_PROPERTIES_AUDIT",
+    "sub_category": "PROPERTIES_ENV_FILE_SEARCH",
+    "prompt": "Environment Audit: Search for all application.yml and .properties files defining SPRING_DATASOURCE_URL.",
+    "favored_tool": "grep",
+    "reason": "Grep finds raw key-value environment declarations across all config extensions."
+  }
+]

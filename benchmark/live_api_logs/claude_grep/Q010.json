@@ -1,0 +1,395 @@
+{
+  "turns": 8,
+  "input_tokens": 37869,
+  "output_tokens": 788,
+  "total_tokens": 38657,
+  "final_answer": "If the backend endpoint **`POST /api/agent`** is deleted, it will introduce a **BREAKING** change in the Angular frontend. \n\nThe following TypeScript consumers, services, and UI components rely directly on this endpoint via `AgentService.saveAgent()` and would be broken:\n\n### 1. Service Layer Consumers\n* **`AgentService`** (`ui-ngx/src/app/core/http/agent.service.ts`)\n  * **Method:** `saveAgent(agent: Agent, entityGroupIds?: string | string[], config?: RequestConfig)`\n  * **Impact:** This is the core HTTP wrapper method that constructs and executes the `POST` request to `/api/agent` (with optional query parameters `?entityGroupIds=...`).\n* **`EntityService`** (`ui-ngx/src/app/core/http/entity.service.ts`)\n  * **Method:** `saveGroupEntityObservable(entity: BaseData<EntityId>, entityGroupIds: string | string[], config?: RequestConfig)`\n  * **Impact:** Within the `EntityType.AGENT` case of the switch statement, it delegates to `this.agentService.saveAgent()`.\n\n### 2. UI and Dialog/Configuration Consumers\n* **`AgentCreateDialogService`** (`ui-ngx/src/app/modules/home/pages/agent/agent-create-dialog.service.ts`)\n  * **Method:** `create()`\n  * **Impact:** The `saveEntity` callback of the `EntityTableConfig` object calls `this.agentService.saveAgent(agent)`, meaning creating a new Agent via the creation dialog would fail.\n* **`AgentGroupConfig`** (`ui-ngx/src/app/modules/home/pages/agent/agent-group-config.factory.ts`)\n  * **Impact:** In the group configuration setup, `config.saveEntity` is assigned to `agent => this.agentService.saveAgent(agent)`.\n* **`AgentsTableConfigResolver`** (`ui-ngx/src/app/modules/home/pages/agent/agents-table-config.resolver.ts`)\n  * **Impact:** Within the entity table config resolution, `config.saveEntity`",
+  "transcript": [
+    {
+      "turn": 1,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a18IclpQhVM73Ysw/GAoSHBC8rjsHqxvUXRxvw/fYHJZ7cajWh6mCkIlrquwI10EYEEV1c2mP+QUqqpcxcnpGTaY8+FBkL1ZOMMPQSrTiGZrmHOBi8z4BTjvBfQzihmv1AB6ZxYSJMTGQkMiZ2UDc8XqYE9KF9K3YuaxQXQd/mGeHboK4Kz3JfYXcjSZLMt2QPyOqctZO+9Ut1GsMhhwa/QCic2311uH0hIA5b60uvjwNi1ZyVBTVgsz0bKqhLqSXDs+/5bgPfPZlSaX3ZAu0podBd418ymPtuBcMEImGkltgy3WohbTU/LW9q7NziiCEboxmKCZuj9a8bDtLhmir1KRgWb06z5xO4qrK2uuV5EIa+j27n6QunOmulju1w/UyLUiesNZ1dR//pbyZoZ9UPUlz6plx7TUxiwlOUUiNnuzVlcreVnJYNEVx3QAHnpQOeeLJBhjEHhCQ/IDiBUHvx9BXikIkP6DxrIzO1BpmKFvPubvLnZyMFyMt6EIp/4ZlgGGguxBaYwjoDiFR+e/BRFX4jX53F5YuBLi1K7LsHgsKVFqScQN4O3lAHNOAtXmB/MDl3eul5kEbXeD5ds1s8w="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"pattern\":\"/api/agent\"}",
+                    "name": "grep_search"
+                  },
+                  "id": "call_9376624276771801909",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393660,
+        "id": "PEb0asPSCcOdktwP5NPZ8Qk",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 19,
+          "completion_tokens_details": {
+            "reasoning_tokens": 94
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 168,
+          "total_tokens": 281
+        }
+      },
+      "dur_ms": 1715.43
+    },
+    {
+      "turn": 2,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a1/R3PqEZXplxRFObwpxz08SUF6SE+7F/Ml8ZNNP1FrPmLeI7pK88od2A/iNFdNsrGQZhsC7Ekyn0aKVL931bPpfY5vsOJE9xmQhFbxPPoSIkXT4mG8t2i8mRnLD+wk92VcoFNX0e/I17n+HNGPoKPhgOxoRCwIke3E1fmAZK1vtNI9RuY9uasfm0UMcySWiMyUu"
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"end_line\":115,\"file_path\":\"ui-ngx/src/app/core/http/agent.service.ts\",\"start_line\":80}",
+                    "name": "read_file"
+                  },
+                  "id": "call_4668891963678480960",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393661,
+        "id": "PUb0aqHlOZOBncoPiMj_kA8",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 49,
+          "completion_tokens_details": {
+            "reasoning_tokens": 22
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 3341,
+          "total_tokens": 3412
+        }
+      },
+      "dur_ms": 1423.38
+    },
+    {
+      "turn": 3,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a18klVe3oBzCv3jwz18Tyfazr3tSwYoNTeLiK+v3I9U3HSiDi6syWjFhiuLNzhMq5dcdhMiFXW7qKuTxvAtHjlymifiwSIT+rPM6Ri+59RV0LKtCDppdtiBsKUlBKbd9lqUDwPPuBJ78qja4FvvfgL7ERCsJdQuSq5uqFBmrUi2UXkR56Twx07J9qafY+nmxt1MLxiKSy3z2QNcP3MZqufGF4Nnlip7EEMeCdNlviTGXnvI1mr00l8I2NK4iLCMnIUOPRsDTAvSqouuG5EYiTljUiyKvDYa8r1xDAntwidv2rinfQy/R+w/QM8aLrhPWZNK8rA=="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"pattern\":\"saveAgent\"}",
+                    "name": "grep_search"
+                  },
+                  "id": "call_4932594275781067530",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393663,
+        "id": "P0b0aq2hFq2BktwPs7GooQ0",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 17,
+          "completion_tokens_details": {
+            "reasoning_tokens": 52
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 4004,
+          "total_tokens": 4073
+        }
+      },
+      "dur_ms": 1706.11
+    },
+    {
+      "turn": 4,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a18M3C1Oy/DWc633zVctNyuO8Xyp6lU01raKOESbuuazljPMQEdMpbAOB18tYS24Fpvu2r1sbRR8a479y1fYdsUWTBeV4iyw+iLKm3vF376MKomTWdAUALxAikhVTTFZcAwJKB9hL/GlFUs7IEhNqk4RpDh/nwGxme1wB12LORxJVeTVKCuRIOMq7JRHmXdd600G6sn2FosMugq5rA+QVmrZAKVA0UE+ybogO/ZFP+Rzb0xfekgXo2huj4vbcmzHkpYf2edI3PVhb0QNQc5jLNybDnrEmbPI9//fTEzACCszs2dp8ONUqeajiWfrpaxYDjNxyhNTHKS/AARSn0L/HHaMcH572XIiF9DRsVImHZheCGu6u96jES+teyECpS09cbkikTSwDD1jVL22xrjCHVfzi5YNdGsKCG5RGM4PhiDdtMryRKLqtVAJ0bn5RrbfzdWQ6r440MEbvjJ9ltHk0qw923inw1NYVPGQQLhnJRTfMLoXZwEXT3vav8+MTdGe8eTDUyusw3FAi9B8HG1uEGqK3qkFMQdakkFz9PtyNWkI/SJIA5wgBGrMh56jnXJ540kzcfYTmJojbVwbjRLCqeBasTp6E9+3tWgDWuwXB9vfxQpURaFj5ZJcPxyObfz/XC1plb8rPb2L4DL4q4Vg+lGx9oC6WAxODMO7r7KkiNofw1imX0fIgGnsYohjG//g8RW2kzfYekfR/gY7Lr5qSXlmm08Fgfcm6fEQa+fN+TftPdsU5M6HIXLwdp+B8AlyJB/097PWDDtR9M1XDuyjqD3D5aWopEVZ5t49BwmWqQGh7cwbUusaIY36eaeVxsHNypPldjoxIeQilonI7wUAdgmKxIt6o1IxFcUJjAkv8aJ8O8iIpZnRDcZ5ke/zw4yIkAwSccjHCZGrG+xmGajZVE5W6lcpUtythcu0IktSa6uyFIRNc4XkQPyg+eSNw2DJDtxgmLi0f6eebvuuh454runJCS4BQJb1HrrtYHnhfKtW+5f1LRvyleKfpl3QeWZNFTruOUY/lRY="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"end_line\":390,\"file_path\":\"ui-ngx/src/app/core/http/entity.service.ts\",\"start_line\":365}",
+                    "name": "read_file"
+                  },
+                  "id": "call_12080712583277136945",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393665,
+        "id": "QUb0asDUCLScvdAPu9CLsQ8",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 50,
+          "completion_tokens_details": {
+            "reasoning_tokens": 217
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 4935,
+          "total_tokens": 5202
+        }
+      },
+      "dur_ms": 2496.57
+    },
+    {
+      "turn": 5,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a18OjtC2vuAribHHWHZAQWWkLM53bcuwNM7B6u4IdCCmkrkaPR38S9IpJ1Y5W/n0R060HjgDWTnlvfJ2tDP9qPPTzvJkeDutJI6LaS/p2/6L1puqxdS4y8KDodYY+cKWAw0dO303UN0Fsy0YasD7nOnXw25h6YXaUSPEtmF9epRSnxVNY6tjxfxwwFLOxrADBcMdgZxq28rl7T6mOC2mWY6hKjlHy4+W45Jm/SZjK+AgMwMQd3nF7dogPrvIIQbEC/oL55AVmcUYvhAbkcuFvyFy5RzMn5YzlnN+YJXL/fGrfodWQxMjndoxN6PKT5wUFzdzM87hJyd5aEJDWu6iQQEbChccXxXkTfGqhe3gZbxqwBLmEsIudFgCm/98HFvaaHvqv0DcrG6gQ4+xjHoUyME4CVH31p45E87z6iJw2f7tuguIRQrHuRFRB8ncGg=="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"end_line\":45,\"file_path\":\"ui-ngx/src/app/modules/home/pages/agent/agent-create-dialog.service.ts\",\"start_line\":15}",
+                    "name": "read_file"
+                  },
+                  "id": "call_8662042593289194378",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393668,
+        "id": "REb0avbvCuOmktwPiO7icQ",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 56,
+          "completion_tokens_details": {
+            "reasoning_tokens": 83
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 5600,
+          "prompt_tokens_details": {
+            "cached_tokens": 3943
+          },
+          "total_tokens": 5739
+        }
+      },
+      "dur_ms": 3144.12
+    },
+    {
+      "turn": 6,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a186lGK5IATKkySNYemxTvZV8fkt5UK9s9gicTRcMBHYBOv6ThmQzITAGgQBcXR9zjFa6rXEUD4S3dP5j6P3tg1szlknodvf60DgQWwME5ZU7VkQSzJDS8EJORmtXTjslW2ytX7Sbp4M+IoO+HL1aQWMEEsFFgIdCen3frMja22zFqJxwbgBQvAvK1uNtse6IXKKDxDipHu4Sgvj+WleEKmbadr/2V1UJ7vl2Czah4t1QxSlwm0="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"end_line\":55,\"file_path\":\"ui-ngx/src/app/modules/home/pages/agent/agent-group-config.factory.ts\",\"start_line\":35}",
+                    "name": "read_file"
+                  },
+                  "id": "call_4385132324551298495",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393670,
+        "id": "Rkb0apqvNM2cncoPlIPC2A4",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 56,
+          "completion_tokens_details": {
+            "reasoning_tokens": 37
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 6106,
+          "total_tokens": 6199
+        }
+      },
+      "dur_ms": 1502.31
+    },
+    {
+      "turn": 7,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a19JoW6POQQzCeWmvB8wQXxDEif+pGK2KyeHAk5V6Io34rdUTREjWlb5Fo2Td9w8vmWaUMlPMBU3Id4rg3XYIIUJPB7DhmIlSYSbuYHPM96fLQeRqJ+Cnpo/bZIowF6vbRPeRhUgxqzikRbcbMLc0uPDb5dtSBavwC96f1K3mZBl8n9sYcnPWQmn/O0qxI9SbEkU3KCiwLC0ImbJPxq6SOLN3oSBQbfopINinYz0NjCYi/+ms0U2d98="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"end_line\":150,\"file_path\":\"ui-ngx/src/app/modules/home/pages/agent/agents-table-config.resolver.ts\",\"start_line\":125}",
+                    "name": "read_file"
+                  },
+                  "id": "call_15783666482647538226",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393672,
+        "id": "SEb0aqu5EcOdktwP5NPZ8Qk",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 58,
+          "completion_tokens_details": {
+            "reasoning_tokens": 38
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 6566,
+          "total_tokens": 6662
+        }
+      },
+      "dur_ms": 1769.36
+    },
+    {
+      "turn": 8,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "length",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "If the backend endpoint **`POST /api/agent`** is deleted, it will introduce a **BREAKING** change in the Angular frontend. \n\nThe following TypeScript consumers, services, and UI components rely directly on this endpoint via `AgentService.saveAgent()` and would be broken:\n\n### 1. Service Layer Consumers\n* **`AgentService`** (`ui-ngx/src/app/core/http/agent.service.ts`)\n  * **Method:** `saveAgent(agent: Agent, entityGroupIds?: string | string[], config?: RequestConfig)`\n  * **Impact:** This is the core HTTP wrapper method that constructs and executes the `POST` request to `/api/agent` (with optional query parameters `?entityGroupIds=...`).\n* **`EntityService`** (`ui-ngx/src/app/core/http/entity.service.ts`)\n  * **Method:** `saveGroupEntityObservable(entity: BaseData<EntityId>, entityGroupIds: string | string[], config?: RequestConfig)`\n  * **Impact:** Within the `EntityType.AGENT` case of the switch statement, it delegates to `this.agentService.saveAgent()`.\n\n### 2. UI and Dialog/Configuration Consumers\n* **`AgentCreateDialogService`** (`ui-ngx/src/app/modules/home/pages/agent/agent-create-dialog.service.ts`)\n  * **Method:** `create()`\n  * **Impact:** The `saveEntity` callback of the `EntityTableConfig` object calls `this.agentService.saveAgent(agent)`, meaning creating a new Agent via the creation dialog would fail.\n* **`AgentGroupConfig`** (`ui-ngx/src/app/modules/home/pages/agent/agent-group-config.factory.ts`)\n  * **Impact:** In the group configuration setup, `config.saveEntity` is assigned to `agent => this.agentService.saveAgent(agent)`.\n* **`AgentsTableConfigResolver`** (`ui-ngx/src/app/modules/home/pages/agent/agents-table-config.resolver.ts`)\n  * **Impact:** Within the entity table config resolution, `config.saveEntity`",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "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"
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1794393674,
+        "id": "Skb0at39JeOmktwPiO7icQ",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 483,
+          "completion_tokens_details": {
+            "reasoning_tokens": 537
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 7149,
+          "total_tokens": 8169
+        }
+      },
+      "dur_ms": 4921.66
+    }
+  ]
+}

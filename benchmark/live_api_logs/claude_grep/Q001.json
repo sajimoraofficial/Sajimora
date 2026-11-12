@@ -1,0 +1,245 @@
+{
+  "turns": 5,
+  "input_tokens": 6604,
+  "output_tokens": 620,
+  "total_tokens": 7224,
+  "final_answer": "If the backend endpoint `GET /api/admin/settings/*PARAM*` (where `*PARAM*` is the variable `key`) is deleted, the following TypeScript consumers in the Angular frontend will be **broken** (this is a **BREAKING** change):\n\n### 1. Direct Service Consumer\n* **`AdminService`** (`ui-ngx/src/app/core/http/admin.service.ts`)\n  * **Method:** `getAdminSettings<T>(key: string, systemByDefault?: boolean, config?: RequestConfig)`\n  * **Impact:** This method makes the actual HTTP GET call to `/api/admin/settings/${key}` and will fail.\n\n---\n\n### 2. Component/Page Consumers\nThe following components directly invoke `AdminService.getAdminSettings` to retrieve configuration settings:\n\n* **`GeneralSettingsComponent`** (`ui-ngx/src/app/modules/home/pages/admin/general-settings.component.ts`)\n  * **Calls:** \n    * `this.adminService.getAdminSettings<GeneralSettings>('general')` (to load general system settings)\n    * `this.adminService.getAdminSettings<DeviceConnectivitySettings>('connectivity')` (to load connectivity settings)\n\n* **`MailServerComponent`** (`ui-ngx/src/app/modules/home/pages/admin/mail-server.component.ts`)\n  * **Calls:**\n    * `this.adminService.getAdminSettings<MailServerSettings>('mail')` (to load outgoing SMTP mail server settings)\n\n* **`SmsProviderComponent`** (`ui-ngx/src/app/modules/home/pages/admin/sms-provider.component.ts`)\n  * **Calls:**\n    * `this.adminService.getAdminSettings<SmsProviderConfiguration>('sms', false, {ignoreErrors: true})` (to load SMS provider/gateway configurations)\n\n### Conclusion\nDeleting this endpoint will completely break the Admin Settings module of ThingsBoard (General, Connectivity, Mail Server, and SMS Provider setup pages). Therefore, this is a **BREAKING** change.",
+  "transcript": [
+    {
+      "turn": 1,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a1+APozUfg2Ys00almyF4oUXLfjORPaeycc4Td4glv0hqHsjYCdheafhcWIGx1qYlISGxvmB49TFOOJzxIp2zKEtFr6qqyDsqaK2fG5bDXbbIO9mdUjseGtiEyhl7dxuz68yWnY+o5UoQnZ/cVWBMlmlcdq2/LtNPhDEVdxg8elgtYls4fCH+YHneedivNQC9Nakk6z122ZVPTQtHrCoRnBtXUzRwiaPW2ylp5ih5JayHlNSdIZkEhlGdcHZ1gCE6vdDGOxvgcUfAscZ5mT5pVKt0d+73+pGN5z80R6YNNkddtYkx1B6LKtepK7fclxR0Jl0TU/m3eaY2tGA3jPDOVNCo80MI7Dlw8giY4QbpBrtabR0RcwcdjdPmLioBGADmjYWn7oaT1MAsDo/sZWtiHl1B5DVq5zTgQkYXpak4Gg+w0vNAmUusMLNh1OFENh0ZiJ3MkvMrfhao8YpO0EcP/zBKW684dxoiHMOKYLpFonUEqQZTieLAf6g7nYIPZ6c7gD9AvnfMEE7DGSNV8+dfrxwyfqxcxQFt3C5ONFqCnr9LDqz3Jk7RCNZMnVnnW5vZ46A72B8cx55CLXigPw4hsSqIPvYCJDAKHgAZILIRIQLJhnCrafM3Wg/QHdrgHEwFaIhGeKL+wcJQKfMHC2266cfC7+453BbwNZEem/gl4AxeNPM3F2o+trwCqDvyQcCfmlnsUONAApXWwV1wFe3xFhtKvrlO/gxozQa6+2BcN6s0Hbw80+Z0boQV1leEcKSpjSbZ3xw+TkO1KhdZ5VoJI6yOcGBCxmbTiIAx4zQq1BO2Qz5pN7R+mg1GCvoBarzk3VmBKZLDE7gLeYwM8c="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"file_pattern\":\"*.ts\",\"pattern\":\"/api/admin/settings\"}",
+                    "name": "grep_search"
+                  },
+                  "id": "call_14022107863200278294",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393551,
+        "id": "z0X0arnaC5ecvdAPteKTsQ8",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 30,
+          "completion_tokens_details": {
+            "reasoning_tokens": 132
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 173,
+          "total_tokens": 335
+        }
+      },
+      "dur_ms": 2331.14
+    },
+    {
+      "turn": 2,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a19vIDOa1PRGhesjGegwGhsmlNmHCSA/RVlGLzG3H3Soxl3UOQbsZGwSK4b2IZ4QDbFW2Zf7bGWRHJ72Ea6LwQIivSnjijGGsaSn/cx9O8iW4GkB+Sp38pI/hD/CA7RUpLcQnGzysMfKxCh0wGXbpRZH2tb5vPP7Er3Qg6sDYuMrRWgFepulxK2FNHRFK1GqZ/kZ75uRVw2taYk6sVFmIQXsXdRkoIJOlTyYQMBF29sC0dC3MNiETNWzyKano4Ox1iBNJj6y+FDQg7n7"
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"end_line\":60,\"file_path\":\"ui-ngx/src/app/core/http/admin.service.ts\",\"start_line\":25}",
+                    "name": "read_file"
+                  },
+                  "id": "call_14188959000629833381",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393553,
+        "id": "0UX0ar6TGsOdktwP5NPZ8Qk",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 48,
+          "completion_tokens_details": {
+            "reasoning_tokens": 43
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 594,
+          "total_tokens": 685
+        }
+      },
+      "dur_ms": 2627.01
+    },
+    {
+      "turn": 3,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "AY89a18CKQ+N4InRZ7mZl2hhezFnsgulEBEybuTh/Nz2ffCH32ozmIfZse1CH0F6EooGQRx/ZQ1pMgwp4L9tG8Q2xWUHGyVaAzAelBgSqcfz+EI1qAvuUkOOk1pwJAz2SJM7VIn4jkRTg/Yd8Cxqo6yqgjR9VheuXJUbe8IjypiZk3RfXHrmV7SKYZyjwyJ0rg5EQsA3YS5/6cpwszDeoA22zBuJh3wmtzcg//i9HDkUN9r2cEzPOzh+oK4Rlfa+TSs6KIypPz8QN5wOq47IuINAYAl88F/zXscMmavEvPOryA/HiNs4Q1AuuTOxH+6yZXUmiPwmauA3bbzXim1TcuoiV7zXAytS18yNUrq70ZEfPsYSsoKf"
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"file_pattern\":\"*.ts\",\"pattern\":\"getAdminSettings\"}",
+                    "name": "grep_search"
+                  },
+                  "id": "call_6483655650258581559",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393556,
+        "id": "1EX0arWgJ7ScvdAPu9CLsQ8",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 27,
+          "completion_tokens_details": {
+            "reasoning_tokens": 51
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 1199,
+          "total_tokens": 1277
+        }
+      },
+      "dur_ms": 2191.1
+    },
+    {
+      "turn": 4,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "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"
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"end_line\":140,\"file_path\":\"ui-ngx/src/app/shared/components/image/image-references.component.ts\",\"start_line\":115}",
+                    "name": "read_file"
+                  },
+                  "id": "call_14497808930256873304",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1794393558,
+        "id": "1kX0arOEEOiPncoP8eqmeQ",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 54,
+          "completion_tokens_details": {
+            "reasoning_tokens": 807
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 1734,
+          "total_tokens": 2595
+        }
+      },
+      "dur_ms": 5428.09
+    },
+    {
+      "turn": 5,
+      "raw_api_response": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "If the backend endpoint `GET /api/admin/settings/*PARAM*` (where `*PARAM*` is the variable `key`) is deleted, the following TypeScript consumers in the Angular frontend will be **broken** (this is a **BREAKING** change):\n\n### 1. Direct Service Consumer\n* **`AdminService`** (`ui-ngx/src/app/core/http/admin.service.ts`)\n  * **Method:** `getAdminSettings<T>(key: string, systemByDefault?: boolean, config?: RequestConfig)`\n  * **Impact:** This method makes the actual HTTP GET call to `/api/admin/settings/${key}` and will fail.\n\n---\n\n### 2. Component/Page Consumers\nThe following components directly invoke `AdminService.getAdminSettings` to retrieve configuration settings:\n\n* **`GeneralSettingsComponent`** (`ui-ngx/src/app/modules/home/pages/admin/general-settings.component.ts`)\n  * **Calls:** \n    * `this.adminService.getAdminSettings<GeneralSettings>('general')` (to load general system settings)\n    * `this.adminService.getAdminSettings<DeviceConnectivitySettings>('connectivity')` (to load connectivity settings)\n\n* **`MailServerComponent`** (`ui-ngx/src/app/modules/home/pages/admin/mail-server.component.ts`)\n  * **Calls:**\n    * `this.adminService.getAdminSettings<MailServerSettings>('mail')` (to load outgoing SMTP mail server settings)\n\n* **`SmsProviderComponent`** (`ui-ngx/src/app/modules/home/pages/admin/sms-provider.component.ts`)\n  * **Calls:**\n    * `this.adminService.getAdminSettings<SmsProviderConfiguration>('sms', false, {ignoreErrors: true})` (to load SMS provider/gateway configurations)\n\n### Conclusion\nDeleting this endpoint will completely break the Admin Settings module of ThingsBoard (General, Connectivity, Mail Server, and SMS Provider setup pages). Therefore, this is a **BREAKING** change.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "AY89a19oDnLlbHuIxsRBt3RrXo/2bZuDLGf+wmPxbh6yLeQ0zFkwvdD5D8Ow8iULSrSk/Zv/0R376twwYgKlscW/ctIHVLZr50/JM+D01QmJKHCrws+PiNI7VkS7L6AsHIz8YpwajETxHk3+35gMZliWZGmwlrRPGY89jZSDgvFOZke030ZTSTUpbc7cEXdLKQ5jH7+uU1ZPuYx+b2yVtMeQm/Ulg752LUSZnoMTWdw7R82JPgPZe0wDZWlvaUoCdftM81a1tFWm42eF43vdvys018kFFSy4eyLhMDWMXW5uvEolraJ4KRFCfYEWbWHK5EGKeNg133+G+CV4mH/fXqqFN2adXP+gcrFtJPe6w1oHxG2CgeZCVka+++wMIGgy+bU/2cqDVEUX0eYqaHFTr9d6n7NJ0iq80zqSKynRbJJstifX1/PXyUSOApj68xoxb2rvQEmIgSm422dAiGJ/RuGl7kglJ/7AGU0uB+2m2damoRcAJOaaIwxU/8Q0cZTYYrKCOzH7BOjVGSNFT9JKVRsjggn24zjBCq2xFGf/F6BOPYrvukn+tAoAGD3uvVzIEoqiR1PRrGINtZOJtThLmhBHTRU46olUaXumAjHdLfkjyclpeWK1m5qeLRGnLLw9PgbbwYjCQJ2+ZmBrNjSB1ElaQgm5qAun58olhAhcHPj3xrfaIjL2pDStc4F+XtS9BwjW286VTpHYjhOEfq+ZL+H6xhnPAmVlM7I4DBa0Z/aIhQfq4vXBY85BPfodYyMYmn2V1cdtx+MObLC60HQfIz9VcHV6oCsL+uG3yHq60CcilqS+ZoO5jZDTLAApvlU75xT3AGOgeyaY9U1YORKROzJjkt3OtoLpK9tlgJ0OYpQmoQY/GKL+iDLrX3iPa8r3xKFlY1S2Bo863fs8TLtEWmnbw+jgmYs6jMI3+7bkHXkbpM6zPeZeu+UsXUmholWt6GPtQMVP1bAh/X8iXn9bV4GQOsYEbrhWJeU6FkYtv/3SJ6ZEykLjqtR9F9XcMzUPN3vgymDPi032LAJDxJW8/akMBb3o713I9Qr8GTBbkgBCMVa2CDgNmrSZd+wWcXxpwQFjkf3lEIpaytUuPOs7C+rUvvPvdlduIxOFXe/GofxtLtMkRrl7EfahuQrM6nGZs+4FXZQQs8j2gw=="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1794393564,
+        "id": "3EX0aqmHDsOdktwP5NPZ8Qk",
+        "model": "google/gemini-3.5-flash",
+        "object": "chat.completion",
+        "system_fingerprint": "",
+        "usage": {
+          "completion_tokens": 461,
+          "completion_tokens_details": {
+            "reasoning_tokens": 183
+          },
+          "extra_properties": {
+            "google": {
+              "traffic_type": "ON_DEMAND"
+            }
+          },
+          "prompt_tokens": 2904,
+          "total_tokens": 3548
+        }
+      },
+      "dur_ms": 12512.54
+    }
+  ]
+}
