@@ -8,6 +8,7 @@ use source_index::contracts_db::{
     get_catalog_stats, open_reader, query_consumers_by_dto, query_consumers_by_route,
     query_endpoints_by_dto, sync_if_needed,
 };
+use crate::snippet::extract_source_snippet;
 use source_index::endpoint_impact::resolve_repo_root;
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -194,10 +195,22 @@ pub fn run_query(
             if detail == "summary" {
                 let endpoints: Vec<_> = matches
                     .iter()
-                    .map(|e| format!("{} {} ({}:{})", e.http_method, e.raw_path, e.source_file, e.source_line))
+                    .map(|e| {
+                        let mut item = serde_json::json!({
+                            "endpoint": format!("{} {} ({}:{})", e.http_method, e.raw_path, e.source_file, e.source_line),
+                            "method": e.http_method,
+                            "route": e.raw_path,
+                            "file": e.source_file,
+                            "line": e.source_line,
+                        });
+                        if let Some(snip) = extract_source_snippet(&repo_root, &e.source_file, e.source_line, 2) {
+                            item["snippet"] = serde_json::json!(snip);
+                        }
+                        item
+                    })
                     .collect();
                 Ok(serde_json::json!({
-                    "schemaVersion": "SAJIMORA_QUERY_V1",
+                    "schemaVersion": "SAJIMORA_QUERY_V2",
                     "queryType": "endpoints_by_dto",
                     "targetDto": target,
                     "matchCount": matches.len(),

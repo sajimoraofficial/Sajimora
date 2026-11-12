@@ -13,6 +13,7 @@ use source_index::contracts_db::{
     query_consumers_by_dto_symbol, query_consumers_by_route, query_consumers_by_type_ref,
     resolve_dto_type_refs, sync_if_needed, ConsumerMatch,
 };
+use crate::snippet::extract_source_snippet;
 use source_index::endpoint_impact::resolve_repo_root;
 use source_index::java_routes::{ConfigInputs, JavaRouteExtractor};
 use std::collections::BTreeSet;
@@ -157,7 +158,7 @@ pub fn run_what_if(
             "latencyMicros": elapsed_micros,
             "telemetry": compute_savings_telemetry(affected.len().max(1), elapsed_micros),
             "verdict": if affected.is_empty() { "COMPATIBLE" } else { "CONSUMERS_OBSERVED" },
-            "affectedConsumers": consumer_preview(&affected, None, None, None)
+            "affectedConsumers": consumer_preview(&repo_root, &affected, None, None, None)
         })
         .to_string());
     }
@@ -207,7 +208,7 @@ pub fn run_what_if(
                 "telemetry": compute_savings_telemetry(affected_files.len().max(1), elapsed_micros),
                 "breakingConsumersCount": consumers.len(),
                 "affectedFiles": affected_files.into_iter().collect::<Vec<_>>(),
-                "affectedConsumers": consumer_preview(&consumers, None, None, Some("DELETE_ENDPOINT")),
+                "affectedConsumers": consumer_preview(&repo_root, &consumers, None, None, Some("DELETE_ENDPOINT")),
                 "message": if consumers.is_empty() {
                     "No sealed consumer contract calls this route; removing it has no observed consumer impact."
                 } else {
@@ -343,7 +344,7 @@ pub fn run_what_if(
             affected_files.insert(tm.file.clone());
         }
 
-        let mut all_affected_consumers = consumer_preview(&consumers, Some(target_dto), Some(field), Some(&action));
+        let mut all_affected_consumers = consumer_preview(&repo_root, &consumers, Some(target_dto), Some(field), Some(&action));
         for tm in &template_matches {
             let mut patch_recipe = serde_json::Map::new();
             if action == "RENAME_FIELD" && !rename_to.is_empty() {
@@ -361,7 +362,7 @@ pub fn run_what_if(
                 patch_recipe.insert("guidance".to_string(), serde_json::json!(format!("Property '{}' will be undefined; remove binding or provide fallback", field)));
             }
 
-            all_affected_consumers.push(serde_json::json!({
+            let mut match_val = serde_json::json!({
                 "file": tm.file,
                 "line": tm.line,
                 "kind": tm.kind,
@@ -377,7 +378,11 @@ pub fn run_what_if(
                     format!("3. Template View: '{}' (line {}) dynamically evaluates '{}'", tm.file, tm.line, tm.expression)
                 ],
                 "patchRecipe": patch_recipe
-            }));
+            });
+            if let Some(snip) = extract_source_snippet(&repo_root, &tm.file, tm.line as i64, 2) {
+                match_val["snippet"] = serde_json::json!(snip);
+            }
+            all_affected_consumers.push(match_val);
         }
 
         let mut automated_patches = Vec::new();
@@ -547,6 +552,7 @@ fn dedupe_consumers(consumers: &mut Vec<ConsumerMatch>) {
 }
 
 fn consumer_preview(
+    repo_root: &Path,
     consumers: &[ConsumerMatch],
     target_dto: Option<&str>,
     field: Option<&str>,
@@ -563,6 +569,9 @@ fn consumer_preview(
                 "route": consumer.normalized_route,
                 "kind": "HTTP_SERVICE_CONSUMER",
             });
+            if let Some(snip) = extract_source_snippet(repo_root, &consumer.source_file, consumer.source_line, 2) {
+                val["snippet"] = serde_json::json!(snip);
+            }
             if let (Some(dto), Some(fld), Some(act)) = (target_dto, field, action) {
                 val["rootCause"] = serde_json::json!(format!(
                     "Service endpoint '{} {}' returns payload mapped to DTO '{}' where wire field '{}' is affected by {}.",

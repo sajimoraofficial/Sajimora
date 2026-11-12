@@ -21,6 +21,7 @@ pub mod invariants;
 pub mod query;
 pub mod run;
 pub mod server;
+pub mod snippet;
 pub mod unit;
 pub mod verify;
 pub mod what_if;
