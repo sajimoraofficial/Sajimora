@@ -2,15 +2,19 @@ use std::path::PathBuf;
 use std::time::Instant;
 
 #[tokio::test]
+#[ignore = "Requires local ThingsBoard repository corpus"]
 async fn test_endpoint_impact_stat_cache_on_thingsboard() {
-    let tb_path = PathBuf::from("E:\\thingsboard");
+    let tb_path = std::env::var("THINGSBOARD_PATH")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| PathBuf::from("E:\\thingsboard"));
     if !tb_path.exists() {
         return;
     }
     let allowed_roots = vec![tb_path.clone()];
+    let tb_str = tb_path.to_string_lossy().to_string();
 
     let mut args = serde_json::Map::new();
-    args.insert("repoRoot".to_string(), serde_json::json!("E:\\thingsboard"));
+    args.insert("repoRoot".to_string(), serde_json::json!(tb_str));
     args.insert("mode".to_string(), serde_json::json!("workingTreeVsHead"));
 
     // Run 1: First run (populates the stat cache)

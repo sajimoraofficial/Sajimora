@@ -1,15 +1,19 @@
 use std::path::PathBuf;
 
 #[test]
+#[ignore = "Requires local ThingsBoard repository corpus"]
 fn print_sample_telemetry() {
-    let tb_path = PathBuf::from("E:\\thingsboard");
+    let tb_path = std::env::var("THINGSBOARD_PATH")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| PathBuf::from("E:\\thingsboard"));
     if !tb_path.exists() {
         return;
     }
     let allowed_roots = vec![tb_path.clone()];
+    let tb_str = tb_path.to_string_lossy().to_string();
 
     let mut what_if_args = serde_json::Map::new();
-    what_if_args.insert("repoRoot".to_string(), serde_json::json!("E:\\thingsboard"));
+    what_if_args.insert("repoRoot".to_string(), serde_json::json!(tb_str));
     what_if_args.insert(
         "mutation".to_string(),
         serde_json::json!({

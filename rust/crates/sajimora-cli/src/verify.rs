@@ -17,6 +17,20 @@ use source_index::provider::ProviderKind;
 use std::fs;
 use std::path::{Path, PathBuf};
 
+fn write_with_retry(path: &Path, content: impl AsRef<[u8]>) -> Result<()> {
+    let mut attempts = 0;
+    loop {
+        match fs::write(path, content.as_ref()) {
+            Ok(()) => return Ok(()),
+            Err(e) if attempts < 15 && (e.raw_os_error() == Some(32) || e.kind() == std::io::ErrorKind::PermissionDenied) => {
+                attempts += 1;
+                std::thread::sleep(std::time::Duration::from_millis(25 * attempts));
+            }
+            Err(e) => return Err(e.into()),
+        }
+    }
+}
+
 #[derive(Args, Debug)]
 pub struct VerifyArgs {
     /// Path to the repository root or subproject. Defaults to auto-detecting .sajimora.
@@ -224,7 +238,7 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
 
         let candidate_file = sajimora_dir.join("candidate-contract.json");
         let candidate_json = serde_json::to_string_pretty(&candidate_envelope)?;
-        fs::write(&candidate_file, &candidate_json)?;
+        write_with_retry(&candidate_file, &candidate_json)?;
         (candidate_envelope, candidate_file)
     };
 
@@ -397,7 +411,7 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
     }
     let report_file = sajimora_dir.join("impact-report.json");
     let report_json = serde_json::to_string_pretty(&report_value)?;
-    fs::write(&report_file, &report_json)?;
+    write_with_retry(&report_file, &report_json)?;
 
     // Promote candidate frontend contract to default baseline if verification passed
     let default_fe = sajimora_dir.join("frontend-contract.json");

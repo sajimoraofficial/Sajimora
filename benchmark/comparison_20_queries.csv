@@ -1,5 +1,0 @@
-configuration,total_turns,avg_turns_per_query,total_tokens,avg_tokens_per_query,total_latency_sec,precision,recall,f1,verdict_accuracy_pct,estimated_cost_usd
-claude_grep,60,3.0,45228,2261,1.64,1.5,43.8,0.030,90.0,0.1498
-claude_sajimora,40,2.0,15770,788,0.82,40.5,93.8,0.566,100.0,0.0665
-qwen32b_grep,60,3.0,11398,570,1.56,55.6,15.6,0.244,65.0,0.0091
-qwen32b_sajimora,40,2.0,16334,817,0.84,40.5,93.8,0.566,100.0,0.0131

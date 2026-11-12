@@ -6,7 +6,7 @@ inputs:
   version:
     description: 'Version of Sajimora CLI to install and use'
     required: false
-    default: '0.10.0'
+    default: '0.1.0'
   repo-path:
     description: 'Path to repository root'
     required: false
@@ -65,10 +65,20 @@ runs:
 
           BIN_DIR="$RUNNER_TEMP/sajimora-bin"
           mkdir -p "$BIN_DIR"
-          ASSET="sajimora-v${{ inputs.version }}-${TARGET}.tar.gz"
-          URL="https://github.com/sajimora/sajimora/releases/download/v${{ inputs.version }}/${ASSET}"
+          EXT="tar.gz"
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            EXT="zip"
+          fi
+          ASSET="sajimora-v${{ inputs.version }}-${TARGET}.${EXT}"
+          URL="https://github.com/sajimoraofficial/sajimora/releases/download/v${{ inputs.version }}/${ASSET}"
           echo "Downloading $URL into $BIN_DIR..."
-          curl -sSL "$URL" | tar -xz -C "$BIN_DIR"
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            curl -sSL "$URL" -o "$BIN_DIR/$ASSET"
+            unzip -q "$BIN_DIR/$ASSET" -d "$BIN_DIR"
+            rm "$BIN_DIR/$ASSET"
+          else
+            curl -sSL "$URL" | tar -xz -C "$BIN_DIR"
+          fi
           echo "$BIN_DIR" >> $GITHUB_PATH
           export PATH="$BIN_DIR:$PATH"
         fi

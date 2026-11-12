@@ -48,12 +48,7 @@ fn run_cmd(dir: &Path, args: &[&str]) -> String {
 }
 
 fn bin_path() -> PathBuf {
-    let mut path = std::env::current_exe().unwrap();
-    path.pop();
-    if path.ends_with("deps") {
-        path.pop();
-    }
-    path.join("sajimora")
+    PathBuf::from(env!("CARGO_BIN_EXE_sajimora"))
 }
 
 #[test]

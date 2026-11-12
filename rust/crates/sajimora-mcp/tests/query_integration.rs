@@ -1,16 +1,20 @@
 use std::path::PathBuf;
 
 #[tokio::test]
+#[ignore = "Requires local ThingsBoard repository corpus"]
 async fn test_query_and_what_if_on_thingsboard() {
-    let tb_path = PathBuf::from("E:\\thingsboard");
+    let tb_path = std::env::var("THINGSBOARD_PATH")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| PathBuf::from("E:\\thingsboard"));
     if !tb_path.exists() {
         return;
     }
     let allowed_roots = vec![tb_path.clone()];
+    let tb_str = tb_path.to_string_lossy().to_string();
 
     // Test 1: Stats query
     let mut stats_args = serde_json::Map::new();
-    stats_args.insert("repoRoot".to_string(), serde_json::json!("E:\\thingsboard"));
+    stats_args.insert("repoRoot".to_string(), serde_json::json!(tb_str));
     stats_args.insert("queryType".to_string(), serde_json::json!("stats"));
 
     let stats_res = sajimora_mcp::query::run_query(&allowed_roots, &stats_args)
@@ -21,7 +25,7 @@ async fn test_query_and_what_if_on_thingsboard() {
 
     // Test 2: consumers_by_route
     let mut route_args = serde_json::Map::new();
-    route_args.insert("repoRoot".to_string(), serde_json::json!("E:\\thingsboard"));
+    route_args.insert("repoRoot".to_string(), serde_json::json!(tb_str));
     route_args.insert(
         "queryType".to_string(),
         serde_json::json!("consumers_by_route"),
@@ -35,7 +39,7 @@ async fn test_query_and_what_if_on_thingsboard() {
 
     // Test 3: what_if symbolic mutation (unretained firstName -> givenName)
     let mut what_if_args = serde_json::Map::new();
-    what_if_args.insert("repoRoot".to_string(), serde_json::json!("E:\\thingsboard"));
+    what_if_args.insert("repoRoot".to_string(), serde_json::json!(tb_str));
     what_if_args.insert(
         "mutation".to_string(),
         serde_json::json!({
@@ -55,7 +59,7 @@ async fn test_query_and_what_if_on_thingsboard() {
 
     // Test 4: what_if with jsonPropertyRetained: true
     let mut what_if_safe_args = serde_json::Map::new();
-    what_if_safe_args.insert("repoRoot".to_string(), serde_json::json!("E:\\thingsboard"));
+    what_if_safe_args.insert("repoRoot".to_string(), serde_json::json!(tb_str));
     what_if_safe_args.insert(
         "mutation".to_string(),
         serde_json::json!({

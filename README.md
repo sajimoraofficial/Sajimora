@@ -142,7 +142,7 @@ sajimora verify --fail-on-violation
 Predicts what will break *before* modifying code:
 
 ```bash
-sajimora what-if --target UserDto --field email --action REMOVE_FIELD
+sajimora what-if --type UserDto --field email --mutation REMOVE_FIELD
 ```
 
 ### 4. `sajimora doctor` — Repository Diagnostics

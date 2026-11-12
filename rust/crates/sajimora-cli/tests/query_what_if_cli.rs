@@ -2,8 +2,11 @@ use std::path::PathBuf;
 use std::process::Command;
 
 #[test]
+#[ignore = "Requires local ThingsBoard repository corpus"]
 fn test_cli_query_and_what_if_on_thingsboard() {
-    let tb_path = PathBuf::from("E:\\thingsboard");
+    let tb_path = std::env::var("THINGSBOARD_PATH")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| PathBuf::from("E:\\thingsboard"));
     if !tb_path.exists() {
         return;
     }
