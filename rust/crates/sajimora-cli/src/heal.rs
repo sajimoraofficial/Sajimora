@@ -11,7 +11,7 @@ use anyhow::{Context, Result};
 use clap::Args;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use source_index::call_sites::{extract_java_call_sites, CallSiteRecord};
+use source_index::call_sites::{extract_java_call_sites, extract_ts_call_sites, CallSiteRecord};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -269,8 +269,9 @@ pub fn execute_heal(args: &HealArgs) -> Result<HealSummary> {
     let test_path = Path::new(&args.test_dir);
 
     let test_files = if test_path.is_file() {
-        if test_path.extension().and_then(|e| e.to_str()) != Some("java") {
-            anyhow::bail!("Autonomous test healing is currently implemented for Java test files (.java) only. TypeScript test healing is planned for General Availability.");
+        let ext = test_path.extension().and_then(|e| e.to_str()).unwrap_or("");
+        if !matches!(ext, "java" | "ts" | "tsx" | "js" | "jsx") {
+            anyhow::bail!("Autonomous test healing supports Java (.java) and TypeScript/JavaScript (.ts, .tsx, .js, .jsx) files. Found: {:?}", test_path);
         }
         vec![test_path.to_path_buf()]
     } else if test_path.exists() {
@@ -281,8 +282,11 @@ pub fn execute_heal(args: &HealArgs) -> Result<HealSummary> {
 
     if let Some(ref t) = args.target {
         let p = Path::new(t);
-        if p.is_file() && p.extension().and_then(|e| e.to_str()) != Some("java") {
-            anyhow::bail!("Autonomous healing target {:?} is not a Java source file (.java). Refactoring detection currently supports Java only.", t);
+        if p.is_file() {
+            let ext = p.extension().and_then(|e| e.to_str()).unwrap_or("");
+            if !matches!(ext, "java" | "ts" | "tsx" | "js" | "jsx") {
+                anyhow::bail!("Autonomous healing target {:?} is not a supported source file (.java, .ts, .tsx, .js, .jsx).", t);
+            }
         }
     }
 
@@ -386,7 +390,14 @@ pub fn execute_heal(args: &HealArgs) -> Result<HealSummary> {
             Err(_) => continue,
         };
 
-        let call_sites = match extract_java_call_sites(&file_str, &source) {
+        let ext = file_path.extension().and_then(|e| e.to_str()).unwrap_or("");
+        let call_sites = if matches!(ext, "ts" | "tsx" | "js" | "jsx") {
+            extract_ts_call_sites(&file_str, &source)
+        } else {
+            extract_java_call_sites(&file_str, &source)
+        };
+
+        let call_sites = match call_sites {
             Ok(cs) => cs,
             Err(_) => {
                 summary.abstentions.push(HealAbstention {
@@ -435,6 +446,11 @@ pub fn execute_heal(args: &HealArgs) -> Result<HealSummary> {
                             | "0.0d"
                             | "\"\""
                             | "null"
+                            | "undefined"
+                            | "[]"
+                            | "{}"
+                            | "new Map()"
+                            | "new Set()"
                             | "Optional.empty()"
                             | "Collections.emptyList()"
                             | "Collections.emptySet()"
@@ -894,8 +910,7 @@ fn walk_dir_for_tests(dir: &Path, files: &mut Vec<PathBuf>) -> Result<()> {
         if path.is_dir() {
             walk_dir_for_tests(&path, files)?;
         } else if let Some(ext) = path.extension() {
-            // STRICT SAFETY: Java AST healer must ONLY process Java files!
-            if ext == "java" {
+            if matches!(ext.to_str().unwrap_or(""), "java" | "ts" | "tsx" | "js" | "jsx") {
                 files.push(path);
             }
         }

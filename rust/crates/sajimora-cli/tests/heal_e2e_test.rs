@@ -474,3 +474,66 @@ describe("pricing", () => {
 
     let _ = fs::remove_dir_all(dir);
 }
+
+#[test]
+fn test_heal_typescript_call_site_addition_and_idempotence() {
+    let dir = unique_dir("ts-heal");
+    let file_path = dir.join("priceCalculator.test.ts");
+
+    let original_source = r#"import { calculateFinalPrice } from './calculator';
+
+describe("PriceCalculator", () => {
+    it("calculates standard discount", () => {
+        const result = calculateFinalPrice(100.0, 0.15);
+        expect(result).toBe(85.0);
+    });
+});
+"#;
+
+    fs::write(&file_path, original_source).unwrap();
+
+    let (code, stdout, stderr) = run_heal(&[
+        "--test-dir",
+        dir.to_str().unwrap(),
+        "--method",
+        "calculateFinalPrice",
+        "--default-value",
+        "true",
+    ]);
+
+    assert_eq!(code, 0, "Heal command failed: {stderr}");
+    assert!(
+        stdout.contains("Successfully healed 1 call sites"),
+        "stdout: {stdout}"
+    );
+
+    let content_after_first = fs::read_to_string(&file_path).unwrap();
+    assert!(
+        content_after_first.contains("calculateFinalPrice(100.0, 0.15, true)"),
+        "Content after first heal: {content_after_first}"
+    );
+
+    // Idempotence test: second run must find 0 eligible unhealed call sites
+    let (code2, stdout2, _) = run_heal(&[
+        "--test-dir",
+        dir.to_str().unwrap(),
+        "--method",
+        "calculateFinalPrice",
+        "--default-value",
+        "true",
+    ]);
+
+    assert_eq!(code2, 0);
+    assert!(
+        stdout2.contains("Successfully healed 0 call sites"),
+        "Second heal must be a no-op: {stdout2}"
+    );
+
+    let content_after_second = fs::read_to_string(&file_path).unwrap();
+    assert_eq!(
+        content_after_first, content_after_second,
+        "Idempotence failed"
+    );
+
+    let _ = fs::remove_dir_all(dir);
+}

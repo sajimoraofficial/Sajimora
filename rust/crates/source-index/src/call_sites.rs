@@ -163,3 +163,155 @@ fn extract_argument_list(source: &str, args_node: Node) -> Option<(Vec<ByteRange
 
     Some((argument_spans, argument_texts))
 }
+
+/// Extracts all function calls, method invocations, and constructor calls from TypeScript/JavaScript source code.
+pub fn extract_ts_call_sites(file_path: &str, source: &str) -> Result<Vec<CallSiteRecord>> {
+    let mut parser = Parser::new();
+    let is_tsx = file_path.ends_with(".tsx") || file_path.ends_with(".jsx");
+    let language: tree_sitter::Language = if is_tsx {
+        tree_sitter_typescript::LANGUAGE_TSX.into()
+    } else {
+        tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into()
+    };
+    parser
+        .set_language(&language)
+        .context("Failed to load tree-sitter-typescript grammar")?;
+
+    let tree = parser
+        .parse(source.as_bytes(), None)
+        .context("Failed to parse TypeScript source with tree-sitter")?;
+
+    let mut call_sites = Vec::new();
+    let root = tree.root_node();
+    if root.has_error() {
+        anyhow::bail!("TypeScript syntax error detected in source file: {}", file_path);
+    }
+    walk_ts_call_sites(file_path, source, root, &mut call_sites);
+
+    Ok(call_sites)
+}
+
+fn walk_ts_call_sites(
+    file_path: &str,
+    source: &str,
+    node: Node,
+    results: &mut Vec<CallSiteRecord>,
+) {
+    match node.kind() {
+        "call_expression" => {
+            if let Some(record) = parse_ts_call_expression(file_path, source, node) {
+                results.push(record);
+            }
+        }
+        "new_expression" => {
+            if let Some(record) = parse_ts_new_expression(file_path, source, node) {
+                results.push(record);
+            }
+        }
+        _ => {}
+    }
+
+    let mut cursor = node.walk();
+    for child in node.children(&mut cursor) {
+        walk_ts_call_sites(file_path, source, child, results);
+    }
+}
+
+fn parse_ts_call_expression(
+    file_path: &str,
+    source: &str,
+    node: Node,
+) -> Option<CallSiteRecord> {
+    let func_node = node.child_by_field_name("function")?;
+    let (receiver, method_name) = match func_node.kind() {
+        "identifier" => {
+            let name = source.get(func_node.start_byte()..func_node.end_byte())?.to_string();
+            (None, name)
+        }
+        "member_expression" => {
+            let prop_node = func_node.child_by_field_name("property")?;
+            let obj_node = func_node.child_by_field_name("object")?;
+            let prop_name = source.get(prop_node.start_byte()..prop_node.end_byte())?.to_string();
+            let obj_name = source.get(obj_node.start_byte()..obj_node.end_byte())?.to_string();
+            (Some(obj_name), prop_name)
+        }
+        _ => return None,
+    };
+
+    let args_node = node.child_by_field_name("arguments")?;
+    let (argument_spans, argument_texts) = extract_argument_list(source, args_node)?;
+
+    let pos = node.start_position();
+    Some(CallSiteRecord {
+        file: file_path.to_string(),
+        line: pos.row + 1,
+        column: pos.column + 1,
+        receiver,
+        method_name,
+        is_constructor: false,
+        invocation_span: ByteRange {
+            start: node.start_byte(),
+            end: node.end_byte(),
+        },
+        argument_list_span: ByteRange {
+            start: args_node.start_byte(),
+            end: args_node.end_byte(),
+        },
+        argument_spans,
+        argument_texts,
+    })
+}
+
+fn parse_ts_new_expression(
+    file_path: &str,
+    source: &str,
+    node: Node,
+) -> Option<CallSiteRecord> {
+    let constructor_node = node.child_by_field_name("constructor")?;
+    let method_name = match constructor_node.kind() {
+        "identifier" => source.get(constructor_node.start_byte()..constructor_node.end_byte())?.to_string(),
+        "member_expression" => {
+            let prop_node = constructor_node.child_by_field_name("property")?;
+            source.get(prop_node.start_byte()..prop_node.end_byte())?.to_string()
+        }
+        _ => return None,
+    };
+
+    let (argument_list_span, argument_spans, argument_texts) = if let Some(args_node) = node.child_by_field_name("arguments") {
+        let (spans, texts) = extract_argument_list(source, args_node)?;
+        (
+            ByteRange {
+                start: args_node.start_byte(),
+                end: args_node.end_byte(),
+            },
+            spans,
+            texts,
+        )
+    } else {
+        (
+            ByteRange {
+                start: node.end_byte(),
+                end: node.end_byte(),
+            },
+            Vec::new(),
+            Vec::new(),
+        )
+    };
+
+    let pos = node.start_position();
+    Some(CallSiteRecord {
+        file: file_path.to_string(),
+        line: pos.row + 1,
+        column: pos.column + 1,
+        receiver: None,
+        method_name,
+        is_constructor: true,
+        invocation_span: ByteRange {
+            start: node.start_byte(),
+            end: node.end_byte(),
+        },
+        argument_list_span,
+        argument_spans,
+        argument_texts,
+    })
+}

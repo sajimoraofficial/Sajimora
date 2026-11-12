@@ -1,4 +1,4 @@
-use source_index::call_sites::extract_java_call_sites;
+use source_index::call_sites::{extract_java_call_sites, extract_ts_call_sites};
 
 #[test]
 fn test_extract_java_primitive_call_site() {
@@ -136,4 +136,54 @@ fn test_extract_real_spring_sample_fixture() {
             assert!(span.end <= call.argument_list_span.end);
         }
     }
+}
+
+#[test]
+fn test_extract_ts_call_site_and_member_invocation() {
+    let source = r#"
+import { client } from './api';
+
+export async function submitOrder(cartId: string) {
+    const response = await client.post('/api/v1/orders', { cartId, total: 99.5 });
+    logEvent("order_submitted", cartId);
+    return response.data;
+}
+"#;
+
+    let calls = extract_ts_call_sites("orderService.ts", source).unwrap();
+
+    let post_call = calls
+        .iter()
+        .find(|c| c.method_name == "post")
+        .expect("client.post call not found");
+
+    assert_eq!(post_call.receiver.as_deref(), Some("client"));
+    assert!(!post_call.is_constructor);
+    assert_eq!(post_call.argument_spans.len(), 2);
+    assert_eq!(post_call.argument_texts[0], "'/api/v1/orders'");
+    assert_eq!(post_call.argument_texts[1], "{ cartId, total: 99.5 }");
+
+    let log_call = calls
+        .iter()
+        .find(|c| c.method_name == "logEvent")
+        .expect("logEvent call not found");
+
+    assert_eq!(log_call.receiver, None);
+    assert_eq!(log_call.argument_texts, vec!["\"order_submitted\"", "cartId"]);
+}
+
+#[test]
+fn test_extract_ts_constructor_and_arguments() {
+    let source = r#"
+const service = new OrderService(config, true);
+"#;
+
+    let calls = extract_ts_call_sites("app.ts", source).unwrap();
+    let ctor = calls
+        .iter()
+        .find(|c| c.method_name == "OrderService" && c.is_constructor)
+        .expect("OrderService new expression not found");
+
+    assert!(ctor.is_constructor);
+    assert_eq!(ctor.argument_texts, vec!["config", "true"]);
 }

@@ -1,9 +1,8 @@
-//! Bounded Differential Behavioral Equivalence Gate (Bisimulation).
+//! Bounded Differential Behavioral Equivalence Gate.
 //!
-//! Complies strictly with Section 7 of `L2_IMPLEMENTATION_READINESS_REPORT.md`:
-//! - Compares dual revisions ($R-1$ and $R$) along basic block execution paths.
+//! Evaluates dual revisions ($R-1$ and $R$) along basic block execution paths:
 //! - Distinguishes between:
-//!   * `SOUND PROOF OF EQUIVALENCE`: Structural algebraic proof that return expressions are identical.
+//!   * `SOUND PROOF OF EQUIVALENCE`: Structural algebraic verification that straight-line return expressions are identical.
 //!   * `COUNTEREXAMPLE`: Concrete input causing behavioral divergence, sealed in a SHA-256 Incompatibility Witness.
 //!   * `LIKELY_EQUIVALENT (bounded)`: Advisory signal only (failed on strict gate).
 //!   * `UNKNOWN`: Fails closed when encountering unmodeled local mutations or budget exhaustion.

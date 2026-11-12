@@ -1,6 +1,6 @@
-//! Tier 1 Bounded Finite-Domain & Interval SMT Constraint Solver.
+//! Tier 1 Bounded Finite-Domain & Interval Constraint Evaluator.
 //!
-//! Solves linear inequalities, boolean propositions, string literals, and enum matches:
+//! Evaluates linear inequalities, boolean propositions, string literals, and enum matches:
 //! - Heuristic boundary testing and interval constraint propagation.
 //! - Floating-point 0-equality and positive inequalities.
 //! - Boolean algebra (AND, OR, NOT).
@@ -73,7 +73,7 @@ pub enum Constraint {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum SolverVerdict {
-    /// Soundly proven unsatisfiable or tautology under Tier 1 arithmetic axioms.
+    /// Evaluated unsatisfiable or tautology under bounded interval axioms.
     Proven,
     /// Concrete input assignment that satisfies the constraint path condition.
     Counterexample(BTreeMap<String, ConcreteValue>),

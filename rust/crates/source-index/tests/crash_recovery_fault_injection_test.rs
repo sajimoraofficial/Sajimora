@@ -163,7 +163,7 @@ fn test_crash_recovery_uncommitted_sigkill() {
     }
 
     // 2. Spawn a python subprocess that enters an IMMEDIATE transaction, inserts 100 dirty rows, flushes, and sleeps
-    let db_str = db_path.to_str().unwrap().to_string();
+    let db_str = db_path.to_string_lossy().replace('\\', "/");
     let py_script = format!(
         r#"
 import sqlite3, sys, time
@@ -182,7 +182,8 @@ time.sleep(30)
 "#
     );
 
-    let mut child = Command::new("python3")
+    let py_bin = if cfg!(windows) { "python" } else { "python3" };
+    let mut child = Command::new(py_bin)
         .arg("-c")
         .arg(&py_script)
         .stdout(Stdio::piped())
