@@ -58,7 +58,26 @@ pub fn run(args: GenUnitArgs) -> i32 {
     }
 
     if source_path.extension().and_then(|e| e.to_str()) != Some("java") {
-        eprintln!("Error: Unit test synthesis currently supports Java source files (.java) only. TypeScript support is planned for General Availability.");
+        if args.json {
+            println!(
+                "{}",
+                serde_json::json!({
+                    "status": "UNSUPPORTED_LANGUAGE",
+                    "file": file_str,
+                    "message": "Symbolic unit test synthesis is currently active for Java (.java). TypeScript synthesis is in preview.",
+                    "available_commands": ["sajimora check", "sajimora impact", "sajimora ask"]
+                })
+            );
+            return 1;
+        }
+        eprintln!(
+            "\n[sajimora] Formal symbolic unit test synthesis is currently specialized for Java (.java).\n\
+             TypeScript/Python test synthesis is previewing in the upcoming release with Sajimora-Coder-32B!\n\n\
+             Tip: You can verify and inspect your TypeScript code right now with:\n  \
+             • sajimora check      (Full cross-language contract verification)\n  \
+             • sajimora impact     (Call-graph blast radius)\n  \
+             • sajimora ask        (Architectural insights and code queries)\n"
+        );
         return 1;
     }
 

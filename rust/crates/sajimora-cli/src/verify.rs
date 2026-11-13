@@ -22,9 +22,37 @@ fn write_with_retry(path: &Path, content: impl AsRef<[u8]>) -> Result<()> {
     loop {
         match fs::write(path, content.as_ref()) {
             Ok(()) => return Ok(()),
-            Err(e) if attempts < 15 && (e.raw_os_error() == Some(32) || e.kind() == std::io::ErrorKind::PermissionDenied) => {
+            Err(e) if attempts < 25 && (e.raw_os_error() == Some(32) || e.kind() == std::io::ErrorKind::PermissionDenied) => {
                 attempts += 1;
-                std::thread::sleep(std::time::Duration::from_millis(25 * attempts));
+                std::thread::sleep(std::time::Duration::from_millis(30 * attempts));
+            }
+            Err(e) => return Err(e.into()),
+        }
+    }
+}
+
+fn copy_with_retry(from: &Path, to: &Path) -> Result<()> {
+    let mut attempts = 0;
+    loop {
+        match fs::copy(from, to) {
+            Ok(_) => return Ok(()),
+            Err(e) if attempts < 25 && (e.raw_os_error() == Some(32) || e.kind() == std::io::ErrorKind::PermissionDenied) => {
+                attempts += 1;
+                std::thread::sleep(std::time::Duration::from_millis(30 * attempts));
+            }
+            Err(e) => return Err(e.into()),
+        }
+    }
+}
+
+fn read_with_retry(path: &Path) -> Result<Vec<u8>> {
+    let mut attempts = 0;
+    loop {
+        match fs::read(path) {
+            Ok(bytes) => return Ok(bytes),
+            Err(e) if attempts < 25 && (e.raw_os_error() == Some(32) || e.kind() == std::io::ErrorKind::PermissionDenied) => {
+                attempts += 1;
+                std::thread::sleep(std::time::Duration::from_millis(30 * attempts));
             }
             Err(e) => return Err(e.into()),
         }
@@ -201,8 +229,8 @@ fn run_inner(args: VerifyArgs) -> Result<i32> {
             println!("   ⚡ [Fast Path] Zero backend changes detected via Git diff (reusing baseline contract).");
         }
         let candidate_file = sajimora_dir.join("candidate-contract.json");
-        fs::copy(&base_file, &candidate_file)?;
-        let bytes = fs::read(&base_file)?;
+        copy_with_retry(&base_file, &candidate_file)?;
+        let bytes = read_with_retry(&base_file)?;
         let env: ContractArtifactEnvelope = serde_json::from_slice(&bytes)?;
         (env, candidate_file)
     } else {

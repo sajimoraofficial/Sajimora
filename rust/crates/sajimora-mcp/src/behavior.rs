@@ -46,6 +46,10 @@ pub fn run_verify_behavior(
         bail!("Candidate file not found: {:?}", cand_path);
     }
 
+    if cand_path.extension().and_then(|e| e.to_str()) != Some("java") {
+        bail!("Behavioral equivalence verification (bisimulation) currently supports Java source files (.java). TypeScript behavioral verification is in preview.");
+    }
+
     let cand_src = fs::read_to_string(&cand_path)
         .with_context(|| format!("Failed to read candidate file {:?}", cand_path))?;
 

@@ -33,6 +33,10 @@ pub fn run_gen_unit(
         bail!("Target file not found: {:?}", source_path);
     }
 
+    if source_path.extension().and_then(|e| e.to_str()) != Some("java") {
+        bail!("Autonomous unit test synthesis via symbolic execution currently supports Java source files (.java). TypeScript test synthesis is in preview.");
+    }
+
     let source = fs::read_to_string(&source_path)
         .with_context(|| format!("Failed to read file {:?}", source_path))?;
 

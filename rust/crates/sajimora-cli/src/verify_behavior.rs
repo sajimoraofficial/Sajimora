@@ -70,7 +70,25 @@ pub fn run(args: VerifyBehaviorArgs) -> i32 {
     }
 
     if cand_path.extension().and_then(|e| e.to_str()) != Some("java") {
-        eprintln!("Error: Behavioral equivalence verification currently supports Java source files (.java) only. TypeScript support is planned for General Availability.");
+        if args.json {
+            println!(
+                "{}",
+                serde_json::json!({
+                    "status": "UNSUPPORTED_LANGUAGE",
+                    "file": cand_file,
+                    "message": "Behavioral bisimulation is currently active for Java (.java). TypeScript equivalence verification is in preview.",
+                    "available_commands": ["sajimora check", "sajimora impact", "sajimora ask"]
+                })
+            );
+            return 1;
+        }
+        eprintln!(
+            "\n[sajimora] Formal behavioral equivalence (bisimulation) is currently specialized for Java (.java).\n\
+             TypeScript behavioral equivalence is previewing in the upcoming release with Sajimora-Coder-32B!\n\n\
+             Tip: You can detect interface regressions and breaking changes right now with:\n  \
+             • sajimora check      (Full cross-language contract verification)\n  \
+             • sajimora impact     (Call-graph and endpoint blast radius)\n"
+        );
         return 1;
     }
 

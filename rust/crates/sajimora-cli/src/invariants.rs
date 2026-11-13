@@ -163,7 +163,14 @@ pub fn execute_gen_invariants(args: &GenInvariantsArgs) -> Result<InvariantSynth
     if is_java {
         analyze_java_invariants(target_path, &source, args)
     } else {
-        bail!("Autonomous invariant synthesis currently supports Java source files (.java) with jqwik/junit5. TypeScript invariant analysis via fast-check is planned for General Availability. Please target a .java file.");
+        bail!(
+            "Autonomous invariant synthesis is currently specialized for Java (.java) with jqwik/junit5.\n\
+             TypeScript property-based invariant analysis via fast-check is scheduled for the upcoming release with Sajimora-Coder-32B.\n\n\
+             Tip: You can extract and verify contracts for TypeScript right now using:\n  \
+             • sajimora check      (Full cross-language contract verification)\n  \
+             • sajimora impact     (Call-graph blast radius)\n  \
+             • sajimora ask        (AST queries)"
+        );
     }
 }
 
