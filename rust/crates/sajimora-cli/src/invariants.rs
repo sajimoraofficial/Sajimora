@@ -159,17 +159,18 @@ pub fn execute_gen_invariants(args: &GenInvariantsArgs) -> Result<InvariantSynth
         .with_context(|| format!("Failed to read source file {:?}", target_path))?;
 
     let is_java = target_path.extension().map_or(false, |ext| ext == "java");
+    let is_ts = target_path
+        .extension()
+        .map_or(false, |ext| matches!(ext.to_str().unwrap_or(""), "ts" | "tsx" | "js" | "jsx"));
 
     if is_java {
         analyze_java_invariants(target_path, &source, args)
+    } else if is_ts {
+        analyze_ts_invariants(target_path, &source, args)
     } else {
         bail!(
-            "Autonomous invariant synthesis is currently specialized for Java (.java) with jqwik/junit5.\n\
-             TypeScript property-based invariant analysis via fast-check is scheduled for the upcoming release with Sajimora-Coder-32B.\n\n\
-             Tip: You can extract and verify contracts for TypeScript right now using:\n  \
-             • sajimora check      (Full cross-language contract verification)\n  \
-             • sajimora impact     (Call-graph blast radius)\n  \
-             • sajimora ask        (AST queries)"
+            "Autonomous invariant synthesis currently supports Java (.java) and TypeScript/JavaScript (.ts, .tsx, .js).\n\
+             Please target a supported source file."
         );
     }
 }
@@ -632,4 +633,450 @@ fn parse_param_node(source: &str, node: Node) -> Option<ParamInfo> {
         has_non_null_annotation,
         annotations,
     })
+}
+
+// ---------------------------------------------------------------------------
+// TypeScript Invariant Synthesis (fast-check)
+// ---------------------------------------------------------------------------
+
+fn analyze_ts_invariants(
+    file_path: &Path,
+    source: &str,
+    args: &GenInvariantsArgs,
+) -> Result<InvariantSynthesisReport> {
+    let mut parser = Parser::new();
+    let is_tsx = file_path
+        .extension()
+        .map_or(false, |ext| ext == "tsx" || ext == "jsx");
+    let language: tree_sitter::Language = if is_tsx {
+        tree_sitter_typescript::LANGUAGE_TSX.into()
+    } else {
+        tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into()
+    };
+    parser
+        .set_language(&language)
+        .context("Failed to load tree-sitter-typescript grammar")?;
+
+    let tree = parser
+        .parse(source.as_bytes(), None)
+        .context("Failed to parse TypeScript source")?;
+
+    let root = tree.root_node();
+
+    let module_name = file_path
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("Module")
+        .to_string();
+
+    let methods = extract_ts_methods(source, root);
+
+    let mut report = InvariantSynthesisReport {
+        file: file_path.to_string_lossy().to_string(),
+        package_name: None,
+        class_name: module_name.clone(),
+        methods_inspected: methods.len(),
+        invariants_discovered: Vec::new(),
+        abstentions: Vec::new(),
+        synthesized_source: None,
+    };
+
+    for method in &methods {
+        if !method.is_public {
+            continue;
+        }
+
+        if method.has_side_effects {
+            report.abstentions.push(InvariantAbstention {
+                method_name: method.name.clone(),
+                code: "INVARIANT_SIDE_EFFECTS".into(),
+                reason: "Function body indicates mutable state, external I/O, or side-effects. Invariant synthesis abstains.".into(),
+            });
+            continue;
+        }
+
+        // Check 1: Idempotence Invariant f(f(x)) === f(x)
+        let is_potential_normalizer = method.name.starts_with("normalize")
+            || method.name.starts_with("sanitize")
+            || method.name.starts_with("format")
+            || method.name.starts_with("clean")
+            || method.name.starts_with("canonicalize")
+            || method.name.starts_with("trim")
+            || method.name.starts_with("slugify")
+            || method.name.starts_with("escape");
+
+        if is_potential_normalizer && method.parameters.len() == 1 {
+            let param = &method.parameters[0];
+            let ret = method.return_type.trim();
+            let p_type = param.param_type.trim();
+            if (p_type == ret || ret == "any" || ret.is_empty()) && !p_type.is_empty() {
+                report.invariants_discovered.push(DiscoveredInvariant {
+                    method_name: method.name.clone(),
+                    kind: InvariantKind::Idempotence,
+                    rationale: format!(
+                        "Pure normalization function {} with signature ({}): {}. Idempotence f(f(x)) === f(x) provable.",
+                        method.name, p_type, if ret.is_empty() { p_type } else { ret }
+                    ),
+                });
+            }
+        }
+
+        // Check 2: Null/Undefined Safety Invariant
+        let has_non_null = method.parameters.iter().any(|p| p.has_non_null_annotation);
+        if has_non_null && !is_potential_normalizer {
+            report.invariants_discovered.push(DiscoveredInvariant {
+                method_name: method.name.clone(),
+                kind: InvariantKind::NullSafety,
+                rationale: format!(
+                    "Function {} with strict typing expects non-null/non-undefined parameters.",
+                    method.name
+                ),
+            });
+        }
+    }
+
+    if !report.invariants_discovered.is_empty() {
+        let test_suite_name = args
+            .name
+            .clone()
+            .unwrap_or_else(|| format!("{}Invariants", module_name));
+        report.synthesized_source =
+            Some(emit_fast_check_test_suite(&report, &methods, &test_suite_name, file_path));
+    }
+
+    Ok(report)
+}
+
+fn extract_ts_methods(source: &str, root: Node) -> Vec<MethodInfo> {
+    let mut methods = Vec::new();
+    walk_for_ts_methods(source, root, false, &mut methods);
+    methods
+}
+
+fn walk_for_ts_methods(source: &str, node: Node, is_exported: bool, methods: &mut Vec<MethodInfo>) {
+    match node.kind() {
+        "export_statement" => {
+            let mut cursor = node.walk();
+            for child in node.named_children(&mut cursor) {
+                walk_for_ts_methods(source, child, true, methods);
+            }
+            return;
+        }
+        "function_declaration" => {
+            if let Some(m) = parse_ts_function_node(source, node, is_exported) {
+                methods.push(m);
+            }
+        }
+        "method_definition" => {
+            if let Some(m) = parse_ts_method_node(source, node, is_exported) {
+                methods.push(m);
+            }
+        }
+        "lexical_declaration" | "variable_declaration" => {
+            let mut cursor = node.walk();
+            for decl in node.named_children(&mut cursor) {
+                if decl.kind() == "variable_declarator" {
+                    if let Some(m) = parse_ts_declarator_node(source, decl, is_exported) {
+                        methods.push(m);
+                    }
+                }
+            }
+        }
+        _ => {}
+    }
+
+    let mut cursor = node.walk();
+    for child in node.named_children(&mut cursor) {
+        walk_for_ts_methods(source, child, is_exported, methods);
+    }
+}
+
+fn parse_ts_function_node(source: &str, node: Node, is_exported: bool) -> Option<MethodInfo> {
+    let name_node = node.child_by_field_name("name")?;
+    let name = source.get(name_node.start_byte()..name_node.end_byte())?.to_string();
+
+    let return_type = node
+        .child_by_field_name("return_type")
+        .and_then(|t| source.get(t.start_byte()..t.end_byte()))
+        .map(|s| s.trim().trim_start_matches(':').trim().to_string())
+        .unwrap_or_else(|| "any".to_string());
+
+    let mut has_side_effects = false;
+    if let Some(body) = node.child_by_field_name("body") {
+        has_side_effects = check_ts_side_effects(source, body);
+    }
+
+    let mut parameters = Vec::new();
+    if let Some(params_node) = node.child_by_field_name("parameters") {
+        parameters = parse_ts_params(source, params_node);
+    }
+
+    Some(MethodInfo {
+        name,
+        return_type,
+        parameters,
+        is_public: is_exported,
+        is_static: false,
+        has_side_effects,
+        annotations: Vec::new(),
+    })
+}
+
+fn parse_ts_declarator_node(source: &str, decl: Node, is_exported: bool) -> Option<MethodInfo> {
+    let name_node = decl.child_by_field_name("name")?;
+    let name = source.get(name_node.start_byte()..name_node.end_byte())?.to_string();
+
+    let val = decl.child_by_field_name("value")?;
+    if val.kind() != "arrow_function" && val.kind() != "function_expression" {
+        return None;
+    }
+
+    let return_type = val
+        .child_by_field_name("return_type")
+        .and_then(|t| source.get(t.start_byte()..t.end_byte()))
+        .map(|s| s.trim().trim_start_matches(':').trim().to_string())
+        .unwrap_or_else(|| "any".to_string());
+
+    let mut has_side_effects = false;
+    if let Some(body) = val.child_by_field_name("body") {
+        has_side_effects = check_ts_side_effects(source, body);
+    }
+
+    let mut parameters = Vec::new();
+    if let Some(params_node) = val.child_by_field_name("parameters") {
+        parameters = parse_ts_params(source, params_node);
+    }
+
+    Some(MethodInfo {
+        name,
+        return_type,
+        parameters,
+        is_public: is_exported,
+        is_static: false,
+        has_side_effects,
+        annotations: Vec::new(),
+    })
+}
+
+fn parse_ts_method_node(source: &str, node: Node, is_exported: bool) -> Option<MethodInfo> {
+    let name_node = node.child_by_field_name("name")?;
+    let name = source.get(name_node.start_byte()..name_node.end_byte())?.to_string();
+
+    let return_type = node
+        .child_by_field_name("return_type")
+        .and_then(|t| source.get(t.start_byte()..t.end_byte()))
+        .map(|s| s.trim().trim_start_matches(':').trim().to_string())
+        .unwrap_or_else(|| "any".to_string());
+
+    let mut has_side_effects = false;
+    if let Some(body) = node.child_by_field_name("body") {
+        has_side_effects = check_ts_side_effects(source, body);
+    }
+
+    let mut parameters = Vec::new();
+    if let Some(params_node) = node.child_by_field_name("parameters") {
+        parameters = parse_ts_params(source, params_node);
+    }
+
+    Some(MethodInfo {
+        name,
+        return_type,
+        parameters,
+        is_public: is_exported || true,
+        is_static: false,
+        has_side_effects,
+        annotations: Vec::new(),
+    })
+}
+
+fn parse_ts_params(source: &str, params_node: Node) -> Vec<ParamInfo> {
+    let mut params = Vec::new();
+    let mut cursor = params_node.walk();
+    for param in params_node.named_children(&mut cursor) {
+        match param.kind() {
+            "required_parameter" | "optional_parameter" => {
+                let name = param
+                    .child_by_field_name("pattern")
+                    .and_then(|p| source.get(p.start_byte()..p.end_byte()))
+                    .unwrap_or("arg")
+                    .trim()
+                    .to_string();
+                let param_type = param
+                    .child_by_field_name("type")
+                    .and_then(|t| source.get(t.start_byte()..t.end_byte()))
+                    .map(|s| s.trim().trim_start_matches(':').trim().to_string())
+                    .unwrap_or_else(|| "string".to_string());
+                let is_primitive = matches!(
+                    param_type.as_str(),
+                    "string" | "number" | "boolean" | "bigint"
+                );
+                params.push(ParamInfo {
+                    name,
+                    param_type,
+                    is_primitive,
+                    has_non_null_annotation: true,
+                    annotations: Vec::new(),
+                });
+            }
+            "identifier" => {
+                let name = source
+                    .get(param.start_byte()..param.end_byte())
+                    .unwrap_or("arg")
+                    .trim()
+                    .to_string();
+                params.push(ParamInfo {
+                    name,
+                    param_type: "string".to_string(),
+                    is_primitive: true,
+                    has_non_null_annotation: true,
+                    annotations: Vec::new(),
+                });
+            }
+            _ => {}
+        }
+    }
+    params
+}
+
+fn check_ts_side_effects(source: &str, body: Node) -> bool {
+    let raw = source.get(body.start_byte()..body.end_byte()).unwrap_or("");
+    raw.contains("fetch(")
+        || raw.contains("axios.")
+        || raw.contains("fs.")
+        || raw.contains("process.")
+        || raw.contains(".save(")
+        || raw.contains(".delete(")
+        || raw.contains(".update(")
+        || raw.contains(".insert(")
+        || raw.contains("console.log(")
+        || raw.contains("localStorage")
+        || raw.contains("sessionStorage")
+}
+
+fn emit_fast_check_test_suite(
+    report: &InvariantSynthesisReport,
+    methods: &[MethodInfo],
+    test_suite_name: &str,
+    target_file: &Path,
+) -> String {
+    let mut out = String::new();
+    let file_stem = target_file
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("module");
+
+    out.push_str("// Auto-generated by Sajimora Metamorphic Invariant Synthesizer\n");
+    out.push_str("// 100% Deterministic Property-Based Tests (0 LLM Calls)\n\n");
+    out.push_str("import fc from 'fast-check';\n");
+
+    let method_names: Vec<&str> = report
+        .invariants_discovered
+        .iter()
+        .map(|i| i.method_name.as_str())
+        .collect();
+    let mut unique_names = method_names.clone();
+    unique_names.sort();
+    unique_names.dedup();
+
+    out.push_str(&format!(
+        "import {{ {} }} from './{}';\n\n",
+        unique_names.join(", "),
+        file_stem
+    ));
+
+    out.push_str(&format!("describe('{} Invariants', () => {{\n", test_suite_name));
+
+    for inv in &report.invariants_discovered {
+        let method = match methods.iter().find(|m| m.name == inv.method_name) {
+            Some(m) => m,
+            None => continue,
+        };
+
+        match inv.kind {
+            InvariantKind::Idempotence => {
+                let param = &method.parameters[0];
+                let fc_arb = map_ts_type_to_fast_check(&param.param_type);
+                out.push_str("  /**\n");
+                out.push_str(&format!(
+                    "   * Property: Idempotence Invariant for {}\n",
+                    method.name
+                ));
+                out.push_str("   * f(f(x)) === f(x)\n");
+                out.push_str("   */\n");
+                out.push_str(&format!(
+                    "  it('idempotence_{}: f(f(x)) === f(x)', () => {{\n",
+                    method.name
+                ));
+                out.push_str("    fc.assert(\n");
+                out.push_str(&format!(
+                    "      fc.property({}, (input) => {{\n",
+                    fc_arb
+                ));
+                out.push_str(&format!(
+                    "        const first = {}(input);\n",
+                    method.name
+                ));
+                out.push_str(&format!(
+                    "        const second = {}(first);\n",
+                    method.name
+                ));
+                out.push_str("        expect(second).toEqual(first);\n");
+                out.push_str("      })\n");
+                out.push_str("    );\n");
+                out.push_str("  });\n\n");
+            }
+            InvariantKind::NullSafety => {
+                out.push_str("  /**\n");
+                out.push_str(&format!(
+                    "   * Property: Null-Safety Invariant for {}\n",
+                    method.name
+                ));
+                out.push_str("   * Non-null arguments must not throw unhandled TypeErrors for valid inputs.\n");
+                out.push_str("   */\n");
+                let arbs: Vec<String> = method
+                    .parameters
+                    .iter()
+                    .map(|p| map_ts_type_to_fast_check(&p.param_type).to_string())
+                    .collect();
+                let param_names: Vec<String> = method
+                    .parameters
+                    .iter()
+                    .enumerate()
+                    .map(|(i, p)| if p.name.is_empty() { format!("arg{}", i) } else { p.name.clone() })
+                    .collect();
+                out.push_str(&format!(
+                    "  it('nullSafety_{}: handles valid typed domain safely', () => {{\n",
+                    method.name
+                ));
+                out.push_str("    fc.assert(\n");
+                out.push_str(&format!(
+                    "      fc.property({}, ({}) => {{\n",
+                    arbs.join(", "),
+                    param_names.join(", ")
+                ));
+                out.push_str(&format!(
+                    "        expect(() => {}({})).not.toThrow(TypeError);\n",
+                    method.name,
+                    param_names.join(", ")
+                ));
+                out.push_str("      })\n");
+                out.push_str("    );\n");
+                out.push_str("  });\n\n");
+            }
+            _ => {}
+        }
+    }
+
+    out.push_str("});\n");
+    out
+}
+
+fn map_ts_type_to_fast_check(param_type: &str) -> &'static str {
+    match param_type.trim() {
+        "string" => "fc.string()",
+        "number" => "fc.integer()",
+        "boolean" => "fc.boolean()",
+        "bigint" => "fc.bigInt()",
+        _ => "fc.anything()",
+    }
 }

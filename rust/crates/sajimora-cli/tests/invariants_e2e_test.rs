@@ -143,3 +143,63 @@ public class FormatterService {
 
     let _ = fs::remove_dir_all(dir);
 }
+
+#[test]
+fn test_gen_invariants_typescript_fast_check() {
+    let dir = unique_dir("ts-invariants");
+    let file_path = dir.join("Sanitizer.ts");
+
+    let source = r#"
+// Pure Normalizer: Idempotence Invariant must be synthesized
+export function normalizeEmail(email: string): string {
+    return email.trim().toLowerCase();
+}
+
+// Strictly Typed: Null-safety invariant synthesized
+export function updateProfile(userId: string, displayName: string): { id: string; name: string } {
+    return { id: userId, name: displayName };
+}
+
+// Side-Effecting: Must abstain
+export function deleteUser(userId: string): void {
+    fetch(`/api/users/${userId}`, { method: 'DELETE' });
+}
+"#;
+
+    fs::write(&file_path, source).unwrap();
+
+    let (code, stdout, stderr) =
+        run_gen_invariants(&["--file", file_path.to_str().unwrap(), "--json"]);
+
+    assert_eq!(code, 0, "gen-invariants for TS failed: {stderr}");
+
+    let json_val: serde_json::Value =
+        serde_json::from_str(&stdout).expect("Failed to parse JSON report output");
+
+    let invariants = json_val["invariants_discovered"].as_array().unwrap();
+    assert!(invariants
+        .iter()
+        .any(|i| i["method_name"] == "normalizeEmail" && i["kind"] == "Idempotence"));
+    assert!(invariants
+        .iter()
+        .any(|i| i["method_name"] == "updateProfile" && i["kind"] == "NullSafety"));
+
+    // Verify strict abstention on deleteUser due to fetch() side-effect
+    let abstentions = json_val["abstentions"].as_array().unwrap();
+    assert!(
+        abstentions
+            .iter()
+            .any(|a| a["method_name"] == "deleteUser" && a["code"] == "INVARIANT_SIDE_EFFECTS"),
+        "deleteUser must be strictly abstained from invariant generation"
+    );
+
+    // Verify synthesized fast-check TypeScript source code
+    let synthesized_source = json_val["synthesized_source"].as_str().unwrap();
+    assert!(synthesized_source.contains("import fc from 'fast-check';"));
+    assert!(synthesized_source.contains("import { normalizeEmail, updateProfile } from './Sanitizer';"));
+    assert!(synthesized_source.contains("it('idempotence_normalizeEmail: f(f(x)) === f(x)'"));
+    assert!(synthesized_source.contains("fc.property(fc.string(), (input) => {"));
+    assert!(synthesized_source.contains("expect(second).toEqual(first);"));
+
+    let _ = fs::remove_dir_all(dir);
+}
