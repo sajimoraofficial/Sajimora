@@ -41,9 +41,13 @@ function resolveBinary(binaryName) {
   const binaryFilename = `${binaryName}${spec.suffix}`;
 
   // 1. Check local Rust build (for development in repo)
-  const localBuild = path.resolve(__dirname, '..', 'rust', 'target', 'release', binaryFilename);
-  if (fs.existsSync(localBuild)) {
-    return localBuild;
+  const localRelease = path.resolve(__dirname, '..', '..', 'rust', 'target', 'release', binaryFilename);
+  if (fs.existsSync(localRelease)) {
+    return localRelease;
+  }
+  const localDebug = path.resolve(__dirname, '..', '..', 'rust', 'target', 'debug', binaryFilename);
+  if (fs.existsSync(localDebug)) {
+    return localDebug;
   }
 
   // 2. Check cached binary in ~/.sajimora/bin/vX.Y.Z/
