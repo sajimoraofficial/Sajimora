@@ -1,6 +1,6 @@
 {
   "name": "sajimora-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Model Context Protocol (MCP) server for Sajimora - deterministic cross-language API contract verification and AST guard",
   "bin": {
     "sajimora-mcp": "bin/sajimora-mcp.cjs"
