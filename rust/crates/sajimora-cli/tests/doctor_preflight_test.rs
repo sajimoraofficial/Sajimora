@@ -483,3 +483,28 @@ fn test_doctor_initialized_invalid_config() {
         "{stdout}"
     );
 }
+
+#[test]
+fn test_doctor_svn_working_copy_detected() {
+    let temp = TempDir::new("svn-copy");
+    let repo = temp.path();
+
+    // Create a mock .svn directory
+    fs::create_dir_all(repo.join(".svn")).unwrap();
+
+    let output = Command::new(env!("CARGO_BIN_EXE_sajimora"))
+        .arg("doctor")
+        .arg("--repo")
+        .arg(repo)
+        .current_dir(repo)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .output()
+        .expect("Failed to execute sajimora doctor");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(
+        stdout.contains("valid Subversion (SVN) working copy detected"),
+        "stdout should confirm SVN working copy: {stdout}"
+    );
+}

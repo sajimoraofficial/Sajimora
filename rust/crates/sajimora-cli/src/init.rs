@@ -693,7 +693,10 @@ fn plan_preflight(repo_root: &Path, args: &InitArgs) -> Result<PreflightPlan> {
     // Check .gitignore
     let gitignore_path = repo_root.join(".gitignore");
     let gitignore_existed = gitignore_path.exists();
-    let gitignore_plan = {
+    let is_svn_only = is_svn_repo(repo_root) && !repo_root.join(".git").exists();
+    let gitignore_plan = if is_svn_only && !gitignore_existed {
+        None
+    } else {
         let raw = if gitignore_existed {
             fs::read_to_string(&gitignore_path).unwrap_or_default()
         } else {
@@ -791,6 +794,10 @@ fn resolve_hook_plan(repo_root: &Path, args: &InitArgs) -> Result<(HookPlan, boo
                 mode
             ));
         }
+    }
+
+    if is_svn_repo(repo_root) && !repo_root.join(".git").exists() {
+        return Ok((HookPlan::Skip, false));
     }
 
     let hooks_path_cfg = git_config_get(repo_root, "core.hooksPath");
@@ -1281,14 +1288,34 @@ pub fn serialize_json_with_fingerprint(
     Ok(result)
 }
 
+pub(crate) fn is_svn_repo(repo_root: &Path) -> bool {
+    repo_root.join(".svn").is_dir()
+        || Command::new("svn")
+            .arg("info")
+            .current_dir(repo_root)
+            .output()
+            .map(|o| o.status.success())
+            .unwrap_or(false)
+}
+
 fn is_working_tree_dirty(repo_root: &Path) -> bool {
     let output = Command::new("git")
         .args(["status", "--porcelain"])
         .current_dir(repo_root)
         .output();
-    match output {
-        Ok(out) => !String::from_utf8_lossy(&out.stdout).trim().is_empty(),
-        Err(_) => false,
+    if let Ok(out) = output {
+        if out.status.success() {
+            return !String::from_utf8_lossy(&out.stdout).trim().is_empty();
+        }
+    }
+
+    let svn_output = Command::new("svn")
+        .args(["status", "-q"])
+        .current_dir(repo_root)
+        .output();
+    match svn_output {
+        Ok(out) if out.status.success() => !String::from_utf8_lossy(&out.stdout).trim().is_empty(),
+        _ => false,
     }
 }
 

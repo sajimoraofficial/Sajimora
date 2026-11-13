@@ -1222,6 +1222,37 @@ fn detect_backend_changes(repo_root: &Path, backend_path: &Path) -> bool {
     };
 
     // 0. Check whether HEAD has moved past the baseline commit in Git history
+    let is_svn = repo_root.join(".svn").is_dir()
+        || std::process::Command::new("svn")
+            .arg("info")
+            .current_dir(repo_root)
+            .output()
+            .map(|o| o.status.success())
+            .unwrap_or(false);
+
+    if is_svn && !repo_root.join(".git").exists() {
+        if let Ok(out) = std::process::Command::new("svn")
+            .args(["status", "-q", "--", &target_arg])
+            .current_dir(repo_root)
+            .output()
+        {
+            if out.status.success() {
+                let stdout = String::from_utf8_lossy(&out.stdout);
+                for line in stdout.lines() {
+                    let trimmed = line.trim();
+                    let parts: Vec<&str> = trimmed.split_whitespace().collect();
+                    if let Some(path) = parts.last() {
+                        if is_provider_input(path) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
     if let Ok(out) = std::process::Command::new("git")
         .args(["log", "-n", "1", "--format=%H", "--", ".sajimora/backend-contract.json"])
         .current_dir(repo_root)

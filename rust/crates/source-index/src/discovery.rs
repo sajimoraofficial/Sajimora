@@ -492,6 +492,35 @@ pub fn detect_frontend_changes(repo_root: &Path) -> bool {
             || path.ends_with(".html")
     };
 
+    let is_svn = repo_root.join(".svn").is_dir()
+        || std::process::Command::new("svn")
+            .arg("info")
+            .current_dir(repo_root)
+            .output()
+            .map(|o| o.status.success())
+            .unwrap_or(false);
+
+    if is_svn && !repo_root.join(".git").exists() {
+        if let Ok(out) = std::process::Command::new("svn")
+            .args(["status", "-q"])
+            .current_dir(repo_root)
+            .output()
+        {
+            if out.status.success() {
+                let stdout = String::from_utf8_lossy(&out.stdout);
+                return stdout.lines().any(|l| {
+                    let trimmed = l.trim();
+                    let parts: Vec<&str> = trimmed.split_whitespace().collect();
+                    if let Some(path) = parts.last() {
+                        is_frontend_input(path)
+                    } else {
+                        false
+                    }
+                });
+            }
+        }
+    }
+
     // 0. If a baseline frontend contract exists, check if HEAD has moved past its commit
     let fe_contract = repo_root.join(".sajimora/frontend-contract.json");
     if fe_contract.exists() {

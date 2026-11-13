@@ -99,7 +99,7 @@ fn diagnose_environment(
 ) -> Result<bool> {
     let mut healthy = true;
 
-    // 1. Git Repository Check
+    // 1. Version Control Check (Git or SVN)
     let git_dir = repo_root.join(".git");
     let is_git = if git_dir.exists() {
         true
@@ -110,6 +110,18 @@ fn diagnose_environment(
             .current_dir(repo_root)
             .output()
             .map(|o| o.status.success() && String::from_utf8_lossy(&o.stdout).trim() == "true")
+            .unwrap_or(false)
+    };
+
+    let svn_dir = repo_root.join(".svn");
+    let is_svn = if svn_dir.is_dir() {
+        true
+    } else {
+        Command::new("svn")
+            .arg("info")
+            .current_dir(repo_root)
+            .output()
+            .map(|o| o.status.success())
             .unwrap_or(false)
     };
 
@@ -126,10 +138,12 @@ fn diagnose_environment(
             "  ✅ [PASS] Git repository: valid worktree detected (branch: {})",
             if branch.is_empty() { "HEAD" } else { &branch }
         );
+    } else if is_svn {
+        println!("  ✅ [PASS] Version Control: valid Subversion (SVN) working copy detected");
     } else {
-        println!("  ❌ [FAIL] Git repository: Directory is not a Git repository (run `git init`).");
+        println!("  ❌ [FAIL] Git repository: Directory is not a Git repository (or SVN working copy).");
         println!(
-            "     Sajimora requires a Git repository for revision tracking and baseline integrity."
+            "     Sajimora requires a Git or Subversion (SVN) working copy for revision tracking."
         );
         healthy = false;
     }

@@ -363,7 +363,21 @@ fn run_inner(args: CleanArgs) -> Result<()> {
         let _ = fs::remove_file(&manifest_path);
     }
 
-    // 7. Remove .sajimora/ directory if empty or only contains transient untracked files
+    // Clean any known transient verification artifacts
+    let transient_artifacts = [
+        "candidate-contract.json",
+        "impact-report.json",
+        "candidate-frontend-contract.json",
+        "frontend-impact-report.json",
+    ];
+    for transient in &transient_artifacts {
+        let path = sajimora_dir.join(transient);
+        if path.exists() && !is_file_tracked(&repo_root, &format!(".sajimora/{transient}")) {
+            let _ = fs::remove_file(&path);
+        }
+    }
+
+    // 7. Remove .sajimora/ directory if empty
     if sajimora_dir.exists() {
         if let Ok(entries) = fs::read_dir(&sajimora_dir) {
             let count = entries.flatten().count();
@@ -382,14 +396,21 @@ fn is_file_tracked(repo_root: &Path, rel_path: &str) -> bool {
         .args(["ls-files", "--", rel_path])
         .current_dir(repo_root)
         .output();
-    match output {
-        Ok(out) => {
-            if out.status.success() {
-                !String::from_utf8_lossy(&out.stdout).trim().is_empty()
-            } else {
-                false
+    if let Ok(out) = output {
+        if out.status.success() {
+            let s = String::from_utf8_lossy(&out.stdout).trim().to_string();
+            if !s.is_empty() {
+                return true;
             }
         }
+    }
+    // SVN fallback: svn info <rel_path>
+    let svn_output = Command::new("svn")
+        .args(["info", rel_path])
+        .current_dir(repo_root)
+        .output();
+    match svn_output {
+        Ok(out) => out.status.success(),
         Err(_) => false,
     }
 }

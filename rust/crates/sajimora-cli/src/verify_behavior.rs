@@ -9,15 +9,40 @@ use std::path::Path;
 use verifier::bisim::{verify_method_behavior, BehaviorVerdict};
 
 fn get_git_head_content(rel_path: &str) -> Option<String> {
+    let norm = rel_path.replace('\\', "/");
     let output = std::process::Command::new("git")
-        .args(["show", &format!("HEAD:{}", rel_path.replace('\\', "/"))])
+        .args(["show", &format!("HEAD:{}", norm)])
         .output()
-        .ok()?;
-    if output.status.success() {
-        String::from_utf8(output.stdout).ok()
-    } else {
-        None
+        .ok();
+    if let Some(out) = output {
+        if out.status.success() {
+            if let Ok(content) = String::from_utf8(out.stdout) {
+                return Some(content);
+            }
+        }
     }
+    // SVN fallback: svn cat -r BASE <rel_path> or svn cat <rel_path>
+    let svn_out = std::process::Command::new("svn")
+        .args(["cat", "-r", "BASE", &norm])
+        .output()
+        .ok();
+    if let Some(out) = svn_out {
+        if out.status.success() {
+            if let Ok(content) = String::from_utf8(out.stdout) {
+                return Some(content);
+            }
+        }
+    }
+    let svn_out2 = std::process::Command::new("svn")
+        .args(["cat", &norm])
+        .output()
+        .ok();
+    if let Some(out) = svn_out2 {
+        if out.status.success() {
+            return String::from_utf8(out.stdout).ok();
+        }
+    }
+    None
 }
 
 #[derive(Args, Debug, Clone)]
@@ -123,7 +148,7 @@ pub fn run(args: VerifyBehaviorArgs) -> i32 {
         match get_git_head_content(cand_file) {
             Some(s) => s,
             None => {
-                eprintln!("Error: Base file not specified and could not be retrieved from git HEAD. Use --base <path>.");
+                eprintln!("Error: Base file not specified and could not be retrieved from Git HEAD or SVN BASE. Use --base <path>.");
                 return 1;
             }
         }

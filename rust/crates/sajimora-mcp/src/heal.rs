@@ -537,15 +537,40 @@ pub fn run_heal(req: McpHealRequest, allowed_roots: &[PathBuf]) -> Result<HealSu
 }
 
 fn get_git_head_content(rel_path: &str) -> Option<String> {
+    let norm = rel_path.replace('\\', "/");
     let output = std::process::Command::new("git")
-        .args(["show", &format!("HEAD:{}", rel_path.replace('\\', "/"))])
+        .args(["show", &format!("HEAD:{}", norm)])
         .output()
-        .ok()?;
-    if output.status.success() {
-        String::from_utf8(output.stdout).ok()
-    } else {
-        None
+        .ok();
+    if let Some(out) = output {
+        if out.status.success() {
+            if let Ok(content) = String::from_utf8(out.stdout) {
+                return Some(content);
+            }
+        }
     }
+    // SVN fallback: svn cat -r BASE <rel_path> or svn cat <rel_path>
+    let svn_out = std::process::Command::new("svn")
+        .args(["cat", "-r", "BASE", &norm])
+        .output()
+        .ok();
+    if let Some(out) = svn_out {
+        if out.status.success() {
+            if let Ok(content) = String::from_utf8(out.stdout) {
+                return Some(content);
+            }
+        }
+    }
+    let svn_out2 = std::process::Command::new("svn")
+        .args(["cat", &norm])
+        .output()
+        .ok();
+    if let Some(out) = svn_out2 {
+        if out.status.success() {
+            return String::from_utf8(out.stdout).ok();
+        }
+    }
+    None
 }
 
 fn detect_modified_git_files() -> Vec<String> {
@@ -555,10 +580,35 @@ fn detect_modified_git_files() -> Vec<String> {
         .ok();
     if let Some(out) = output {
         if out.status.success() {
-            return String::from_utf8_lossy(&out.stdout)
+            let files: Vec<String> = String::from_utf8_lossy(&out.stdout)
                 .lines()
                 .filter(|l| l.ends_with(".java"))
                 .map(|s| s.trim().to_string())
+                .collect();
+            if !files.is_empty() {
+                return files;
+            }
+        }
+    }
+    // SVN fallback: svn status -q
+    let svn_output = std::process::Command::new("svn")
+        .args(["status", "-q"])
+        .output()
+        .ok();
+    if let Some(out) = svn_output {
+        if out.status.success() {
+            return String::from_utf8_lossy(&out.stdout)
+                .lines()
+                .filter_map(|line| {
+                    let trimmed = line.trim();
+                    if trimmed.starts_with('M') || trimmed.starts_with('A') {
+                        let path = trimmed[1..].trim();
+                        if path.ends_with(".java") {
+                            return Some(path.to_string());
+                        }
+                    }
+                    None
+                })
                 .collect();
         }
     }
