@@ -102,14 +102,17 @@ pub(crate) fn object_literal(node: Node, ctx: &ShapeContext) -> Option<WireType>
             }
             "shorthand_property_identifier" | "shorthand_property_identifier_pattern" => {
                 let wire_name = text(child, ctx.content).trim().to_string();
-                properties.push(WirePropertyContract {
-                    wire_name: wire_name.clone(),
-                    aliases: Vec::new(),
-                    r#type: unknown(
+                let wire_type = resolve_local_identifier(child, &wire_name, ctx).unwrap_or_else(|| {
+                    unknown(
                         child,
                         "shorthand property has no statically known value",
                         ctx,
-                    ),
+                    )
+                });
+                properties.push(WirePropertyContract {
+                    wire_name: wire_name.clone(),
+                    aliases: Vec::new(),
+                    r#type: wire_type,
                     optional: false,
                     nullable: false,
                     server_assigned: false,
@@ -118,16 +121,29 @@ pub(crate) fn object_literal(node: Node, ctx: &ShapeContext) -> Option<WireType>
                 });
             }
             "spread_element" => {
-                properties.push(WirePropertyContract {
-                    wire_name: "...".to_string(),
-                    aliases: Vec::new(),
-                    r#type: unknown(child, "object spread is not expanded statically", ctx),
-                    optional: false,
-                    nullable: false,
-                    server_assigned: false,
-                    validation_constraints: Vec::new(),
-                    provenance: Some(ctx.prov(child, "...")),
-                });
+                let mut resolved_spread = false;
+                if let Some(spread_expr) = child.named_child(0) {
+                    let spread_expr = unwrap_expression(spread_expr);
+                    if spread_expr.kind() == "identifier" {
+                        let ident_name = text(spread_expr, ctx.content).trim();
+                        if let Some(WireType::Object(obj)) = resolve_local_identifier(spread_expr, ident_name, ctx) {
+                            properties.extend(obj.properties);
+                            resolved_spread = true;
+                        }
+                    }
+                }
+                if !resolved_spread {
+                    properties.push(WirePropertyContract {
+                        wire_name: "...".to_string(),
+                        aliases: Vec::new(),
+                        r#type: unknown(child, "object spread is not expanded statically", ctx),
+                        optional: false,
+                        nullable: false,
+                        server_assigned: false,
+                        validation_constraints: Vec::new(),
+                        provenance: Some(ctx.prov(child, "...")),
+                    });
+                }
             }
             _ => {}
         }
@@ -204,7 +220,12 @@ fn value_wire(node: Node, ctx: &ShapeContext) -> WireType {
             }
         }
         "null" => unknown(node, "null literal has no non-null wire type", ctx),
-        "identifier" | "call_expression" | "new_expression" => {
+        "identifier" => {
+            let ident_name = text(node, ctx.content).trim();
+            resolve_local_identifier(node, ident_name, ctx)
+                .unwrap_or_else(|| unknown(node, "value is computed at runtime", ctx))
+        }
+        "call_expression" | "new_expression" => {
             unknown(node, "value is computed at runtime", ctx)
         }
         _ => unknown(node, "value expression is not modelled", ctx),
@@ -258,4 +279,142 @@ fn contains_unknown_at(wire: &WireType, depth: usize) -> bool {
         WireType::Map(map) => contains_unknown_at(&map.value_type, depth + 1),
         _ => false,
     }
+}
+
+fn type_annotation_to_wire(type_node: Node, ctx: &ShapeContext) -> Option<WireType> {
+    let raw = text(type_node, ctx.content)
+        .trim()
+        .trim_start_matches(':')
+        .trim();
+    match raw {
+        "string" => Some(primitive(type_node, PrimitiveScalar::String, ctx)),
+        "number" => Some(primitive(type_node, PrimitiveScalar::Number, ctx)),
+        "boolean" => Some(primitive(type_node, PrimitiveScalar::Boolean, ctx)),
+        "bigint" => Some(primitive(type_node, PrimitiveScalar::BigInt, ctx)),
+        "void" => Some(primitive(type_node, PrimitiveScalar::Void, ctx)),
+        _ => None,
+    }
+}
+
+fn inspect_statement_for_ident(stmt: Node, ident_name: &str, ctx: &ShapeContext) -> Option<WireType> {
+    let stmt = unwrap_expression(stmt);
+    match stmt.kind() {
+        "lexical_declaration" | "variable_declaration" => {
+            let mut cursor = stmt.walk();
+            for decl in stmt.named_children(&mut cursor) {
+                if decl.kind() == "variable_declarator" {
+                    if let Some(name_node) = decl.child_by_field_name("name") {
+                        match name_node.kind() {
+                            "identifier" => {
+                                if text(name_node, ctx.content).trim() == ident_name {
+                                    if let Some(type_ann) = decl.child_by_field_name("type") {
+                                        if let Some(wire) = type_annotation_to_wire(type_ann, ctx) {
+                                            return Some(wire);
+                                        }
+                                    }
+                                    if let Some(val) = decl.child_by_field_name("value") {
+                                        if val.kind() == "as_expression" || val.kind() == "satisfies_expression" {
+                                            if let Some(type_child) = val.named_child(1) {
+                                                if let Some(wire) = type_annotation_to_wire(type_child, ctx) {
+                                                    return Some(wire);
+                                                }
+                                            }
+                                        }
+                                        let wire = value_wire(val, ctx);
+                                        if !matches!(wire, WireType::Unknown(_)) {
+                                            return Some(wire);
+                                        }
+                                    }
+                                }
+                            }
+                            "object_pattern" => {
+                                let mut pat_cursor = name_node.walk();
+                                for pat_child in name_node.named_children(&mut pat_cursor) {
+                                    match pat_child.kind() {
+                                        "shorthand_property_identifier_pattern"
+                                        | "shorthand_property_identifier" => {
+                                            if text(pat_child, ctx.content).trim() == ident_name {
+                                                if let Some(val) = decl.child_by_field_name("value") {
+                                                    let val_raw = text(val, ctx.content);
+                                                    if val_raw.contains(".params") || val_raw.contains(".query") {
+                                                        return Some(primitive(pat_child, PrimitiveScalar::String, ctx));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        "pair_pattern" => {
+                                            if let Some(val_pat) = pat_child.child_by_field_name("value") {
+                                                if text(val_pat, ctx.content).trim() == ident_name {
+                                                    if let Some(val) = decl.child_by_field_name("value") {
+                                                        let val_raw = text(val, ctx.content);
+                                                        if val_raw.contains(".params") || val_raw.contains(".query") {
+                                                            return Some(primitive(val_pat, PrimitiveScalar::String, ctx));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        _ => {}
+                                    }
+                                }
+                            }
+                            _ => {}
+                        }
+                    }
+                }
+            }
+        }
+        _ => {}
+    }
+    None
+}
+
+fn inspect_params_for_ident(params_node: Node, ident_name: &str, ctx: &ShapeContext) -> Option<WireType> {
+    let mut cursor = params_node.walk();
+    for param in params_node.named_children(&mut cursor) {
+        match param.kind() {
+            "required_parameter" | "optional_parameter" => {
+                if let Some(pattern) = param.child_by_field_name("pattern") {
+                    if text(pattern, ctx.content).trim() == ident_name {
+                        if let Some(type_ann) = param.child_by_field_name("type") {
+                            if let Some(wire) = type_annotation_to_wire(type_ann, ctx) {
+                                return Some(wire);
+                            }
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+    None
+}
+
+fn resolve_local_identifier(ident_node: Node, ident_name: &str, ctx: &ShapeContext) -> Option<WireType> {
+    let mut current = ident_node.parent();
+    while let Some(parent) = current {
+        if parent.kind() == "statement_block" || parent.kind() == "program" {
+            let mut cursor = parent.walk();
+            for stmt in parent.named_children(&mut cursor) {
+                if stmt.end_byte() > ident_node.start_byte() {
+                    continue;
+                }
+                if let Some(resolved) = inspect_statement_for_ident(stmt, ident_name, ctx) {
+                    return Some(resolved);
+                }
+            }
+        } else if parent.kind() == "arrow_function"
+            || parent.kind() == "function_declaration"
+            || parent.kind() == "function_expression"
+            || parent.kind() == "method_definition"
+        {
+            if let Some(params) = parent.child_by_field_name("parameters") {
+                if let Some(resolved) = inspect_params_for_ident(params, ident_name, ctx) {
+                    return Some(resolved);
+                }
+            }
+        }
+        current = parent.parent();
+    }
+    None
 }

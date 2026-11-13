@@ -79,6 +79,12 @@ pub enum SourceLanguage {
     Java,
     #[serde(rename = "TYPESCRIPT")]
     TypeScript,
+    #[serde(rename = "PYTHON")]
+    Python,
+    #[serde(rename = "GO")]
+    Go,
+    #[serde(rename = "RUST")]
+    Rust,
 }
 
 // ---------------------------------------------------------------------------

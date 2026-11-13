@@ -968,3 +968,67 @@ fn trpc_server_on_express_is_named() {
     );
     assert!(!envelope.completeness.complete);
 }
+
+#[test]
+fn express_shorthand_and_spread_properties_are_resolved() {
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    let tmp_dir = std::env::temp_dir().join(format!("sajimora-express-shorthand-{}", nanos));
+    let src_dir = tmp_dir.join("src");
+    fs::create_dir_all(&src_dir).unwrap();
+    fs::write(
+        tmp_dir.join("package.json"),
+        r#"{"dependencies":{"express":"^4.18.2"}}"#,
+    )
+    .unwrap();
+    fs::write(
+        src_dir.join("server.js"),
+        r#"
+const express = require('express');
+const app = express();
+app.get('/api/resolved', (req, res) => {
+    const ok = true;
+    const count = 42;
+    const { id } = req.params;
+    res.json({ ok, count, id });
+});
+"#,
+    )
+    .unwrap();
+
+    let extractor = ExpressRouteExtractor::new(tmp_dir.clone(), &tmp_dir).unwrap();
+    let env = extractor
+        .build_envelope("express-service", None, "HEAD")
+        .unwrap();
+
+    assert!(
+        env.completeness.complete,
+        "Shorthand properties must be statically resolved: {:?}",
+        env.completeness.blockers
+    );
+
+    match env.payload {
+        ArtifactPayload::Backend(payload) => {
+            let response = payload
+                .endpoints
+                .iter()
+                .find(|endpoint| endpoint.identity.direction == ContractDirection::Response)
+                .expect("response endpoint");
+            match response.body.as_ref().expect("literal response body") {
+                contract_core::ir::WireType::Object(object) => {
+                    let ok_prop = object.properties.iter().find(|p| p.wire_name == "ok").unwrap();
+                    assert!(matches!(ok_prop.r#type, contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::Boolean));
+                    let count_prop = object.properties.iter().find(|p| p.wire_name == "count").unwrap();
+                    assert!(matches!(count_prop.r#type, contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::Number));
+                    let id_prop = object.properties.iter().find(|p| p.wire_name == "id").unwrap();
+                    assert!(matches!(id_prop.r#type, contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::String));
+                }
+                other => panic!("expected object literal, got {other:?}"),
+            }
+        }
+        _ => panic!("Payload must be Backend"),
+    }
+    let _ = fs::remove_dir_all(tmp_dir);
+}

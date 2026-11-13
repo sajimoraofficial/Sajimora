@@ -56,9 +56,9 @@ const PARAM_TOKEN: &str = "*PARAM*";
 fn try_open_and_init(db_path: &Path) -> Result<Connection> {
     let conn = Connection::open(db_path)
         .with_context(|| format!("Cannot open SQLite database at {:?}", db_path))?;
+    conn.busy_timeout(std::time::Duration::from_millis(30000))?;
     conn.pragma_update(None, "journal_mode", "WAL")?;
     conn.pragma_update(None, "synchronous", "NORMAL")?;
-    conn.pragma_update(None, "busy_timeout", 5000)?;
     conn.pragma_update(None, "mmap_size", 67108864)?; // 64 MB OS mmap cache
 
     // Verify integrity of existing database file
@@ -77,6 +77,11 @@ fn try_open_and_init(db_path: &Path) -> Result<Connection> {
     Ok(conn)
 }
 
+fn is_locked_error(e: &anyhow::Error) -> bool {
+    let msg = e.to_string().to_lowercase();
+    msg.contains("locked") || msg.contains("busy")
+}
+
 /// Open or initialize a SQLite writer connection with WAL mode and concurrency pragmas.
 /// If the database cache file is corrupted (e.g. truncated page, uncommitted power loss),
 /// it automatically triggers safe self-healing recovery by clearing invalid state.
@@ -87,7 +92,7 @@ pub fn open_writer(db_path: &Path) -> Result<Connection> {
 
     match try_open_and_init(db_path) {
         Ok(conn) => Ok(conn),
-        Err(e) if db_path.exists() => {
+        Err(e) if db_path.exists() && !is_locked_error(&e) => {
             // Self-healing: contracts.db is a rebuildable local cache.
             // Power loss or page truncation must not permanently lock the user out.
             eprintln!("[sajimora] Warning: Corrupted contracts database detected ({e}). Rebuilding clean cache.");
