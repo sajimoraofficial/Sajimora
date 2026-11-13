@@ -1,0 +1,46 @@
+{
+  "name": "sajimora-mcp",
+  "version": "0.1.1",
+  "description": "Model Context Protocol (MCP) server for Sajimora - deterministic cross-language API contract verification and AST guard",
+  "bin": {
+    "sajimora-mcp": "bin/sajimora-mcp.cjs"
+  },
+  "files": [
+    "bin",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "node bin/sajimora-mcp.cjs --version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sajimoraofficial/Sajimora.git"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "cursor",
+    "claude-desktop",
+    "windsurf",
+    "smithery",
+    "contract-testing",
+    "spring-boot",
+    "typescript",
+    "angular",
+    "react",
+    "ast",
+    "api-diff",
+    "developer-tools"
+  ],
+  "author": "Sajimora Team <dev@sajimora.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/sajimoraofficial/Sajimora/issues"
+  },
+  "homepage": "https://sajimora.com"
+}

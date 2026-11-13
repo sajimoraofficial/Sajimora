@@ -1,6 +1,6 @@
 {
   "name": "sajimora",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Deterministic cross-language API contract verification and autonomous AST impact engine for Java Spring Boot and TypeScript/Angular/React",
   "private": false,
   "license": "SEE LICENSE IN LICENSE",
