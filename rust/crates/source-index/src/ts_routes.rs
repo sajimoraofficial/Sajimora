@@ -397,6 +397,23 @@ impl TypeScriptRouteExtractor {
                     export_maps: Some(&self.export_maps),
                 }
                 .map(type_name, &primary.file, primary.line)
+            } else if primary.http_method == "DELETE" {
+                // HTTP DELETE requests in standard REST semantics return 204 No Content or void
+                // when no explicit response DTO is declared on the client call.
+                WireType::Primitive(PrimitiveWireType {
+                    scalar: PrimitiveScalar::Void,
+                    format: None,
+                    provenance: Some(SourceProvenance {
+                        sha256: None,
+                        language: SourceLanguage::TypeScript,
+                        file: primary.file.clone(),
+                        line: primary.line,
+                        column: None,
+                        ast_identity: Some("void".to_string()),
+                        annotation_or_schema: None,
+                        evidence_classification: None,
+                    }),
+                })
             } else {
                 WireType::Unknown(UnknownWireType {
                     reason: "Response type could not be resolved from call context".to_string(),
@@ -1291,9 +1308,12 @@ fn extract_function_return_type(node: Node, content: &str) -> Option<String> {
         if let Some(inner) = unwrap_async_wrapper(clean) {
             return Some(inner);
         }
+        if clean == "void" {
+            return Some("void".to_string());
+        }
         if !clean.contains('<')
             && ![
-                "void", "any", "unknown", "never", "boolean", "number", "string",
+                "any", "unknown", "never", "boolean", "number", "string",
             ]
             .contains(&clean)
         {
@@ -1334,7 +1354,7 @@ fn unwrap_async_wrapper(type_str: &str) -> Option<String> {
         }) else {
             break;
         };
-        if inner.is_empty() || matches!(inner, "void" | "any" | "unknown") {
+        if inner.is_empty() || matches!(inner, "any" | "unknown") {
             return None;
         }
         current = inner;
@@ -4251,10 +4271,12 @@ fn resolved_client_call(
     non_json_response_type: Option<String>,
     line: u32,
 ) -> CallInspection {
-    // Type arguments (e.g. this.http.get<UserDto>(...) or enclosing Promise<T>)
+    // Type arguments (e.g. this.http.get<UserDto>(...) or contextual type / enclosing Promise<T>)
     let mut response_type = extract_type_argument(node, content);
     if response_type.is_none() {
-        if is_call_returned(node, content) {
+        if let Some(ctx_type) = extract_contextual_type(node, content) {
+            response_type = Some(ctx_type);
+        } else if is_call_returned(node, content) {
             if let Some(ref enc) = scope.enclosing_return_type {
                 response_type = Some(enc.clone());
             }
@@ -4951,9 +4973,13 @@ fn inspect_config_object_call(
     }
 
     let mut response_type = extract_type_argument(node, content);
-    if response_type.is_none() && is_call_returned(node, content) {
-        if let Some(ref enc) = scope.enclosing_return_type {
-            response_type = Some(enc.clone());
+    if response_type.is_none() {
+        if let Some(ctx_type) = extract_contextual_type(node, content) {
+            response_type = Some(ctx_type);
+        } else if is_call_returned(node, content) {
+            if let Some(ref enc) = scope.enclosing_return_type {
+                response_type = Some(enc.clone());
+            }
         }
     }
 
@@ -5093,9 +5119,25 @@ fn names_http_client(
 fn is_call_returned(call_node: Node, content: &str) -> bool {
     let mut curr = call_node;
     while let Some(parent) = curr.parent() {
-        if parent.kind() == "await_expression" || parent.kind() == "parenthesized_expression" {
+        if parent.kind() == "await_expression"
+            || parent.kind() == "parenthesized_expression"
+            || parent.kind() == "as_expression"
+        {
             curr = parent;
             continue;
+        }
+        // Transparently traverse RxJS .pipe(...) calls
+        if parent.kind() == "member_expression" {
+            if let Some(prop) = parent.child_by_field_name("property") {
+                if slice_node(prop, content).trim() == "pipe" {
+                    if let Some(call_parent) = parent.parent() {
+                        if call_parent.kind() == "call_expression" {
+                            curr = call_parent;
+                            continue;
+                        }
+                    }
+                }
+            }
         }
         if parent.kind() == "return_statement" {
             return true;
@@ -5813,6 +5855,91 @@ fn extract_type_argument(call_node: Node, content: &str) -> Option<String> {
                 }
             }
         }
+    }
+    None
+}
+
+fn extract_contextual_type(call_node: Node, content: &str) -> Option<String> {
+    let mut curr = call_node;
+    while let Some(parent) = curr.parent() {
+        if parent.kind() == "parenthesized_expression" || parent.kind() == "await_expression" {
+            curr = parent;
+            continue;
+        }
+        if parent.kind() == "as_expression" {
+            let type_node = parent.child_by_field_name("type").or_else(|| {
+                let n = parent.named_child_count();
+                if n >= 2 {
+                    parent.named_child((n - 1) as u32)
+                } else {
+                    None
+                }
+            });
+            if let Some(type_node) = type_node {
+                let raw = slice_node(type_node, content).trim();
+                let clean = raw.strip_prefix(':').unwrap_or(raw).trim();
+                if !clean.is_empty() && !matches!(clean, "any" | "unknown") {
+                    if let Some(unwrapped) = unwrap_async_wrapper(clean) {
+                        return Some(unwrapped);
+                    }
+                    return Some(clean.to_string());
+                }
+            }
+            curr = parent;
+            continue;
+        }
+        if parent.kind() == "variable_declarator" {
+            if let Some(type_node) = parent.child_by_field_name("type") {
+                let raw = slice_node(type_node, content).trim();
+                let clean = raw.strip_prefix(':').unwrap_or(raw).trim();
+                if !clean.is_empty() && !matches!(clean, "any" | "unknown") {
+                    if let Some(unwrapped) = unwrap_async_wrapper(clean) {
+                        return Some(unwrapped);
+                    }
+                    return Some(clean.to_string());
+                }
+            }
+            break;
+        }
+        if parent.kind() == "member_expression" {
+            if let Some(prop) = parent.child_by_field_name("property") {
+                let prop_name = slice_node(prop, content).trim();
+                if prop_name == "then" || prop_name == "subscribe" {
+                    if let Some(call_parent) = parent.parent() {
+                        if call_parent.kind() == "call_expression" {
+                            if let Some(args) = call_parent.child_by_field_name("arguments") {
+                                if let Some(cb) = args.named_child(0) {
+                                    if matches!(cb.kind(), "arrow_function" | "function_expression" | "function") {
+                                        if let Some(params) = cb.child_by_field_name("parameters") {
+                                            if let Some(first_param) = params.named_child(0) {
+                                                if let Some(type_node) = first_param.child_by_field_name("type") {
+                                                    let raw = slice_node(type_node, content).trim();
+                                                    let clean = raw.strip_prefix(':').unwrap_or(raw).trim();
+                                                    if !clean.is_empty() && !matches!(clean, "any" | "unknown") {
+                                                        if let Some(unwrapped) = unwrap_async_wrapper(clean) {
+                                                            return Some(unwrapped);
+                                                        }
+                                                        return Some(clean.to_string());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if prop_name == "pipe" {
+                    if let Some(call_parent) = parent.parent() {
+                        if call_parent.kind() == "call_expression" {
+                            curr = call_parent;
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        break;
     }
     None
 }

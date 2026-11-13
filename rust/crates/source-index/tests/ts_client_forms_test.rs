@@ -214,3 +214,191 @@ post('/api/destructured-post', { value: 1 });
         ]
     );
 }
+
+#[test]
+fn test_untyped_delete_defaults_to_void() {
+    let dir = tempdir().unwrap();
+    let repo = dir.path();
+    write(
+        repo,
+        "src/client.ts",
+        r#"
+import axios from 'axios';
+export class DeviceService {
+    deleteDevice(id: string) {
+        return axios.delete(`/api/device/${id}`);
+    }
+}
+"#,
+    );
+    let extractor = TypeScriptRouteExtractor::new(repo.to_path_buf(), &repo.join("src")).unwrap();
+    let (payload, _) = extractor.extract_payload("ui", "backend");
+    assert_eq!(payload.client_contracts.len(), 1);
+    let contract = &payload.client_contracts[0];
+    assert_eq!(contract.http_method, "DELETE");
+    assert_eq!(contract.normalized_route, "/api/device/:param");
+    match &contract.expected_response {
+        contract_core::ir::WireType::Primitive(p) => {
+            assert_eq!(p.scalar, contract_core::ir::PrimitiveScalar::Void);
+        }
+        other => panic!("Expected Primitive(Void), got {:?}", other),
+    }
+}
+
+#[test]
+fn test_observable_void_resolves_to_void() {
+    let dir = tempdir().unwrap();
+    let repo = dir.path();
+    write(
+        repo,
+        "src/client.ts",
+        r#"
+import { Observable } from 'rxjs';
+export class DeviceService {
+    http: any;
+    deleteDevice(id: string): Observable<void> {
+        return this.http.delete(`/api/device/${id}`);
+    }
+}
+"#,
+    );
+    let extractor = TypeScriptRouteExtractor::new(repo.to_path_buf(), &repo.join("src")).unwrap();
+    let (payload, _) = extractor.extract_payload("ui", "backend");
+    assert_eq!(payload.client_contracts.len(), 1);
+    let contract = &payload.client_contracts[0];
+    match &contract.expected_response {
+        contract_core::ir::WireType::Primitive(p) => {
+            assert_eq!(p.scalar, contract_core::ir::PrimitiveScalar::Void);
+        }
+        other => panic!("Expected Primitive(Void), got {:?}", other),
+    }
+}
+
+#[test]
+fn test_contextual_type_from_variable_declarator() {
+    let dir = tempdir().unwrap();
+    let repo = dir.path();
+    write(
+        repo,
+        "src/client.ts",
+        r#"
+import axios from 'axios';
+interface UserDto {
+    id: string;
+    name: string;
+}
+export async function loadUser(id: string) {
+    const user: UserDto = await axios.get(`/api/user/${id}`);
+    return user;
+}
+"#,
+    );
+    let extractor = TypeScriptRouteExtractor::new(repo.to_path_buf(), &repo.join("src")).unwrap();
+    let (payload, _) = extractor.extract_payload("ui", "backend");
+    assert_eq!(payload.client_contracts.len(), 1);
+    let contract = &payload.client_contracts[0];
+    assert_eq!(contract.http_method, "GET");
+    match &contract.expected_response {
+        contract_core::ir::WireType::Ref(r) => {
+            assert!(r.r#ref.contains("UserDto"));
+        }
+        other => panic!("Expected Ref(UserDto), got {:?}", other),
+    }
+}
+
+#[test]
+fn test_contextual_type_from_as_expression() {
+    let dir = tempdir().unwrap();
+    let repo = dir.path();
+    write(
+        repo,
+        "src/client.ts",
+        r#"
+import axios from 'axios';
+interface UserDto {
+    id: string;
+    name: string;
+}
+export async function loadUser(id: string) {
+    return (await axios.get(`/api/user/${id}`)) as UserDto;
+}
+"#,
+    );
+    let extractor = TypeScriptRouteExtractor::new(repo.to_path_buf(), &repo.join("src")).unwrap();
+    let (payload, _) = extractor.extract_payload("ui", "backend");
+    assert_eq!(payload.client_contracts.len(), 1);
+    let contract = &payload.client_contracts[0];
+    match &contract.expected_response {
+        contract_core::ir::WireType::Ref(r) => {
+            assert!(r.r#ref.contains("UserDto"));
+        }
+        other => panic!("Expected Ref(UserDto), got {:?}", other),
+    }
+}
+
+#[test]
+fn test_contextual_type_from_rxjs_pipe() {
+    let dir = tempdir().unwrap();
+    let repo = dir.path();
+    write(
+        repo,
+        "src/client.ts",
+        r#"
+import { Observable } from 'rxjs';
+interface UserDto {
+    id: string;
+    name: string;
+}
+export class UserService {
+    http: any;
+    loadUser(id: string): Observable<UserDto> {
+        return this.http.get(`/api/user/${id}`).pipe();
+    }
+}
+"#,
+    );
+    let extractor = TypeScriptRouteExtractor::new(repo.to_path_buf(), &repo.join("src")).unwrap();
+    let (payload, _) = extractor.extract_payload("ui", "backend");
+    assert_eq!(payload.client_contracts.len(), 1);
+    let contract = &payload.client_contracts[0];
+    match &contract.expected_response {
+        contract_core::ir::WireType::Ref(r) => {
+            assert!(r.r#ref.contains("UserDto"));
+        }
+        other => panic!("Expected Ref(UserDto), got {:?}", other),
+    }
+}
+
+#[test]
+fn test_contextual_type_from_subscribe_callback() {
+    let dir = tempdir().unwrap();
+    let repo = dir.path();
+    write(
+        repo,
+        "src/client.ts",
+        r#"
+interface UserDto {
+    id: string;
+    name: string;
+}
+export class UserService {
+    http: any;
+    loadUser(id: string) {
+        this.http.get(`/api/user/${id}`).subscribe((user: UserDto) => {
+            console.log(user);
+        });
+    }
+}
+"#,
+    );
+    let extractor = TypeScriptRouteExtractor::new(repo.to_path_buf(), &repo.join("src")).unwrap();
+    let (payload, _) = extractor.extract_payload("ui", "backend");
+    assert_eq!(payload.client_contracts.len(), 1);
+    let contract = &payload.client_contracts[0];
+    match &contract.expected_response {
+        contract_core::ir::WireType::Ref(r) => {
+            assert!(r.r#ref.contains("UserDto"));
+        }
+        other => panic!("Expected Ref(UserDto), got {:?}", other),
+    }
+}
