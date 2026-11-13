@@ -331,6 +331,7 @@ impl ServerHandler for SajimoraMcpServer {
             Self::run_tool_definition(),
             Self::query_tool_definition(),
             Self::what_if_tool_definition(),
+            Self::apply_tool_definition(),
         ]))
     }
 
@@ -347,6 +348,7 @@ impl ServerHandler for SajimoraMcpServer {
             "sajimora_run" => Some(Self::run_tool_definition()),
             "sajimora_query" => Some(Self::query_tool_definition()),
             "sajimora_what_if" => Some(Self::what_if_tool_definition()),
+            "sajimora_apply_patches" => Some(Self::apply_tool_definition()),
             _ => None,
         }
     }
@@ -368,6 +370,7 @@ impl ServerHandler for SajimoraMcpServer {
             "sajimora_run" => self.call_run(request.arguments).await,
             "sajimora_query" => self.call_query(request.arguments).await,
             "sajimora_what_if" => self.call_what_if(request.arguments).await,
+            "sajimora_apply_patches" => self.call_apply(request.arguments).await,
             other => Err(McpError::invalid_params(
                 format!("Unknown tool: {other}"),
                 None,
@@ -519,6 +522,36 @@ impl SajimoraMcpServer {
             }
             Err(error) => Ok(CallToolResult::error(vec![ContentBlock::text(format!(
                 "sajimora_what_if task failed: {error}"
+            ))])
+            .into()),
+        }
+    }
+
+    fn apply_tool_definition() -> Tool {
+        crate::apply::tool_definition()
+    }
+
+    async fn call_apply(
+        &self,
+        arguments: Option<serde_json::Map<String, serde_json::Value>>,
+    ) -> Result<CallToolResponse, McpError> {
+        let args = arguments.unwrap_or_default();
+        let _permit = match self.semaphore.acquire().await {
+            Ok(permit) => permit,
+            Err(_) => return Err(McpError::internal_error("Server closing", None)),
+        };
+        let allowed_roots = self.config.allowed_roots.clone();
+        let result =
+            tokio::task::spawn_blocking(move || crate::apply::run_apply_patches(&allowed_roots, &args))
+                .await;
+        match result {
+            Ok(Ok(report)) => Ok(CallToolResult::success(vec![ContentBlock::text(report)]).into()),
+            Ok(Err(error)) => Ok(CallToolResult::error(vec![ContentBlock::text(format!(
+                "sajimora_apply_patches failed: {error:#}"
+            ))])
+            .into()),
+            Err(error) => Ok(CallToolResult::error(vec![ContentBlock::text(format!(
+                "sajimora_apply_patches task failed: {error}"
             ))])
             .into()),
         }

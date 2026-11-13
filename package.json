@@ -98,18 +98,17 @@
     "campaign:scale:java": "node --max-old-space-size=4096 scripts/test-runtime/run-tsx-command.cjs packages/analysis/tests/sajimora/JavaCampaignJ10B.test.ts",
     "test:java": "node scripts/test-runtime/run-tsx.cjs packages/analysis/tests/sajimora/JavaBuildFallback.test.ts packages/analysis/tests/sajimora/JavaPhase1BExtensions.test.ts packages/analysis/tests/sajimora/JavaGuardedAdditiveProofs.test.ts packages/analysis/tests/sajimora/JavaFrameworkScanner.test.ts packages/analysis/tests/sajimora/JavaPhase1AAliasFixtures.test.ts packages/analysis/tests/sajimora/JavaWildBaselineJ12.test.ts packages/analysis/tests/sajimora/JavaRealGitCommitQueries.test.ts packages/analysis/tests/sajimora/JavaF1CompilerJ11.test.ts packages/analysis/tests/sajimora/JavaAdversarialJ10C.test.ts packages/analysis/tests/sajimora/JavaPilotJ10A.test.ts packages/analysis/tests/sajimora/JavaCliIntegrationJ9.test.ts packages/analysis/tests/sajimora/JavaQualificationJ8_5.test.ts packages/analysis/tests/sajimora/JavaMultiModuleJ8.test.ts packages/analysis/tests/sajimora/JavaCertificationJ7.test.ts packages/analysis/tests/sajimora/JavaBenchmarkJ6.test.ts packages/analysis/tests/sajimora/JavaAdversarialJ6.test.ts packages/analysis/tests/sajimora/AdvisoryJavaImpactAnalyzer.test.ts packages/analysis/tests/sajimora/JavaCallSiteExtractionJ5.test.ts packages/impact-analysis/tests/java_extractor_j1.test.ts packages/impact-analysis/tests/java_type_ir_j2.test.ts"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.32.1",
+    "@types/node": "^20.0.0",
     "@types/react": "^19.3.0",
+    "esbuild": "0.21.5",
     "tree-sitter": "0.21.1",
     "tree-sitter-java": "0.23.5",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "esbuild": "0.21.5",
     "ts-morph": "^28.0.0",
     "tsx": "^4.19.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "zod": "^3.23.8"
   }
 }

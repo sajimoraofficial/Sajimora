@@ -10,6 +10,7 @@
 //! Phase R3: full CLI with subprocess tests.
 
 mod ask;
+mod apply;
 mod build_telemetry;
 mod change_evaluate;
 mod check_contract;
@@ -42,7 +43,7 @@ use clap::{Parser, Subcommand};
     name = "sajimora",
     version,
     about = "Sajimora — Deterministic Cross-Language Contract Verification & Autonomous Test Synthesis",
-    after_help = "⚡ DEVELOPER QUICKSTART ALIASES:\n  sajimora run                  Run full end-to-end verification pipeline in 1 command\n  sajimora check                 Verify API contracts (Spring Boot <-> TypeScript)\n  sajimora fix [file|method]     Auto-heal broken test call sites after refactoring\n  sajimora unit <file>           Synthesize branch unit tests for a service\n  sajimora props <file>          Synthesize metamorphic property tests\n  sajimora diff [file]           Verify behavioral equivalence across revisions\n  sajimora doctor                Health check & configuration diagnostics\n"
+    after_help = "⚡ DEVELOPER QUICKSTART ALIASES:\n  sajimora run                  Run full end-to-end verification pipeline in 1 command\n  sajimora check                 Verify API contracts (Spring Boot <-> TypeScript)\n  sajimora fix [file|method]     Auto-heal broken test call sites after refactoring\n  sajimora patch                 Apply consumer-side patches for a DTO mutation\n  sajimora unit <file>           Synthesize branch unit tests for a service\n  sajimora props <file>          Synthesize metamorphic property tests\n  sajimora diff [file]           Verify behavioral equivalence across revisions\n  sajimora doctor                Health check & configuration diagnostics\n"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -110,6 +111,9 @@ enum Commands {
     /// Sub-second 'what-if' simulation for in-memory DTO mutations and breaking-change detection.
     #[command(alias = "simulate", alias = "mutate")]
     WhatIf(what_if::WhatIfArgs),
+    /// Deterministically apply consumer-side patches (TypeScript client-models, Angular templates) for a DTO mutation.
+    #[command(alias = "patch", alias = "apply-patches")]
+    Apply(apply::ApplyArgs),
     /// Run the full unified end-to-end Sajimora verification pipeline in one command.
     #[command(alias = "all", alias = "pipeline")]
     Run(run::RunArgs),
@@ -143,6 +147,7 @@ fn main() {
         Commands::Ask(args) => ask::run(args),
         Commands::Query(args) => query::run(args),
         Commands::WhatIf(args) => what_if::run(args),
+        Commands::Apply(args) => apply::run(args),
         Commands::Run(args) => run::run(args),
     };
     std::process::exit(exit_code);

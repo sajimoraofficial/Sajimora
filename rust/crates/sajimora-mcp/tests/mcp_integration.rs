@@ -217,6 +217,7 @@ async fn test_mcp_init_and_list_tools() {
             "sajimora_run",
             "sajimora_query",
             "sajimora_what_if",
+            "sajimora_apply_patches",
         ],
         "all Level 1 and Level 2 tools are advertised"
     );

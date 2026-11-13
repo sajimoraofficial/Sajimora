@@ -13,6 +13,7 @@
 //! - Diagnostics go to stderr, never stdout (MCP framing on stdout)
 //! - Cancellation and stdin EOF shut down cleanly
 
+pub mod apply;
 pub mod behavior;
 pub mod change_evaluate;
 pub mod endpoint_impact;
