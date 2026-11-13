@@ -48,6 +48,7 @@ BASELINE_AUDIT_MANIFEST_PHASE0.json
 arch5Trace.json
 artifact.json
 backend-artifact.json
+.npmrc
 baselineTrace.json
 frontend-artifact.json
 sajimora_pipeline_diagram.*

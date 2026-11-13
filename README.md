@@ -6,7 +6,7 @@
 
 *The LLM Proposes. Sajimora Verifies.*
 
-[![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg?style=flat-square)](https://github.com/sajimoraofficial/sajimora/releases)
+[![Release](https://img.shields.io/badge/release-v0.1.1-blue.svg?style=flat-square)](https://github.com/sajimoraofficial/sajimora/releases)
 [![License](https://img.shields.io/badge/license-Free_for_Individuals-brightgreen.svg?style=flat-square)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2021_edition-orange.svg?style=flat-square)](https://www.rust-lang.org)
 [![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-purple.svg?style=flat-square)](https://modelcontextprotocol.io)
@@ -50,10 +50,15 @@ Traditional integration tests require starting Docker containers, spinning up da
 
 ## 🚀 Quickstart in 30 Seconds
 
-### Option A: Zero-Install via `npx` (Fullstack & Frontend Devs)
+### Option A: npm / npx (Zero Rust Compiler Required)
 
-No Rust compiler required. The lightweight launcher automatically fetches the optimized native binary for your OS:
+Install globally:
+```bash
+npm install -g sajimora
+sajimora run
+```
 
+Or run on-the-fly via `npx` with zero local installation:
 ```bash
 # Run full verification pipeline
 npx sajimora run
@@ -98,12 +103,13 @@ Add to your **`.cursor/mcp.json`** or **`claude_desktop_config.json`**:
 {
   "mcpServers": {
     "sajimora": {
-      "command": "sajimora-mcp",
-      "args": ["--trusted-local", "--allowed-root", "."]
+      "command": "npx",
+      "args": ["-y", "sajimora-mcp", "--allowed-root", "."]
     }
   }
 }
 ```
+*(Or use `"command": "sajimora-mcp"` if installed natively).*
 
 ### Available MCP Tools
 
@@ -120,15 +126,38 @@ Add to your **`.cursor/mcp.json`** or **`claude_desktop_config.json`**:
 
 ## 💻 CLI Commands
 
+> **Developer Rule of Thumb:** You only need `sajimora run` for daily verification, or `sajimora ask` for plain-English queries. You don't need to remember 20+ commands!
+
 ### 1. `sajimora run` — The Complete Pipeline in One Command
-Runs the full 6-step lifecycle pipeline: Health check, Contract extraction, Cross-language verification, Git impact analysis, and generates `.sajimora/pipeline-report.json`.
+Runs the full lifecycle pipeline: Health check, Contract extraction, Cross-language verification, Git impact analysis, and generates `.sajimora/pipeline-report.json`:
 
 ```bash
 sajimora run
 ```
 
-### 2. `sajimora verify` — Differential Contract Ratchet
-Verifies local Git changes against the project baseline. Automatically detects modified TypeScript clients and Java endpoints in memory:
+### 2. `sajimora ask` — Zero-LLM Natural Language Queries (100% Offline, <20 ms)
+Query your entire cross-language codebase in plain English without sending tokens or code to external LLMs:
+
+```bash
+# Query routes and consumer dependencies
+sajimora ask "Which frontend components call /api/devices?"
+sajimora ask "Show all endpoints that return UserDTO"
+sajimora ask "Which POST routes are missing frontend callers?"
+```
+
+### 3. `sajimora fix` (or `sajimora heal`) — Autonomous Cross-Language AST Healing
+Automatically detects and heals broken test and consumer call-sites across **Java** and **TypeScript/Angular/React** after method signature refactorings:
+
+```bash
+# Auto-heal call sites with safe default literals
+sajimora fix
+
+# Dry-run preview without modifying files
+sajimora heal --dry-run
+```
+
+### 4. `sajimora verify` (alias: `sajimora check`) — Differential Contract Ratchet
+Verifies local Git changes against the project baseline without compiling code:
 
 ```bash
 # Advisory developer mode (exit code 0)
@@ -138,21 +167,21 @@ sajimora verify
 sajimora verify --fail-on-violation
 ```
 
-### 3. `sajimora what-if` — Change Impact Simulation
+### 5. `sajimora what-if` — Change Impact Simulation
 Predicts what will break *before* modifying code:
 
 ```bash
 sajimora what-if --type UserDto --field email --mutation REMOVE_FIELD
 ```
 
-### 4. `sajimora doctor` — Repository Diagnostics
+### 6. `sajimora doctor` — Repository Diagnostics
 Validates toolchain health, git readiness, and contract manifest integrity:
 
 ```bash
 sajimora doctor
 ```
 
-### 5. `sajimora dashboard` — Visual Contract Health
+### 7. `sajimora dashboard` — Visual Contract Health
 Displays an interactive terminal health matrix or generates a standalone HTML report:
 
 ```bash
@@ -162,6 +191,38 @@ sajimora dashboard
 # Generate interactive web report
 sajimora dashboard --web
 ```
+
+---
+
+### ⚡ Developer Quickstart Aliases
+
+Sajimora includes intuitive short aliases for common tasks:
+
+| Shorthand Alias | Full Command | Purpose |
+| :--- | :--- | :--- |
+| **`sajimora run`** | `sajimora run` | Full extraction & verification in 1 command |
+| **`sajimora check`** | `sajimora verify` | Check API contracts (Spring Boot <-> TypeScript) |
+| **`sajimora fix`** | `sajimora heal` | Auto-heal broken call sites after refactoring |
+| **`sajimora ask`** | `sajimora ask` | Plain-English natural language queries (0-LLM) |
+| **`sajimora unit`** | `sajimora gen-unit` | Synthesize bounded branch unit tests |
+| **`sajimora props`** | `sajimora gen-invariants` | Synthesize metamorphic property tests |
+| **`sajimora diff`** | `sajimora verify-behavior` | Verify behavioral equivalence across revisions |
+| **`sajimora doctor`** | `sajimora doctor` | Health check & repository diagnostics |
+
+---
+
+<details>
+<summary><b>📖 Complete 24-Command Reference (Click to Expand)</b></summary>
+<br>
+
+| Category | Commands |
+| :--- | :--- |
+| **Daily Development** | `run`, `verify`, `doctor`, `init`, `clean`, `dashboard` |
+| **Intelligence & Simulation** | `ask`, `what-if`, `query`, `endpoint-impact`, `change-evaluate` |
+| **Healing & Test Synthesis** | `heal`, `gen-unit`, `gen-invariants`, `generate-tests`, `verify-behavior` |
+| **Extraction & Crypto CI/CD** | `extract-backend`, `extract-frontend`, `check-contract`, `keygen`, `sign`, `verify-envelope`, `build-telemetry`, `init-hook`, `index-source` |
+
+</details>
 
 ---
 
