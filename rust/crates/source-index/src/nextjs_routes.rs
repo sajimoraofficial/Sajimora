@@ -18,7 +18,7 @@
 //! - Request bodies for POST/PUT/PATCH from typed request parameters or body DTOs
 //! - Interfaces, types, and classes declared in route files are resolved into `type_pool`.
 
-use crate::ts_shape::{contains_unknown, object_literal, ShapeContext};
+use crate::ts_shape::{contains_unknown, response_shape_wire, ShapeContext};
 use anyhow::{anyhow, Result};
 use contract_core::envelope::{
     compute_envelope_digest, ArtifactBlocker, ArtifactCompleteness, ArtifactIntegrity,
@@ -1032,7 +1032,7 @@ impl NextJsRouteExtractor {
                         line_of(*first),
                         "response-null",
                     )));
-                } else if let Some(object_shape) = object_literal(*first, &ctx) {
+                } else if let Some(object_shape) = response_shape_wire(*first, &ctx) {
                     shape = Some(object_shape);
                 }
             }
@@ -1166,7 +1166,7 @@ impl NextJsRouteExtractor {
                 {
                     let args = call_arguments(node);
                     if let Some(first) = args.first() {
-                        if let Some(object_shape) = object_literal(*first, &ctx) {
+                        if let Some(object_shape) = response_shape_wire(*first, &ctx) {
                             shape = Some(object_shape);
                         } else if first.kind() == "null" {
                             shape = Some(void_wire(&self.prov(
@@ -1202,7 +1202,7 @@ impl NextJsRouteExtractor {
                             if text(func, content).trim().ends_with("JSON.stringify") {
                                 let nested = call_arguments(*first);
                                 if let Some(inner) = nested.first() {
-                                    if let Some(object_shape) = object_literal(*inner, &ctx) {
+                                    if let Some(object_shape) = response_shape_wire(*inner, &ctx) {
                                         shape = Some(object_shape);
                                     }
                                 }

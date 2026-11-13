@@ -10,8 +10,9 @@
 //! guessing a shape.
 
 use contract_core::ir::{
-    ArrayWireType, ObjectWireType, PrimitiveScalar, PrimitiveWireType, SourceLanguage,
-    SourceProvenance, UnknownWireType, WirePropertyContract, WireType,
+    ArrayWireType, ObjectWireType, PrimitiveScalar, PrimitiveWireType, RefWireType,
+    SourceLanguage, SourceProvenance, UnionWireType, UnknownWireType, WirePropertyContract,
+    WireType,
 };
 use tree_sitter::Node;
 
@@ -157,6 +158,24 @@ pub(crate) fn object_literal(node: Node, ctx: &ShapeContext) -> Option<WireType>
 }
 
 fn value_wire(node: Node, ctx: &ShapeContext) -> WireType {
+    if node.kind() == "as_expression" || node.kind() == "satisfies_expression" {
+        if let Some(type_child) = node.child_by_field_name("type").or_else(|| node.named_child(1)) {
+            let type_str = text(type_child, ctx.content).trim();
+            if type_str != "const" {
+                if let Some(wire) = type_annotation_to_wire(type_child, ctx) {
+                    return wire;
+                }
+            }
+        }
+    }
+    if node.kind() == "type_assertion" {
+        if let Some(type_child) = node.child_by_field_name("type").or_else(|| node.named_child(0)) {
+            if let Some(wire) = type_annotation_to_wire(type_child, ctx) {
+                return wire;
+            }
+        }
+    }
+
     let node = unwrap_expression(node);
     match node.kind() {
         "string" | "template_string" => primitive(node, PrimitiveScalar::String, ctx),
@@ -166,10 +185,20 @@ fn value_wire(node: Node, ctx: &ShapeContext) -> WireType {
             .unwrap_or_else(|| unknown(node, "object literal could not be read", ctx)),
         "array" => {
             let mut cursor = node.walk();
-            let first = node.named_children(&mut cursor).next();
-            let element_type = first
-                .map(|child| value_wire(child, ctx))
-                .unwrap_or_else(|| unknown(node, "empty array has no element type", ctx));
+            let mut elements = Vec::new();
+            for child in node.named_children(&mut cursor) {
+                let wire = value_wire(child, ctx);
+                elements.push(wire);
+            }
+            let element_type = if elements.is_empty() {
+                unknown(node, "empty array has no element type", ctx)
+            } else {
+                let mut combined = elements.remove(0);
+                for next in elements {
+                    combined = merge_wire_types(combined, next);
+                }
+                combined
+            };
             WireType::Array(ArrayWireType {
                 element_type: Box::new(element_type),
                 is_stream_or_flux: Some(false),
@@ -281,22 +310,295 @@ fn contains_unknown_at(wire: &WireType, depth: usize) -> bool {
     }
 }
 
+fn merge_wire_types(mut a: WireType, b: WireType) -> WireType {
+    if a == b {
+        return a;
+    }
+    match (&mut a, &b) {
+        (WireType::Object(ref mut obj_a), WireType::Object(obj_b)) => {
+            for prop_b in &obj_b.properties {
+                if let Some(prop_a) = obj_a.properties.iter_mut().find(|p| p.wire_name == prop_b.wire_name) {
+                    if prop_a.r#type != prop_b.r#type {
+                        prop_a.r#type = WireType::Union(UnionWireType {
+                            types: vec![prop_a.r#type.clone(), prop_b.r#type.clone()],
+                            provenance: prop_a.provenance.clone(),
+                        });
+                    }
+                } else {
+                    let mut optional_prop = prop_b.clone();
+                    optional_prop.optional = true;
+                    obj_a.properties.push(optional_prop);
+                }
+            }
+            a
+        }
+        (WireType::Unknown(_), _) => b,
+        (_, WireType::Unknown(_)) => a,
+        _ => WireType::Union(UnionWireType {
+            types: vec![a, b],
+            provenance: None,
+        }),
+    }
+}
+
+fn is_valid_ident(s: &str) -> bool {
+    let mut chars = s.chars();
+    match chars.next() {
+        Some(c) if c.is_alphabetic() || c == '_' || c == '$' => {
+            chars.all(|c| c.is_alphanumeric() || c == '_' || c == '$')
+        }
+        _ => false,
+    }
+}
+
+fn is_reserved_type_keyword(s: &str) -> bool {
+    matches!(
+        s,
+        "any"
+            | "unknown"
+            | "never"
+            | "object"
+            | "Function"
+            | "Record"
+            | "null"
+            | "undefined"
+            | "true"
+            | "false"
+            | "const"
+    )
+}
+
+fn strip_outer_parens(s: &str) -> &str {
+    let trimmed = s.trim();
+    if trimmed.starts_with('(') && trimmed.ends_with(')') {
+        let mut depth = 0;
+        for (i, c) in trimmed.char_indices() {
+            if c == '(' {
+                depth += 1;
+            } else if c == ')' {
+                depth -= 1;
+                if depth == 0 && i < trimmed.len() - 1 {
+                    return trimmed;
+                }
+            }
+        }
+        if depth == 0 {
+            return strip_outer_parens(&trimmed[1..trimmed.len() - 1]);
+        }
+    }
+    trimmed
+}
+
+fn parse_type_annotation_str(raw: &str, node: Node, ctx: &ShapeContext) -> Option<WireType> {
+    let trimmed = raw.trim().trim_start_matches(':').trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+    let trimmed = strip_outer_parens(trimmed);
+
+    // Array types: T[]
+    if trimmed.ends_with("[]") {
+        let inner = trimmed[..trimmed.len() - 2].trim();
+        let elem_wire = parse_type_annotation_str(inner, node, ctx)?;
+        return Some(WireType::Array(ArrayWireType {
+            element_type: Box::new(elem_wire),
+            is_stream_or_flux: Some(false),
+            provenance: Some(ctx.prov(node, trimmed)),
+        }));
+    }
+
+    // Generic Array: Array<T> or ReadonlyArray<T>
+    if trimmed.starts_with("Array<") && trimmed.ends_with('>') {
+        let inner = trimmed[6..trimmed.len() - 1].trim();
+        let elem_wire = parse_type_annotation_str(inner, node, ctx)?;
+        return Some(WireType::Array(ArrayWireType {
+            element_type: Box::new(elem_wire),
+            is_stream_or_flux: Some(false),
+            provenance: Some(ctx.prov(node, trimmed)),
+        }));
+    }
+    if trimmed.starts_with("ReadonlyArray<") && trimmed.ends_with('>') {
+        let inner = trimmed[14..trimmed.len() - 1].trim();
+        let elem_wire = parse_type_annotation_str(inner, node, ctx)?;
+        return Some(WireType::Array(ArrayWireType {
+            element_type: Box::new(elem_wire),
+            is_stream_or_flux: Some(false),
+            provenance: Some(ctx.prov(node, trimmed)),
+        }));
+    }
+
+    // Inline object type: { id: string; name: string }
+    if trimmed.starts_with('{') && trimmed.ends_with('}') {
+        let body = &trimmed[1..trimmed.len() - 1].trim();
+        let mut properties = Vec::new();
+        for field_part in body.split(|c| c == ';' || c == ',') {
+            let part = field_part.trim();
+            if part.is_empty() {
+                continue;
+            }
+            if let Some(colon_idx) = part.find(':') {
+                let name_part = part[..colon_idx].trim();
+                let type_part = part[colon_idx + 1..].trim();
+                let is_optional = name_part.ends_with('?');
+                let wire_name = name_part.trim_end_matches('?').trim().to_string();
+                if let Some(prop_wire) = parse_type_annotation_str(type_part, node, ctx) {
+                    properties.push(WirePropertyContract {
+                        wire_name: wire_name.clone(),
+                        aliases: Vec::new(),
+                        r#type: prop_wire,
+                        optional: is_optional,
+                        nullable: false,
+                        server_assigned: false,
+                        validation_constraints: Vec::new(),
+                        provenance: Some(ctx.prov(node, &wire_name)),
+                    });
+                }
+            }
+        }
+        if !properties.is_empty() {
+            return Some(WireType::Object(ObjectWireType {
+                name: None,
+                properties,
+                strict: Some(false),
+                provenance: Some(ctx.prov(node, trimmed)),
+            }));
+        }
+    }
+
+    // Primitives
+    match trimmed {
+        "string" => return Some(primitive(node, PrimitiveScalar::String, ctx)),
+        "number" => return Some(primitive(node, PrimitiveScalar::Number, ctx)),
+        "boolean" => return Some(primitive(node, PrimitiveScalar::Boolean, ctx)),
+        "bigint" => return Some(primitive(node, PrimitiveScalar::BigInt, ctx)),
+        "void" => return Some(primitive(node, PrimitiveScalar::Void, ctx)),
+        "any" => return Some(primitive(node, PrimitiveScalar::Any, ctx)),
+        _ => {}
+    }
+
+    // Single type identifier reference e.g. UserDto
+    if is_valid_ident(trimmed) && !is_reserved_type_keyword(trimmed) {
+        return Some(WireType::Ref(RefWireType {
+            r#ref: trimmed.to_string(),
+            provenance: Some(ctx.prov(node, trimmed)),
+        }));
+    }
+
+    None
+}
+
 fn type_annotation_to_wire(type_node: Node, ctx: &ShapeContext) -> Option<WireType> {
     let raw = text(type_node, ctx.content)
         .trim()
         .trim_start_matches(':')
         .trim();
-    match raw {
-        "string" => Some(primitive(type_node, PrimitiveScalar::String, ctx)),
-        "number" => Some(primitive(type_node, PrimitiveScalar::Number, ctx)),
-        "boolean" => Some(primitive(type_node, PrimitiveScalar::Boolean, ctx)),
-        "bigint" => Some(primitive(type_node, PrimitiveScalar::BigInt, ctx)),
-        "void" => Some(primitive(type_node, PrimitiveScalar::Void, ctx)),
-        _ => None,
+    parse_type_annotation_str(raw, type_node, ctx)
+}
+
+fn is_empty_or_unknown_array(wire: &WireType) -> bool {
+    match wire {
+        WireType::Array(arr) => contains_unknown(&arr.element_type),
+        _ => false,
     }
 }
 
-fn inspect_statement_for_ident(stmt: Node, ident_name: &str, ctx: &ShapeContext) -> Option<WireType> {
+fn find_array_mutations(
+    scope_node: Node,
+    ident_name: &str,
+    after_byte: usize,
+    before_byte: usize,
+    ctx: &ShapeContext,
+) -> Option<WireType> {
+    let mut cursor = scope_node.walk();
+    let mut inferred_elements: Vec<WireType> = Vec::new();
+
+    for child in scope_node.named_children(&mut cursor) {
+        if child.end_byte() <= after_byte {
+            continue;
+        }
+        if child.start_byte() >= before_byte {
+            break;
+        }
+        collect_mutations_recursive(child, ident_name, ctx, &mut inferred_elements);
+    }
+
+    if inferred_elements.is_empty() {
+        return None;
+    }
+
+    let mut combined = inferred_elements.remove(0);
+    for next in inferred_elements {
+        combined = merge_wire_types(combined, next);
+    }
+
+    Some(WireType::Array(ArrayWireType {
+        element_type: Box::new(combined),
+        is_stream_or_flux: Some(false),
+        provenance: Some(ctx.prov(scope_node, "array-inferred-mutation")),
+    }))
+}
+
+fn collect_mutations_recursive(
+    node: Node,
+    ident_name: &str,
+    ctx: &ShapeContext,
+    out: &mut Vec<WireType>,
+) {
+    if node.kind() == "call_expression" {
+        if let Some(func) = node.child_by_field_name("function") {
+            if func.kind() == "member_expression" {
+                if let (Some(obj), Some(prop)) = (
+                    func.child_by_field_name("object"),
+                    func.child_by_field_name("property"),
+                ) {
+                    if text(obj, ctx.content).trim() == ident_name {
+                        let method_name = text(prop, ctx.content).trim();
+                        if method_name == "push" || method_name == "unshift" {
+                            if let Some(args) = node.child_by_field_name("arguments") {
+                                let mut arg_cursor = args.walk();
+                                for arg in args.named_children(&mut arg_cursor) {
+                                    let wire = value_wire(arg, ctx);
+                                    if !contains_unknown(&wire) {
+                                        out.push(wire);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if node.kind() == "assignment_expression" {
+        if let (Some(left), Some(right)) = (
+            node.child_by_field_name("left"),
+            node.child_by_field_name("right"),
+        ) {
+            if text(left, ctx.content).trim() == ident_name {
+                let right_wire = value_wire(right, ctx);
+                if let WireType::Array(arr) = right_wire {
+                    if !contains_unknown(&arr.element_type) {
+                        out.push(*arr.element_type);
+                    }
+                }
+            }
+        }
+    }
+
+    let mut cursor = node.walk();
+    for child in node.named_children(&mut cursor) {
+        collect_mutations_recursive(child, ident_name, ctx, out);
+    }
+}
+
+fn inspect_statement_for_ident(
+    stmt: Node,
+    ident_name: &str,
+    scope_block: Node,
+    ident_node: Node,
+    ctx: &ShapeContext,
+) -> Option<WireType> {
     let stmt = unwrap_expression(stmt);
     match stmt.kind() {
         "lexical_declaration" | "variable_declaration" => {
@@ -314,15 +616,36 @@ fn inspect_statement_for_ident(stmt: Node, ident_name: &str, ctx: &ShapeContext)
                                     }
                                     if let Some(val) = decl.child_by_field_name("value") {
                                         if val.kind() == "as_expression" || val.kind() == "satisfies_expression" {
-                                            if let Some(type_child) = val.named_child(1) {
+                                            if let Some(type_child) = val.child_by_field_name("type").or_else(|| val.named_child(1)) {
                                                 if let Some(wire) = type_annotation_to_wire(type_child, ctx) {
                                                     return Some(wire);
                                                 }
                                             }
                                         }
                                         let wire = value_wire(val, ctx);
+                                        if is_empty_or_unknown_array(&wire) {
+                                            if let Some(inferred_arr) = find_array_mutations(
+                                                scope_block,
+                                                ident_name,
+                                                stmt.end_byte(),
+                                                ident_node.start_byte(),
+                                                ctx,
+                                            ) {
+                                                return Some(inferred_arr);
+                                            }
+                                        }
                                         if !matches!(wire, WireType::Unknown(_)) {
                                             return Some(wire);
+                                        }
+                                    } else {
+                                        if let Some(inferred_arr) = find_array_mutations(
+                                            scope_block,
+                                            ident_name,
+                                            stmt.end_byte(),
+                                            ident_node.start_byte(),
+                                            ctx,
+                                        ) {
+                                            return Some(inferred_arr);
                                         }
                                     }
                                 }
@@ -399,7 +722,7 @@ fn resolve_local_identifier(ident_node: Node, ident_name: &str, ctx: &ShapeConte
                 if stmt.end_byte() > ident_node.start_byte() {
                     continue;
                 }
-                if let Some(resolved) = inspect_statement_for_ident(stmt, ident_name, ctx) {
+                if let Some(resolved) = inspect_statement_for_ident(stmt, ident_name, parent, ident_node, ctx) {
                     return Some(resolved);
                 }
             }
@@ -415,6 +738,24 @@ fn resolve_local_identifier(ident_node: Node, ident_name: &str, ctx: &ShapeConte
             }
         }
         current = parent.parent();
+    }
+    None
+}
+
+/// Read an object literal, array literal, or identifier response body.
+pub(crate) fn response_shape_wire(node: Node, ctx: &ShapeContext) -> Option<WireType> {
+    if let Some(shape) = object_literal(node, ctx) {
+        return Some(shape);
+    }
+    let unwrapped = unwrap_expression(node);
+    if unwrapped.kind() == "array" {
+        return Some(value_wire(node, ctx));
+    }
+    if unwrapped.kind() == "identifier" {
+        let ident_name = text(unwrapped, ctx.content).trim();
+        if let Some(resolved) = resolve_local_identifier(unwrapped, ident_name, ctx) {
+            return Some(resolved);
+        }
     }
     None
 }

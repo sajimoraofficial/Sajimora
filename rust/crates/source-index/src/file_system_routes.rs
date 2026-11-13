@@ -5,7 +5,7 @@
 //! `new Response(JSON.stringify({...}))` calls (and, for Nuxt, a returned object literal).
 //! Unmodelled bodies stay unresolved; nothing is fabricated.
 
-use crate::ts_shape::{object_literal, ShapeContext};
+use crate::ts_shape::{response_shape_wire, ShapeContext};
 use anyhow::{anyhow, Result};
 use contract_core::envelope::{
     compute_envelope_digest, ArtifactBlocker, ArtifactCompleteness, ArtifactIntegrity,
@@ -1021,7 +1021,7 @@ fn literal_response(root: Node, content: &str, ctx: &ShapeContext) -> Option<Wir
             if let Some(body) = node.child_by_field_name("body") {
                 let body = unwrap_parenthesized(body);
                 if body.kind() == "object" {
-                    shape = object_literal(body, ctx);
+                    shape = response_shape_wire(body, ctx);
                 }
             }
             return;
@@ -1043,13 +1043,13 @@ fn literal_response(root: Node, content: &str, ctx: &ShapeContext) -> Option<Wir
                 let mut cursor = arguments.walk();
                 let first = arguments.named_children(&mut cursor).next();
                 if let Some(first) = first {
-                    shape = object_literal(first, ctx);
+                    shape = response_shape_wire(first, ctx);
                 }
             }
             "return_statement" => {
                 if let Some(value) = node.named_child(0) {
-                    if value.kind() == "object" {
-                        shape = object_literal(value, ctx);
+                    if value.kind() == "object" || value.kind() == "array" || value.kind() == "identifier" {
+                        shape = response_shape_wire(value, ctx);
                     }
                 }
             }

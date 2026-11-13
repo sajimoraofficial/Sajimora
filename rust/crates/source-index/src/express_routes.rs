@@ -10,7 +10,7 @@
 //! Handlers with typed request/response shapes (e.g. `req: Request<Params, ResBody, ReqBody>`)
 //! or local DTO interfaces are resolved and added to `type_pool`.
 
-use crate::ts_shape::{contains_unknown, object_literal, ShapeContext};
+use crate::ts_shape::{contains_unknown, response_shape_wire, ShapeContext};
 use anyhow::{anyhow, Result};
 use contract_core::envelope::{
     compute_envelope_digest, ArtifactBlocker, ArtifactCompleteness, ArtifactIntegrity,
@@ -1470,7 +1470,7 @@ impl ExpressRouteExtractor {
                     return;
                 }
                 if let Some(first) = first_argument(node) {
-                    if let Some(response) = object_literal(first, &ctx) {
+                    if let Some(response) = response_shape_wire(first, &ctx) {
                         shape = Some(response);
                     }
                 }
@@ -1499,7 +1499,7 @@ impl ExpressRouteExtractor {
                         .unwrap_or_default();
                     if callee == "JSON.stringify" {
                         if let Some(argument) = first_argument(*first) {
-                            if let Some(response) = object_literal(argument, &ctx) {
+                            if let Some(response) = response_shape_wire(argument, &ctx) {
                                 shape = Some(response);
                             }
                         }
@@ -1651,7 +1651,7 @@ impl ExpressRouteExtractor {
                 }
                 "json" | "send" => {
                     if let Some(first) = first_arg {
-                        if let Some(object_shape) = object_literal(first, &ctx) {
+                        if let Some(object_shape) = response_shape_wire(first, &ctx) {
                             shape = Some(object_shape);
                         } else if first.kind() == "string" || first.kind() == "template_string" {
                             shape = Some(WireType::Primitive(PrimitiveWireType {

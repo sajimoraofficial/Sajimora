@@ -223,3 +223,66 @@ export async function DELETE(
 
     let _ = fs::remove_dir_all(tmp_dir);
 }
+
+#[test]
+fn nextjs_empty_array_and_mutation_scope_inference() {
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    let tmp_dir = std::env::temp_dir().join(format!("sajimora-next-arr-{}", nanos));
+    let route_dir = tmp_dir.join("app/api/products");
+    fs::create_dir_all(&route_dir).unwrap();
+    fs::write(
+        route_dir.join("route.ts"),
+        r#"
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+    const products = [];
+    products.push({ id: 10, title: "Product 10" });
+    return NextResponse.json({ products });
+}
+"#,
+    )
+    .unwrap();
+
+    let extractor = NextJsRouteExtractor::new(tmp_dir.clone(), &tmp_dir).unwrap();
+    let env = extractor
+        .build_envelope("next-arr-service", None, "HEAD")
+        .unwrap();
+    assert!(
+        env.completeness.complete,
+        "Next.js array inference must resolve completely: {:?}",
+        env.completeness.blockers
+    );
+
+    match env.payload {
+        ArtifactPayload::Backend(payload) => {
+            let response = payload
+                .endpoints
+                .iter()
+                .find(|ep| ep.identity.direction == ContractDirection::Response && ep.identity.normalized_route.raw_path == "/api/products")
+                .expect("response endpoint");
+            if let contract_core::ir::WireType::Object(obj) = response.body.as_ref().unwrap() {
+                let prod_prop = obj.properties.iter().find(|p| p.wire_name == "products").unwrap();
+                if let contract_core::ir::WireType::Array(arr) = &prod_prop.r#type {
+                    if let contract_core::ir::WireType::Object(elem_obj) = arr.element_type.as_ref() {
+                        let id_p = elem_obj.properties.iter().find(|p| p.wire_name == "id").unwrap();
+                        let title_p = elem_obj.properties.iter().find(|p| p.wire_name == "title").unwrap();
+                        assert!(matches!(id_p.r#type, contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::Number));
+                        assert!(matches!(title_p.r#type, contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::String));
+                    } else {
+                        panic!("expected ObjectWireType in array elements, got {:?}", arr.element_type);
+                    }
+                } else {
+                    panic!("expected ArrayWireType for products, got {:?}", prod_prop.r#type);
+                }
+            } else {
+                panic!("expected ObjectWireType for products response");
+            }
+        }
+        _ => panic!("Payload must be ArtifactPayload::Backend"),
+    }
+    let _ = fs::remove_dir_all(tmp_dir);
+}

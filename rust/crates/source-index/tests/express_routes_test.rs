@@ -1032,3 +1032,210 @@ app.get('/api/resolved', (req, res) => {
     }
     let _ = fs::remove_dir_all(tmp_dir);
 }
+
+#[test]
+fn express_empty_array_and_mutation_scope_inference() {
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    let tmp_dir = std::env::temp_dir().join(format!("sajimora-express-arr-test-{}", nanos));
+    let src_dir = tmp_dir.join("src");
+    fs::create_dir_all(&src_dir).unwrap();
+
+    let pkg_json = r#"{
+  "name": "sample-express",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}"#;
+    fs::write(tmp_dir.join("package.json"), pkg_json).unwrap();
+
+    fs::write(
+        src_dir.join("index.ts"),
+        r#"
+import express from 'express';
+
+export interface UserDto {
+    id: string;
+    name: string;
+}
+
+const app = express();
+
+// Route 1: Array populated via .push() in handler
+app.get('/api/pushed', (req, res) => {
+    const items = [];
+    items.push({ id: 101, title: 'Item 1' });
+    res.json({ items });
+});
+
+// Route 2: Explicit type annotation on empty array variable
+app.get('/api/annotated', (req, res) => {
+    const tags: string[] = [];
+    const users: UserDto[] = [];
+    res.json({ tags, users });
+});
+
+// Route 3: Inline `as` assertion and Generic Array type
+app.get('/api/asserted', (req, res) => {
+    const counts = [] as Array<number>;
+    res.json({ counts, direct: [] as boolean[] });
+});
+"#,
+    )
+    .unwrap();
+
+    let extractor = ExpressRouteExtractor::new(tmp_dir.clone(), &tmp_dir).unwrap();
+    let env = extractor
+        .build_envelope("express-service", None, "HEAD")
+        .unwrap();
+
+    assert!(
+        env.completeness.complete,
+        "Array scope inference must resolve completely without unknowns: {:?}",
+        env.completeness.blockers
+    );
+
+    match env.payload {
+        ArtifactPayload::Backend(payload) => {
+            // Check Route 1 (/api/pushed)
+            let pushed_endpoint = payload
+                .endpoints
+                .iter()
+                .find(|ep| ep.identity.direction == ContractDirection::Response && ep.identity.normalized_route.raw_path == "/api/pushed")
+                .expect("pushed endpoint");
+            if let contract_core::ir::WireType::Object(obj) = pushed_endpoint.body.as_ref().unwrap() {
+                let items_prop = obj.properties.iter().find(|p| p.wire_name == "items").unwrap();
+                if let contract_core::ir::WireType::Array(arr) = &items_prop.r#type {
+                    if let contract_core::ir::WireType::Object(elem_obj) = arr.element_type.as_ref() {
+                        let id_p = elem_obj.properties.iter().find(|p| p.wire_name == "id").unwrap();
+                        let title_p = elem_obj.properties.iter().find(|p| p.wire_name == "title").unwrap();
+                        assert!(matches!(id_p.r#type, contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::Number));
+                        assert!(matches!(title_p.r#type, contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::String));
+                    } else {
+                        panic!("expected ObjectWireType in array elements, got {:?}", arr.element_type);
+                    }
+                } else {
+                    panic!("expected ArrayWireType for items, got {:?}", items_prop.r#type);
+                }
+            } else {
+                panic!("expected ObjectWireType for pushed response body");
+            }
+
+            // Check Route 2 (/api/annotated)
+            let ann_endpoint = payload
+                .endpoints
+                .iter()
+                .find(|ep| ep.identity.direction == ContractDirection::Response && ep.identity.normalized_route.raw_path == "/api/annotated")
+                .expect("annotated endpoint");
+            if let contract_core::ir::WireType::Object(obj) = ann_endpoint.body.as_ref().unwrap() {
+                let tags_prop = obj.properties.iter().find(|p| p.wire_name == "tags").unwrap();
+                if let contract_core::ir::WireType::Array(arr) = &tags_prop.r#type {
+                    assert!(matches!(arr.element_type.as_ref(), contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::String));
+                } else {
+                    panic!("expected Array of string for tags, got {:?}", tags_prop.r#type);
+                }
+                let users_prop = obj.properties.iter().find(|p| p.wire_name == "users").unwrap();
+                if let contract_core::ir::WireType::Array(arr) = &users_prop.r#type {
+                    assert!(matches!(arr.element_type.as_ref(), contract_core::ir::WireType::Ref(ref r) if r.r#ref == "UserDto"));
+                } else {
+                    panic!("expected Array of UserDto for users, got {:?}", users_prop.r#type);
+                }
+            }
+
+            // Check Route 3 (/api/asserted)
+            let asserted_endpoint = payload
+                .endpoints
+                .iter()
+                .find(|ep| ep.identity.direction == ContractDirection::Response && ep.identity.normalized_route.raw_path == "/api/asserted")
+                .expect("asserted endpoint");
+            if let contract_core::ir::WireType::Object(obj) = asserted_endpoint.body.as_ref().unwrap() {
+                let counts_prop = obj.properties.iter().find(|p| p.wire_name == "counts").unwrap();
+                if let contract_core::ir::WireType::Array(arr) = &counts_prop.r#type {
+                    assert!(matches!(arr.element_type.as_ref(), contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::Number));
+                } else {
+                    panic!("expected Array of number for counts, got {:?}", counts_prop.r#type);
+                }
+                let direct_prop = obj.properties.iter().find(|p| p.wire_name == "direct").unwrap();
+                if let contract_core::ir::WireType::Array(arr) = &direct_prop.r#type {
+                    assert!(matches!(arr.element_type.as_ref(), contract_core::ir::WireType::Primitive(ref p) if p.scalar == contract_core::ir::PrimitiveScalar::Boolean));
+                } else {
+                    panic!("expected Array of boolean for direct, got {:?}", direct_prop.r#type);
+                }
+            }
+        }
+        _ => panic!("Payload must be Backend"),
+    }
+    let _ = fs::remove_dir_all(tmp_dir);
+}
+
+#[test]
+fn express_top_level_array_response() {
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    let tmp_dir = std::env::temp_dir().join(format!("sajimora-express-toparr-test-{}", nanos));
+    let src_dir = tmp_dir.join("src");
+    fs::create_dir_all(&src_dir).unwrap();
+
+    let pkg_json = r#"{
+  "name": "sample-express",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}"#;
+    fs::write(tmp_dir.join("package.json"), pkg_json).unwrap();
+
+    fs::write(
+        src_dir.join("index.ts"),
+        r#"
+import express from 'express';
+
+const app = express();
+
+app.get('/api/items', (req, res) => {
+    const items = [];
+    items.push({ id: 1, name: "Widget" });
+    res.json(items);
+});
+
+app.get('/api/inline-items', (req, res) => {
+    res.json([{ id: 2, name: "Gadget" }]);
+});
+"#,
+    )
+    .unwrap();
+
+    let extractor = ExpressRouteExtractor::new(tmp_dir.clone(), &tmp_dir).unwrap();
+    let env = extractor
+        .build_envelope("express-service", None, "HEAD")
+        .unwrap();
+
+    assert!(
+        env.completeness.complete,
+        "Top-level array responses must be complete: {:?}",
+        env.completeness.blockers
+    );
+
+    match env.payload {
+        ArtifactPayload::Backend(payload) => {
+            let ep1 = payload
+                .endpoints
+                .iter()
+                .find(|ep| ep.identity.direction == ContractDirection::Response && ep.identity.normalized_route.raw_path == "/api/items")
+                .expect("/api/items endpoint");
+            assert!(matches!(ep1.body.as_ref().unwrap(), contract_core::ir::WireType::Array(_)));
+
+            let ep2 = payload
+                .endpoints
+                .iter()
+                .find(|ep| ep.identity.direction == ContractDirection::Response && ep.identity.normalized_route.raw_path == "/api/inline-items")
+                .expect("/api/inline-items endpoint");
+            assert!(matches!(ep2.body.as_ref().unwrap(), contract_core::ir::WireType::Array(_)));
+        }
+        _ => panic!("Payload must be Backend"),
+    }
+    let _ = fs::remove_dir_all(tmp_dir);
+}
