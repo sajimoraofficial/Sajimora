@@ -329,30 +329,45 @@ fn ingest_csv(
     };
 
     // Parse data rows
-    let routes = data_lines
-        .iter()
-        .filter_map(|line| {
-            let parts: Vec<&str> = line.splitn(3, ',').collect();
-            if parts.len() < 3 {
-                return None;
-            }
-            let method = parts[0].trim().to_uppercase();
-            let path = parts[1].trim().to_string();
-            let total_requests: u64 = parts[2].trim().parse().unwrap_or(0);
-            let raw = RawRouteHit {
-                method,
-                path,
-                total_requests,
-                error_count_5xx: 0,
-            };
-            Some(build_route_hit_summary(
-                &raw,
-                duration_days,
-                min_window_days_for_waiver,
-                &trust_level,
+    let mut routes = Vec::new();
+    for line in data_lines {
+        let parts: Vec<&str> = line.split(',').collect();
+        if parts.len() < 3 {
+            continue;
+        }
+        let method = parts[0].trim().to_uppercase();
+        let path = parts[1].trim().to_string();
+        let total_requests: u64 = parts[2].trim().parse().map_err(|e| {
+            HitIngestError::ParseError(format!(
+                "Invalid request count '{}' in CSV row: {}",
+                parts[2].trim(),
+                e
             ))
-        })
-        .collect::<Vec<_>>();
+        })?;
+        let error_count_5xx: u64 = if parts.len() >= 4 {
+            parts[3].trim().parse().map_err(|e| {
+                HitIngestError::ParseError(format!(
+                    "Invalid 5xx error count '{}' in CSV row: {}",
+                    parts[3].trim(),
+                    e
+                ))
+            })?
+        } else {
+            0
+        };
+        let raw = RawRouteHit {
+            method,
+            path,
+            total_requests,
+            error_count_5xx,
+        };
+        routes.push(build_route_hit_summary(
+            &raw,
+            duration_days,
+            min_window_days_for_waiver,
+            &trust_level,
+        ));
+    }
 
     Ok(HitCountEnvelope {
         schema_version,

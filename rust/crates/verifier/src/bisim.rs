@@ -473,77 +473,94 @@ fn traverse_node_paths(
     current_constraints: &mut Vec<Constraint>,
     paths: &mut Vec<MethodPathSummary>,
 ) {
-    let mut cursor = node.walk();
-    for child in node.children(&mut cursor) {
-        match child.kind() {
-            "if_statement" => {
-                if let Some(cond_n) = child.child_by_field_name("condition") {
-                    let raw_cond = &source[cond_n.start_byte()..cond_n.end_byte()];
-                    let cond_str = strip_enclosing_parens(raw_cond).trim().to_string();
+    match node.kind() {
+        "if_statement" => {
+            if let Some(cond_n) = node.child_by_field_name("condition") {
+                let raw_cond = &source[cond_n.start_byte()..cond_n.end_byte()];
+                let cond_str = strip_enclosing_parens(raw_cond).trim().to_string();
 
-                    if let Some(c) = parse_java_condition(source, cond_n) {
-                        // 1. Traverse consequence (then block) with condition C
-                        if let Some(consequent) = child.child_by_field_name("consequence") {
-                            let cond_len = current_conditions.len();
-                            let constr_len = current_constraints.len();
+                if let Some(c) = parse_java_condition(source, cond_n) {
+                    // 1. Traverse consequence (then block) with condition C
+                    if let Some(consequent) = node.child_by_field_name("consequence") {
+                        let cond_len = current_conditions.len();
+                        let constr_len = current_constraints.len();
 
-                            current_conditions.push(cond_str.clone());
-                            current_constraints.push(c.clone());
+                        current_conditions.push(cond_str.clone());
+                        current_constraints.push(c.clone());
 
-                            traverse_node_paths(
-                                source,
-                                consequent,
-                                current_conditions,
-                                current_constraints,
-                                paths,
-                            );
+                        traverse_node_paths(
+                            source,
+                            consequent,
+                            current_conditions,
+                            current_constraints,
+                            paths,
+                        );
 
-                            current_conditions.truncate(cond_len);
-                            current_constraints.truncate(constr_len);
-                        }
+                        current_conditions.truncate(cond_len);
+                        current_constraints.truncate(constr_len);
+                    }
 
-                        // 2. Traverse alternative (else or else if block) with condition !C
-                        if let Some(alternative) = child.child_by_field_name("alternative") {
-                            let cond_len = current_conditions.len();
-                            let constr_len = current_constraints.len();
+                    // 2. Traverse alternative (else or else if block) with condition !C
+                    if let Some(alternative) = node.child_by_field_name("alternative") {
+                        let cond_len = current_conditions.len();
+                        let constr_len = current_constraints.len();
 
-                            current_conditions.push(format!("!({})", cond_str));
-                            current_constraints.push(Constraint::Not(Box::new(c.clone())));
+                        current_conditions.push(format!("!({})", cond_str));
+                        current_constraints.push(Constraint::Not(Box::new(c)));
 
-                            traverse_node_paths(
-                                source,
-                                alternative,
-                                current_conditions,
-                                current_constraints,
-                                paths,
-                            );
+                        traverse_node_paths(
+                            source,
+                            alternative,
+                            current_conditions,
+                            current_constraints,
+                            paths,
+                        );
 
-                            current_conditions.truncate(cond_len);
-                            current_constraints.truncate(constr_len);
-                        } else if let Some(consequent) = child.child_by_field_name("consequence") {
-                            // Downstream statements after if without else ONLY assume !C if the consequent returned
-                            if node_contains_return(consequent) {
-                                current_conditions.push(format!("!({})", cond_str));
-                                current_constraints.push(Constraint::Not(Box::new(c)));
-                            }
-                        }
+                        current_conditions.truncate(cond_len);
+                        current_constraints.truncate(constr_len);
                     }
                 }
             }
-            "return_statement" => {
-                let ret_str = source[child.start_byte()..child.end_byte()].to_string();
-                paths.push(MethodPathSummary {
-                    path_id: paths.len() + 1,
-                    condition_expr: if current_conditions.is_empty() {
-                        "true".to_string()
-                    } else {
-                        current_conditions.join(" && ")
-                    },
-                    constraints: current_constraints.clone(),
-                    return_expr: ret_str,
-                });
+        }
+        "return_statement" => {
+            let ret_str = source[node.start_byte()..node.end_byte()].to_string();
+            paths.push(MethodPathSummary {
+                path_id: paths.len() + 1,
+                condition_expr: if current_conditions.is_empty() {
+                    "true".to_string()
+                } else {
+                    current_conditions.join(" && ")
+                },
+                constraints: current_constraints.clone(),
+                return_expr: ret_str,
+            });
+        }
+        "block" => {
+            let initial_cond_len = current_conditions.len();
+            let initial_constr_len = current_constraints.len();
+            let mut cursor = node.walk();
+            for child in node.children(&mut cursor) {
+                traverse_node_paths(
+                    source,
+                    child,
+                    current_conditions,
+                    current_constraints,
+                    paths,
+                );
+
+                if child.kind() == "if_statement" {
+                    for (cond_s, cond_c) in get_fallthrough_conditions(child, source) {
+                        current_conditions.push(cond_s);
+                        current_constraints.push(cond_c);
+                    }
+                }
             }
-            "block" => {
+            current_conditions.truncate(initial_cond_len);
+            current_constraints.truncate(initial_constr_len);
+        }
+        _ => {
+            let mut cursor = node.walk();
+            for child in node.children(&mut cursor) {
                 traverse_node_paths(
                     source,
                     child,
@@ -552,7 +569,59 @@ fn traverse_node_paths(
                     paths,
                 );
             }
-            _ => {}
+        }
+    }
+}
+
+fn get_fallthrough_conditions(node: Node, source: &str) -> Vec<(String, Constraint)> {
+    if node.kind() != "if_statement" {
+        return Vec::new();
+    }
+
+    let cond_n = match node.child_by_field_name("condition") {
+        Some(c) => c,
+        None => return Vec::new(),
+    };
+    let raw_cond = &source[cond_n.start_byte()..cond_n.end_byte()];
+    let cond_str = strip_enclosing_parens(raw_cond).trim().to_string();
+    let cond_c = match parse_java_condition(source, cond_n) {
+        Some(c) => c,
+        None => return Vec::new(),
+    };
+
+    let consequent = match node.child_by_field_name("consequence") {
+        Some(c) => c,
+        None => return Vec::new(),
+    };
+
+    // If consequence doesn't return, execution can fall through with C true,
+    // so we cannot assume !C for subsequent code.
+    if !node_contains_return(consequent) {
+        return Vec::new();
+    }
+
+    let not_cond_str = format!("!({})", cond_str);
+    let not_cond_c = Constraint::Not(Box::new(cond_c));
+
+    match node.child_by_field_name("alternative") {
+        None => {
+            // No else branch: fallthrough only happens if condition was false
+            vec![(not_cond_str, not_cond_c)]
+        }
+        Some(alt) if alt.kind() == "if_statement" => {
+            // else if: fallthrough only happens if condition was false AND inner else if falls through
+            let mut conds = vec![(not_cond_str, not_cond_c)];
+            conds.extend(get_fallthrough_conditions(alt, source));
+            conds
+        }
+        Some(alt) => {
+            if node_contains_return(alt) {
+                // Both if and else returned: no fallthrough
+                Vec::new()
+            } else {
+                // Else branch didn't return, so fallthrough only happens via else (i.e. !C)
+                vec![(not_cond_str, not_cond_c)]
+            }
         }
     }
 }

@@ -4114,6 +4114,21 @@ enum CallInspection {
     },
 }
 
+fn get_call_argument(args_node: Node, target_index: usize) -> Option<Node> {
+    let mut cursor = args_node.walk();
+    let mut current_idx = 0;
+    for child in args_node.named_children(&mut cursor) {
+        if child.kind() == "comment" {
+            continue;
+        }
+        if current_idx == target_index {
+            return Some(child);
+        }
+        current_idx += 1;
+    }
+    None
+}
+
 fn inspect_call_expression(
     node: Node,
     content: &str,
@@ -4133,7 +4148,7 @@ fn inspect_call_expression(
 
     // A URL argument is string-like. `service.get()` and `service.delete(123)` are
     // ordinary method calls on a receiver whose name happens to look like a client.
-    let Some(url_arg) = args_node.named_child(0) else {
+    let Some(url_arg) = get_call_argument(args_node, 0) else {
         return CallInspection::NotHttp;
     };
 
@@ -4169,7 +4184,7 @@ fn inspect_call_expression(
     if !is_http_call {
         return CallInspection::NotHttp;
     }
-    let Some(url_arg) = args_node.named_child(url_index as u32) else {
+    let Some(url_arg) = get_call_argument(args_node, url_index) else {
         return CallInspection::UnresolvedHttp {
             http_method,
             line,
@@ -4204,11 +4219,10 @@ fn inspect_call_expression(
     // method is passed first, as in Angular's `request('POST', url, body)`).
     let body_index = if url_index == 1 { 2 } else { 1 };
     let request_body_arg = if ["POST", "PUT", "PATCH"].contains(&http_method.as_str()) {
-        args_node
-            .named_child(body_index)
+        get_call_argument(args_node, body_index)
             .map(|n| slice_node(n, content).trim().to_string())
     } else if http_method == "DELETE" {
-        args_node.named_child(body_index).and_then(|options| {
+        get_call_argument(args_node, body_index).and_then(|options| {
             if options.kind() == "object" {
                 let mut cursor = options.walk();
                 for child in options.children(&mut cursor) {
@@ -5436,7 +5450,7 @@ fn normalize_request_verb(raw: &str) -> Option<String> {
 
 /// The literal `method`/`type` in a request options object, defaulting to GET.
 fn method_from_options(args_node: Node, index: usize, content: &str) -> String {
-    let Some(options) = args_node.named_child(index as u32) else {
+    let Some(options) = get_call_argument(args_node, index) else {
         return "GET".to_string();
     };
     if options.kind() != "object" {
