@@ -394,8 +394,8 @@ pub fn execute_heal(args: &HealArgs) -> Result<HealSummary> {
                             .unwrap_or_else(|| "false".to_string()),
                     })
                 }
-            } else if args.method.is_none() {
-                // Zero-argument mode: auto-detect from Git diff
+            } else {
+                // Auto-detect from Git diff (for specified method or zero-argument mode)
                 let modified = detect_modified_git_files();
                 let mut resolved = None;
                 for f in modified {
@@ -408,18 +408,20 @@ pub fn execute_heal(args: &HealArgs) -> Result<HealSummary> {
                         }
                     }
                 }
-                resolved
-            } else if let Some(ref m) = args.method {
-                Some(TargetHealOperation::InsertParam {
-                    method: m.clone(),
-                    position: args.param_index,
-                    default_val: args
-                        .default_value
-                        .clone()
-                        .unwrap_or_else(|| "false".to_string()),
-                })
-            } else {
-                None
+                if resolved.is_some() {
+                    resolved
+                } else if let Some(ref m) = args.method {
+                    Some(TargetHealOperation::InsertParam {
+                        method: m.clone(),
+                        position: args.param_index,
+                        default_val: args
+                            .default_value
+                            .clone()
+                            .unwrap_or_else(|| "false".to_string()),
+                    })
+                } else {
+                    None
+                }
             }
         }
     };

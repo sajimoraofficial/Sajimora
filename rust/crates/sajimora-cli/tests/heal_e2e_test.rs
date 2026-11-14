@@ -537,3 +537,40 @@ describe("PriceCalculator", () => {
 
     let _ = fs::remove_dir_all(dir);
 }
+
+#[test]
+fn test_heal_method_arg_preserves_explicit_parameters() {
+    let dir = unique_dir("method-param-test");
+    let test_path = dir.join("CalculatorTest.java");
+
+    let test_src = r#"package com.example.service;
+
+import org.junit.jupiter.api.Test;
+
+public class CalculatorTest {
+    @Test
+    void testCompute() {
+        calc.computeTotal(100);
+    }
+}
+"#;
+    fs::write(&test_path, test_src).unwrap();
+
+    let (code, stdout, stderr) = run_heal(&[
+        "--test-dir",
+        test_path.to_str().unwrap(),
+        "--method",
+        "computeTotal",
+        "--default-value",
+        "0.0",
+        "--param-index",
+        "1",
+    ]);
+
+    assert_eq!(code, 0, "Heal with method and flags failed: {stderr}");
+    assert!(stdout.contains("Successfully healed 1 call sites"));
+
+    let healed = fs::read_to_string(&test_path).unwrap();
+    assert!(healed.contains("calc.computeTotal(100, 0.0);"));
+    let _ = fs::remove_dir_all(dir);
+}

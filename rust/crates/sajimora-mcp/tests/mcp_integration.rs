@@ -1438,3 +1438,95 @@ async fn test_mcp_run_pipeline_tool() {
     client.shutdown_and_wait().await;
     let _ = std::fs::remove_dir_all(&root);
 }
+
+#[tokio::test]
+async fn test_mcp_apply_alias_and_run_pipeline() {
+    let nanos = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    let root = std::env::temp_dir().join(format!("sajimora_mcp_alias_{nanos}"));
+    std::fs::create_dir_all(&root).unwrap();
+    let repo = root.join("repo");
+    std::fs::create_dir_all(repo.join(".sajimora")).unwrap();
+
+    let manifest = json!({
+        "manifest_version": 1,
+        "status": "complete",
+        "sajimora_version": "0.1.0",
+        "initialized_at": "2026-10-20T00:00:00Z",
+        "roots": {
+            "repo_root": repo.to_str().unwrap(),
+            "backend_root": "backend",
+            "frontend_root": null,
+            "service_id": "test-service"
+        },
+        "owned": { "package_json": null, "hook": null, "gitignore": null },
+        "artifacts": []
+    });
+    std::fs::write(
+        repo.join(".sajimora/init-manifest.json"),
+        serde_json::to_string_pretty(&manifest).unwrap(),
+    )
+    .unwrap();
+
+    let mut client =
+        McpTestClient::start(&["--trusted-local", "--allowed-root", root.to_str().unwrap()]).await;
+    client.initialize().await;
+
+    // 1. Verify sajimora_run runs successfully without allowed_roots
+    client
+        .send_raw(&json!({
+            "jsonrpc": "2.0",
+            "id": 201,
+            "method": "tools/call",
+            "params": {
+                "name": "sajimora_run",
+                "arguments": {
+                    "repoRoot": repo.to_str().unwrap(),
+                    "skipLive": true
+                }
+            }
+        }))
+        .await;
+
+    let response = client.read_raw().await;
+    assert_ne!(
+        response["result"]["isError"],
+        json!(true),
+        "sajimora_run without allowed_roots must succeed: {response}"
+    );
+
+    // 2. Verify sajimora_apply alias is recognized and dispatches to apply_patches
+    client
+        .send_raw(&json!({
+            "jsonrpc": "2.0",
+            "id": 202,
+            "method": "tools/call",
+            "params": {
+                "name": "sajimora_apply",
+                "arguments": {
+                    "repoRoot": repo.to_str().unwrap(),
+                    "dryRun": true,
+                    "mutation": {
+                        "action": "RENAME_FIELD",
+                        "targetDto": "UserDto",
+                        "field": "oldName",
+                        "renameTo": "newName"
+                    }
+                }
+            }
+        }))
+        .await;
+
+    let apply_response = client.read_raw().await;
+    // Should NOT be "Unknown tool: sajimora_apply"
+    let err_str = format!("{apply_response}");
+    assert!(
+        !err_str.contains("Unknown tool: sajimora_apply"),
+        "sajimora_apply alias must be recognized: {apply_response}"
+    );
+
+    client.shutdown_and_wait().await;
+    let _ = std::fs::remove_dir_all(&root);
+}

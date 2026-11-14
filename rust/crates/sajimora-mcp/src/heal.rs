@@ -165,7 +165,7 @@ pub fn run_heal(req: McpHealRequest, allowed_roots: &[PathBuf]) -> Result<HealSu
                             .unwrap_or_else(|| "false".to_string()),
                     })
                 }
-            } else if req.method.is_none() {
+            } else {
                 let modified = detect_modified_git_files();
                 let mut resolved = None;
                 for f in modified {
@@ -178,18 +178,20 @@ pub fn run_heal(req: McpHealRequest, allowed_roots: &[PathBuf]) -> Result<HealSu
                         }
                     }
                 }
-                resolved
-            } else if let Some(ref m) = req.method {
-                Some(TargetHealOperation::InsertParam {
-                    method: m.clone(),
-                    position: req.param_index,
-                    default_val: req
-                        .default_value
-                        .clone()
-                        .unwrap_or_else(|| "false".to_string()),
-                })
-            } else {
-                None
+                if resolved.is_some() {
+                    resolved
+                } else if let Some(ref m) = req.method {
+                    Some(TargetHealOperation::InsertParam {
+                        method: m.clone(),
+                        position: req.param_index,
+                        default_val: req
+                            .default_value
+                            .clone()
+                            .unwrap_or_else(|| "false".to_string()),
+                    })
+                } else {
+                    None
+                }
             }
         }
     };

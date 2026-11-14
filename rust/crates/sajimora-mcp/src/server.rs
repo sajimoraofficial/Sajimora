@@ -348,7 +348,7 @@ impl ServerHandler for SajimoraMcpServer {
             "sajimora_run" => Some(Self::run_tool_definition()),
             "sajimora_query" => Some(Self::query_tool_definition()),
             "sajimora_what_if" => Some(Self::what_if_tool_definition()),
-            "sajimora_apply_patches" => Some(Self::apply_tool_definition()),
+            "sajimora_apply" | "sajimora_apply_patches" => Some(Self::apply_tool_definition()),
             _ => None,
         }
     }
@@ -370,7 +370,7 @@ impl ServerHandler for SajimoraMcpServer {
             "sajimora_run" => self.call_run(request.arguments).await,
             "sajimora_query" => self.call_query(request.arguments).await,
             "sajimora_what_if" => self.call_what_if(request.arguments).await,
-            "sajimora_apply_patches" => self.call_apply(request.arguments).await,
+            "sajimora_apply" | "sajimora_apply_patches" => self.call_apply(request.arguments).await,
             other => Err(McpError::invalid_params(
                 format!("Unknown tool: {other}"),
                 None,
