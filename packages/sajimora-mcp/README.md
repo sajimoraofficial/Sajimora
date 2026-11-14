@@ -70,6 +70,8 @@ When configured, AI agents gain access to the following deterministic verificati
 | `sajimora_change_evaluate` | Score candidate Git diffs for contract regression risk before staging. |
 | `sajimora_query` | Query the canonical AST endpoint graph and dependency shapes. |
 | `sajimora_what_if` | Simulate endpoint signature changes without touching the codebase. |
+| `sajimora_apply_patches` | Deterministically apply consumer-side patches derived from symbolic DTO refactorings. |
+| `sajimora_run` | Run the unified 6-stage verification pipeline end-to-end in one call. |
 
 ---
 

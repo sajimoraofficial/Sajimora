@@ -1,0 +1,138 @@
+name: 'Sajimora Contract Verification'
+description: 'Verify cross-language API contracts (Java Spring Boot <-> TypeScript) in sub-100ms with differential ratchets and fail-closed security.'
+author: 'Sajimora'
+
+inputs:
+  version:
+    description: 'Version of Sajimora CLI to install and use'
+    required: false
+    default: '0.2.0-beta.1'
+  repo-path:
+    description: 'Path to repository root'
+    required: false
+    default: '.'
+  fail-on-violation:
+    description: 'Fail the GitHub workflow step if cross-language API violations are detected'
+    required: false
+    default: 'true'
+  trust-policy:
+    description: 'Optional path to Ed25519 trust policy JSON for artifact admission'
+    required: false
+  comment-pr:
+    description: 'Whether to post a PR comment summarizing breaking API changes'
+    required: false
+    default: 'true'
+  github-token:
+    description: 'GitHub token for posting PR comments'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  verdict:
+    description: 'Verification outcome (LIKELY_PRESERVED, LIKELY_VIOLATED, INCONCLUSIVE, or ANALYSIS_ERROR)'
+    value: ${{ steps.verify.outputs.verdict }}
+  findings-count:
+    description: 'Total number of detected cross-language contract violations'
+    value: ${{ steps.verify.outputs.findings-count }}
+  report-path:
+    description: 'Path to the generated cross-language impact report JSON'
+    value: ${{ steps.verify.outputs.report-path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Sajimora Native Binary
+      shell: bash
+      run: |
+        echo "Installing Sajimora CLI v${{ inputs.version }}..."
+        if ! command -v sajimora &> /dev/null; then
+          TARGET=""
+          ARCH=$(uname -m)
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            TARGET="x86_64-unknown-linux-gnu"
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            if [ "$ARCH" == "arm64" ]; then
+              TARGET="aarch64-apple-darwin"
+            else
+              TARGET="x86_64-apple-darwin"
+            fi
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            TARGET="x86_64-pc-windows-msvc"
+          else
+            echo "Unsupported runner OS: $RUNNER_OS"
+            exit 1
+          fi
+
+          BIN_DIR="$RUNNER_TEMP/sajimora-bin"
+          mkdir -p "$BIN_DIR"
+          EXT="tar.gz"
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            EXT="zip"
+          fi
+          ASSET="sajimora-v${{ inputs.version }}-${TARGET}.${EXT}"
+          URL="https://github.com/sajimoraofficial/sajimora/releases/download/v${{ inputs.version }}/${ASSET}"
+          echo "Downloading $URL into $BIN_DIR..."
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            curl -sSL "$URL" -o "$BIN_DIR/$ASSET"
+            unzip -q "$BIN_DIR/$ASSET" -d "$BIN_DIR"
+            rm "$BIN_DIR/$ASSET"
+          else
+            curl -sSL "$URL" | tar -xz -C "$BIN_DIR"
+          fi
+          echo "$BIN_DIR" >> $GITHUB_PATH
+          export PATH="$BIN_DIR:$PATH"
+        fi
+        echo "Sajimora binary ready: $(command -v sajimora || echo 'local')"
+
+    - name: Run Sajimora Differential Contract Verification
+      id: verify
+      shell: bash
+      run: |
+        cd "${{ inputs.repo-path }}"
+        REPORT_OUT=".sajimora/impact-report.json"
+        mkdir -p .sajimora
+
+        ARGS="verify"
+        if [ -n "${{ inputs.trust-policy }}" ]; then
+          ARGS="$ARGS --trust-policy ${{ inputs.trust-policy }}"
+        else
+          ARGS="$ARGS --trusted-local"
+        fi
+
+        if [ "${{ inputs.fail-on-violation }}" = "true" ]; then
+          ARGS="$ARGS --fail-on-violation"
+        fi
+
+        EXIT_CODE=0
+        sajimora $ARGS || EXIT_CODE=$?
+
+        VERDICT="ANALYSIS_ERROR"
+        FINDINGS_COUNT="0"
+
+        if [ -f "$REPORT_OUT" ]; then
+          VERDICT=$(python3 -c "import json; r=json.load(open('$REPORT_OUT')); print(r.get('verdict', 'ANALYSIS_ERROR'))" 2>/dev/null || node -e "const r = JSON.parse(require('fs').readFileSync('$REPORT_OUT')); console.log(r.verdict || 'ANALYSIS_ERROR');" 2>/dev/null || echo "UNKNOWN")
+          FINDINGS_COUNT=$(python3 -c "import json; r=json.load(open('$REPORT_OUT')); print(len(r.get('findings', [])))" 2>/dev/null || node -e "const r = JSON.parse(require('fs').readFileSync('$REPORT_OUT')); console.log(r.findings ? r.findings.length : 0);" 2>/dev/null || echo "0")
+        fi
+
+        echo "verdict=$VERDICT" >> $GITHUB_OUTPUT
+        echo "findings-count=$FINDINGS_COUNT" >> $GITHUB_OUTPUT
+        echo "report-path=$REPORT_OUT" >> $GITHUB_OUTPUT
+
+        echo "=========================================================="
+        echo "Sajimora Contract Verification Verdict: $VERDICT"
+        echo "Contract Violations Detected: $FINDINGS_COUNT"
+        echo "=========================================================="
+
+        if [ "${{ inputs.fail-on-violation }}" = "true" ] && [ "$VERDICT" = "LIKELY_VIOLATED" ]; then
+          echo "::error title=Cross-Language API Violation Detected::Sajimora detected breaking contract violations between backend and frontend clients."
+          exit 1
+        fi
+
+        if [ "$EXIT_CODE" -ne 0 ] && [ "${{ inputs.fail-on-violation }}" = "true" ]; then
+          echo "::error title=Sajimora Verification Failed::Verification exited with code $EXIT_CODE"
+          exit $EXIT_CODE
+        fi
+
+branding:
+  icon: 'shield'
+  color: 'blue'

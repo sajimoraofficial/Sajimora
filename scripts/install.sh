@@ -4,11 +4,18 @@ set -e
 # Sajimora Native Installer
 # Supports macOS (Apple Silicon & Intel) and Linux (x86_64)
 
-REPO="sajimoraofficial/sajimora"
-LATEST_TAG=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+REPO="sajimoraofficial/Sajimora"
 
+# Check environment override first, then fetch latest tag (including pre-releases/betas), then fallback
+LATEST_TAG="${SAJIMORA_VERSION}"
 if [ -z "$LATEST_TAG" ]; then
-  LATEST_TAG="v0.10.0"
+  LATEST_TAG=$(curl -s "https://api.github.com/repos/${REPO}/releases" | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+fi
+if [ -z "$LATEST_TAG" ]; then
+  LATEST_TAG=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+fi
+if [ -z "$LATEST_TAG" ]; then
+  LATEST_TAG="v0.2.0-beta.1"
 fi
 
 OS="$(uname -s)"
