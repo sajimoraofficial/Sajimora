@@ -255,12 +255,17 @@ fn diff_sources_for_param(
     let new_sigs = source_index::signature_diff::extract_java_method_signatures(new_src)?;
 
     for new_sig in &new_sigs {
+        if let Some(target_m) = &args.method {
+            if &new_sig.method_name != target_m {
+                continue;
+            }
+        }
         if let Some(old_sig) = old_sigs
             .iter()
             .find(|s| s.method_name == new_sig.method_name)
         {
             let diffs = source_index::signature_diff::diff_signatures(old_sig, new_sig);
-            for op in diffs {
+            if let Some(op) = diffs.into_iter().next() {
                 match op {
                     source_index::signature_diff::SignatureDiffOp::AddParam {
                         index,

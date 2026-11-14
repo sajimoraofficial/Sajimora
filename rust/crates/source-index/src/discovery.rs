@@ -366,7 +366,7 @@ pub fn provenance_json(discovery: &Discovery) -> Vec<Value> {
         .iter()
         .map(|(entry, _)| {
             serde_json::json!({
-                "path": entry.path.to_string_lossy(),
+                "path": entry.path.to_string_lossy().replace('\\', "/"),
                 "discoveryStep": entry.step,
                 "serviceId": entry.service_id,
                 "sha256": entry.sha256,
