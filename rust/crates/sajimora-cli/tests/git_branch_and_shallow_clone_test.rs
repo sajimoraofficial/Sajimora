@@ -38,12 +38,7 @@ impl Drop for TempDirGuard {
 }
 
 fn cli_bin() -> PathBuf {
-    let mut path = std::env::current_exe().unwrap();
-    path.pop(); // drop test binary name
-    if path.ends_with("deps") {
-        path.pop();
-    }
-    path.join("sajimora")
+    PathBuf::from(env!("CARGO_BIN_EXE_sajimora"))
 }
 
 fn git(dir: &Path, args: &[&str]) -> String {
