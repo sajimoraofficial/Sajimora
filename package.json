@@ -6,7 +6,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sajimoraofficial/sajimora.git"
+    "url": "git+https://github.com/sajimoraofficial/sajimora.git"
   },
   "homepage": "https://sajimora.com",
   "keywords": [
@@ -37,8 +37,8 @@
     "packages/*"
   ],
   "bin": {
-    "sajimora": "./bin/sajimora.cjs",
-    "sajimora-mcp": "./bin/sajimora-mcp.cjs"
+    "sajimora": "bin/sajimora.cjs",
+    "sajimora-mcp": "bin/sajimora-mcp.cjs"
   },
   "scripts": {
     "mcp:scoped": "node scripts/sajimora/mcpServer.cjs",

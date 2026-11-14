@@ -80,3 +80,36 @@ jobs:
           files: |
             sajimora-${{ github.ref_name }}-${{ matrix.target }}.${{ matrix.archive }}
             sajimora-${{ github.ref_name }}-${{ matrix.target }}.${{ matrix.archive }}.sha256
+
+  npm-publish:
+    name: Publish Packages to npm
+    needs: build-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish sajimora and sajimora-mcp to npm
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          REF="${{ github.ref_name }}"
+          TAG_ARG=""
+          if [[ "$REF" == *"beta"* || "$REF" == *"alpha"* || "$REF" == *"rc"* ]]; then
+            TAG_ARG="--tag beta"
+          fi
+          
+          echo "Publishing sajimora (root package) with $TAG_ARG..."
+          npm publish $TAG_ARG --access public
+          
+          echo "Publishing sajimora-mcp package with $TAG_ARG..."
+          cd packages/sajimora-mcp
+          npm publish $TAG_ARG --access public
+

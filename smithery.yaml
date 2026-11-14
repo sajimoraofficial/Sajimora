@@ -13,7 +13,7 @@ startCommand:
         description: "Enable trusted local mode for rapid local development (skips signature enforcement)"
   commandFunction: |-
     (config) => {
-      const args = ['-y', '--package', 'sajimora', 'sajimora-mcp'];
+      const args = ['-y', 'sajimora-mcp'];
       if (config && config.allowedRoot) {
         args.push('--allowed-root', config.allowedRoot);
       } else {

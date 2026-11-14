@@ -27,7 +27,7 @@ Traditional integration tests require starting Docker containers, spinning up da
 
 **Sajimora solves this in under 90 milliseconds:**
 * **Extracts AST Contracts Deterministically:** Parses Java (Spring Boot, JAX-RS, Micronaut) and TypeScript/JavaScript (Angular, React, Axios, Fetch, SWR, Nuxt) without compiling code or executing runtimes.
-* **Bi-Directional Differential Ratcheting:** Compares parent revision `R - 1` against candidate `R`. Freezes legacy technical debt and blocks only *new* breaking contract violations.
+* **Bi-Directional Differential Ratcheting:** Compares parent revision `R - 1` against candidate `R` across Git and enterprise Subversion (SVN) repositories. Freezes legacy technical debt and blocks only *new* breaking contract violations.
 * **AI-First Tooling (MCP):** Connects directly into Cursor, Claude Desktop, and Windsurf, enabling LLMs to test "what-if" API changes before editing code.
 
 ```text
@@ -113,14 +113,18 @@ Add to your **`.cursor/mcp.json`** or **`claude_desktop_config.json`**:
 
 ### Available MCP Tools
 
-| MCP Tool | Latency | Description |
-| :--- | :---: | :--- |
-| **`sajimora_what_if`** | **~85 ms** | Simulates a hypothetical change (e.g. `REMOVE_FIELD`, `RENAME_ENDPOINT`) and returns all affected files and call sites before making edits. |
-| **`sajimora_verify`** | **~90 ms** | Verifies current working tree modifications against the sealed baseline with differential ratcheting. |
-| **`sajimora_query`** | **< 10 ms** | Instant SQLite B-Tree lookup for consumer call sites, HTTP routes, and DTO definitions. |
-| **`sajimora_endpoint_impact`** | **~35 ms** | Maps changed files in a Git commit to impacted API routes and external callers. |
-| **`sajimora_check_contract`** | **~50 ms** | Cryptographic verification of contract envelopes and admission policies. |
-| **`sajimora_heal`** | **~120 ms** | Suggests autonomous AST patch recipes to heal broken consumer call sites after refactoring. |
+| MCP Tool | Latency | Description | Key Arguments |
+| :--- | :---: | :--- | :--- |
+| **`sajimora_what_if`** | **~85 ms** | Simulates a hypothetical change (e.g. `REMOVE_FIELD`, `RENAME_ENDPOINT`) and returns all affected files, call sites, and causal chains before making edits. | `repoRoot`, `mutation` (`action`, `targetDto`, `field`, `renameTo`) |
+| **`sajimora_apply_patches`** | **~45 ms** | Deterministically applies consumer-side patches (TypeScript models, Angular templates) computed for a symbolic DTO mutation. | `repoRoot`, `mutation`, `dryRun` |
+| **`sajimora_verify`** | **~90 ms** | Verifies current working tree modifications against the sealed baseline with differential ratcheting across Git and SVN. | `repoRoot`, `revisionMode`, `commitRange`, `strict`, `detail` |
+| **`sajimora_query`** | **< 10 ms** | Instant SQLite B-Tree lookup for consumer call sites, HTTP routes, and DTO definitions. | `repoRoot`, `queryType`, `filter` |
+| **`sajimora_endpoint_impact`** | **~35 ms** | Maps changed files in a Git commit to impacted API routes and external callers. | `repoRoot`, `commitRange`, `targetServices` |
+| **`sajimora_check_contract`** | **~50 ms** | Cryptographic verification of contract envelopes and admission policies. | `base`, `candidate`, `targets`, `detail`, `telemetry` |
+| **`sajimora_heal`** | **~120 ms** | Suggests autonomous AST patch recipes to heal broken consumer call sites after refactoring. | `testDir`, `target`, `method`, `paramIndex`, `defaultValue`, `detectOnly` |
+| **`sajimora_gen_invariants`** | **~60 ms** | Synthesizes metamorphic property tests (idempotence, null-safety) in jqwik/fast-check. | `file`, `framework`, `outFile`, `name`, `package` |
+| **`sajimora_gen_unit`** | **~50 ms** | Autonomous branch unit test generation with Tier 1 SMT solver within 50ms budget. | `file`, `method`, `outFile`, `budgetMs` |
+| **`sajimora_verify_behavior`** | **~50 ms** | Differential behavioral equivalence gate (bisimulation) across dual revisions. | `candidate`, `base`, `method`, `budgetMs`, `strict` |
 
 ---
 
@@ -174,14 +178,25 @@ Predicts what will break *before* modifying code:
 sajimora what-if --type UserDto --field email --mutation REMOVE_FIELD
 ```
 
-### 6. `sajimora doctor` — Repository Diagnostics
-Validates toolchain health, git readiness, and contract manifest integrity:
+### 6. `sajimora patch` (alias: `sajimora apply`) — Deterministic Consumer Patch Application
+Applies TypeScript model and Angular template updates derived from a symbolic DTO mutation:
+
+```bash
+# Preview patches without modifying files (dry-run)
+sajimora patch --type UserDto --field email --mutation REMOVE_FIELD --dry-run
+
+# Apply deterministic consumer patches to disk
+sajimora patch --type UserDto --field email --mutation REMOVE_FIELD
+```
+
+### 7. `sajimora doctor` — Repository Diagnostics
+Validates toolchain health, git/svn readiness, and contract manifest integrity:
 
 ```bash
 sajimora doctor
 ```
 
-### 7. `sajimora dashboard` — Visual Contract Health
+### 8. `sajimora dashboard` — Visual Contract Health
 Displays an interactive terminal health matrix or generates a standalone HTML report:
 
 ```bash
@@ -203,6 +218,7 @@ Sajimora includes intuitive short aliases for common tasks:
 | **`sajimora run`** | `sajimora run` | Full extraction & verification in 1 command |
 | **`sajimora check`** | `sajimora verify` | Check API contracts (Spring Boot <-> TypeScript) |
 | **`sajimora fix`** | `sajimora heal` | Auto-heal broken call sites after refactoring |
+| **`sajimora patch`** | `sajimora apply` | Apply consumer-side patches for DTO refactoring |
 | **`sajimora ask`** | `sajimora ask` | Plain-English natural language queries (0-LLM) |
 | **`sajimora unit`** | `sajimora gen-unit` | Synthesize bounded branch unit tests |
 | **`sajimora props`** | `sajimora gen-invariants` | Synthesize metamorphic property tests |
@@ -212,14 +228,14 @@ Sajimora includes intuitive short aliases for common tasks:
 ---
 
 <details>
-<summary><b>📖 Complete 24-Command Reference (Click to Expand)</b></summary>
+<summary><b>📖 Complete 25-Command Reference (Click to Expand)</b></summary>
 <br>
 
 | Category | Commands |
 | :--- | :--- |
 | **Daily Development** | `run`, `verify`, `doctor`, `init`, `clean`, `dashboard` |
 | **Intelligence & Simulation** | `ask`, `what-if`, `query`, `endpoint-impact`, `change-evaluate` |
-| **Healing & Test Synthesis** | `heal`, `gen-unit`, `gen-invariants`, `generate-tests`, `verify-behavior` |
+| **Healing & Patching** | `heal`, `apply`, `gen-unit`, `gen-invariants`, `generate-tests`, `verify-behavior` |
 | **Extraction & Crypto CI/CD** | `extract-backend`, `extract-frontend`, `check-contract`, `keygen`, `sign`, `verify-envelope`, `build-telemetry`, `init-hook`, `index-source` |
 
 </details>
