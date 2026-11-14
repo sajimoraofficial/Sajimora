@@ -1,5 +1,5 @@
 PackageIdentifier: Sajimora.Sajimora
-PackageVersion: 0.1.1
+PackageVersion: 0.2.0-beta.1
 PackageName: Sajimora
 Publisher: Sajimora
 License: Proprietary
@@ -7,7 +7,8 @@ ShortDescription: High-performance native cross-language API contract gatekeeper
 Installers:
   - Architecture: x64
     InstallerType: zip
-    InstallerUrl: https://github.com/sajimoraofficial/Sajimora/releases/download/v0.1.1/sajimora-v0.1.1-x86_64-pc-windows-msvc.zip
+    InstallerUrl: https://github.com/sajimoraofficial/Sajimora/releases/download/v0.2.0-beta.1/sajimora-v0.2.0-beta.1-x86_64-pc-windows-msvc.zip
+    InstallerSha256: UPDATE_ON_RELEASE
     NestedInstallerType: portable
     NestedInstallerFiles:
       - RelativeFilePath: sajimora.exe

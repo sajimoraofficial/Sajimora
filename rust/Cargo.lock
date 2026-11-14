@@ -218,7 +218,7 @@ checksum = "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c"
 
 [[package]]
 name = "contract-core"
-version = "0.1.1"
+version = "0.2.0-beta.1"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -1047,7 +1047,7 @@ checksum = "04d056b875a9d2e6cb9a61d127afee9ac5999b9f87bcb32079d1318e505be714"
 
 [[package]]
 name = "sajimora-mcp"
-version = "0.1.1"
+version = "0.2.0-beta.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -1069,7 +1069,7 @@ dependencies = [
 
 [[package]]
 name = "sajimora-platform-cli"
-version = "0.1.1"
+version = "0.2.0-beta.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -1253,7 +1253,7 @@ dependencies = [
 
 [[package]]
 name = "source-index"
-version = "0.1.1"
+version = "0.2.0-beta.1"
 dependencies = [
  "anyhow",
  "contract-core",
@@ -1336,7 +1336,7 @@ dependencies = [
 
 [[package]]
 name = "telemetry-core"
-version = "0.1.1"
+version = "0.2.0-beta.1"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -1533,7 +1533,7 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 
 [[package]]
 name = "verifier"
-version = "0.1.1"
+version = "0.2.0-beta.1"
 dependencies = [
  "anyhow",
  "contract-core",

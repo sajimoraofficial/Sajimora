@@ -386,8 +386,13 @@ pub fn run(args: RunArgs) -> i32 {
                     synthesis_details = json!({"skipped": false, "generated_file": outcome.path, "summary": outcome.summary, "expected_execution": generated_test});
                 }
                 Err(error) => {
-                    synthesis_status = "ERROR";
-                    synthesis_details = json!({"skipped": false, "error": format!("{error:#}")});
+                    let err_str = format!("{error:#}");
+                    if err_str.contains("SAFE_ABSTENTION") {
+                        synthesis_status = "INCONCLUSIVE";
+                    } else {
+                        synthesis_status = "ERROR";
+                    }
+                    synthesis_details = json!({"skipped": false, "error": err_str});
                 }
             }
         } else {

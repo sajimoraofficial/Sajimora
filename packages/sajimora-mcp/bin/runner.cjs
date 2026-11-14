@@ -41,8 +41,8 @@ function resolveBinary(binaryName) {
   const binaryFilename = `${binaryName}${spec.suffix}`;
 
   // 1. Check local Rust build (for development in repo, prefer newer of release/debug)
-  const localRelease = path.resolve(__dirname, '..', '..', 'rust', 'target', 'release', binaryFilename);
-  const localDebug = path.resolve(__dirname, '..', '..', 'rust', 'target', 'debug', binaryFilename);
+  const localRelease = path.resolve(__dirname, '..', '..', '..', 'rust', 'target', 'release', binaryFilename);
+  const localDebug = path.resolve(__dirname, '..', '..', '..', 'rust', 'target', 'debug', binaryFilename);
   const hasRelease = fs.existsSync(localRelease);
   const hasDebug = fs.existsSync(localDebug);
   if (hasRelease && hasDebug) {
@@ -106,19 +106,20 @@ function ensureBinaryDownloaded(binaryName, spec, cachedDir) {
     if (!isWindows) {
       // Use curl + tar for instant extraction on Unix
       const cmd = `curl -fsSL "${releaseUrl}" | tar -xz -C "${cachedDir}"`;
-      const res = spawnSync('sh', ['-c', cmd], { stdio: 'inherit' });
+      const res = spawnSync('sh', ['-c', cmd], { stdio: ['inherit', 2, 2] });
       if (res.status !== 0) {
         throw new Error(`Extraction failed with exit code ${res.status}`);
       }
     } else {
       // Windows PowerShell extraction
       const psCmd = `
+        $ProgressPreference = 'SilentlyContinue';
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
         Invoke-WebRequest -Uri "${releaseUrl}" -OutFile "${archivePath}";
         Expand-Archive -Path "${archivePath}" -DestinationPath "${cachedDir}" -Force;
         Remove-Item "${archivePath}";
       `;
-      const res = spawnSync('powershell', ['-NoProfile', '-Command', psCmd], { stdio: 'inherit' });
+      const res = spawnSync('powershell', ['-NoProfile', '-Command', psCmd], { stdio: ['inherit', 2, 2] });
       if (res.status !== 0) {
         throw new Error(`Windows download/extraction failed with exit code ${res.status}`);
       }

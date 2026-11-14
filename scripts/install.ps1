@@ -34,7 +34,7 @@ if (-not $tag) {
 }
 
 if (-not $tag) {
-    $tag = "v0.1.1"
+    $tag = "v0.2.0-beta.1"
 }
 
 $installDir = Join-Path $env:LOCALAPPDATA "Programs\Sajimora\bin"

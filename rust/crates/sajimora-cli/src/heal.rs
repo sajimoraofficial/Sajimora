@@ -47,7 +47,7 @@ pub struct HealArgs {
     pub new_file: Option<String>,
 
     /// Advisory detection only; does not write any files to disk
-    #[arg(long, short = 'd')]
+    #[arg(long, short = 'd', alias = "dry-run")]
     pub detect_only: bool,
 
     /// Emit structured JSON diagnostics to stdout

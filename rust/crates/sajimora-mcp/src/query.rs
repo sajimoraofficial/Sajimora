@@ -35,6 +35,10 @@ pub fn tool_definition() -> Tool {
                 "type": "string",
                 "description": "Route path ('/api/user/{id}'), DTO name ('User'), or empty for stats"
             },
+            "filter": {
+                "type": "string",
+                "description": "Optional alias for target (route path or DTO name)"
+            },
             "method": {
                 "type": "string",
                 "description": "Optional HTTP method filter (GET, POST, PUT, DELETE, etc.)"
@@ -85,6 +89,7 @@ pub fn run_query(
 
     let target = args
         .get("target")
+        .or_else(|| args.get("filter"))
         .and_then(serde_json::Value::as_str)
         .unwrap_or("");
 

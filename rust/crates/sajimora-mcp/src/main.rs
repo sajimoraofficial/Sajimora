@@ -9,7 +9,7 @@ use std::path::PathBuf;
 #[command(
     name = "sajimora-mcp",
     version,
-    about = "Sajimora MCP stdio server — exposes sajimora_check_contract and sajimora_verify tools"
+    about = "Sajimora MCP stdio server — deterministic cross-language contract verification & AST guard"
 )]
 struct Args {
     /// Allowed filesystem roots for artifact path resolution (repeated).

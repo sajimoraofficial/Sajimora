@@ -6,7 +6,7 @@
 
 *The LLM Proposes. Sajimora Verifies.*
 
-[![Release](https://img.shields.io/badge/release-v0.1.1-blue.svg?style=flat-square)](https://github.com/sajimoraofficial/sajimora/releases)
+[![Release](https://img.shields.io/badge/release-v0.2.0--beta.1-blue.svg?style=flat-square)](https://github.com/sajimoraofficial/sajimora/releases)
 [![License](https://img.shields.io/badge/license-Free_for_Individuals-brightgreen.svg?style=flat-square)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2021_edition-orange.svg?style=flat-square)](https://www.rust-lang.org)
 [![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-purple.svg?style=flat-square)](https://modelcontextprotocol.io)
@@ -118,13 +118,15 @@ Add to your **`.cursor/mcp.json`** or **`claude_desktop_config.json`**:
 | **`sajimora_what_if`** | **~85 ms** | Simulates a hypothetical change (e.g. `REMOVE_FIELD`, `RENAME_ENDPOINT`) and returns all affected files, call sites, and causal chains before making edits. | `repoRoot`, `mutation` (`action`, `targetDto`, `field`, `renameTo`) |
 | **`sajimora_apply_patches`** | **~45 ms** | Deterministically applies consumer-side patches (TypeScript models, Angular templates) computed for a symbolic DTO mutation. | `repoRoot`, `mutation`, `dryRun` |
 | **`sajimora_verify`** | **~90 ms** | Verifies current working tree modifications against the sealed baseline with differential ratcheting across Git and SVN. | `repoRoot`, `revisionMode`, `commitRange`, `strict`, `detail` |
-| **`sajimora_query`** | **< 10 ms** | Instant SQLite B-Tree lookup for consumer call sites, HTTP routes, and DTO definitions. | `repoRoot`, `queryType`, `filter` |
+| **`sajimora_query`** | **< 10 ms** | Instant SQLite B-Tree lookup for consumer call sites, HTTP routes, and DTO definitions. | `repoRoot`, `queryType`, `target` / `filter` |
 | **`sajimora_endpoint_impact`** | **~35 ms** | Maps changed files in a Git commit to impacted API routes and external callers. | `repoRoot`, `commitRange`, `targetServices` |
 | **`sajimora_check_contract`** | **~50 ms** | Cryptographic verification of contract envelopes and admission policies. | `base`, `candidate`, `targets`, `detail`, `telemetry` |
 | **`sajimora_heal`** | **~120 ms** | Suggests autonomous AST patch recipes to heal broken consumer call sites after refactoring. | `testDir`, `target`, `method`, `paramIndex`, `defaultValue`, `detectOnly` |
 | **`sajimora_gen_invariants`** | **~60 ms** | Synthesizes metamorphic property tests (idempotence, null-safety) in jqwik/fast-check. | `file`, `framework`, `outFile`, `name`, `package` |
 | **`sajimora_gen_unit`** | **~50 ms** | Autonomous branch unit test generation with Tier 1 SMT solver within 50ms budget. | `file`, `method`, `outFile`, `budgetMs` |
 | **`sajimora_verify_behavior`** | **~50 ms** | Differential behavioral equivalence gate (bisimulation) across dual revisions. | `candidate`, `base`, `method`, `budgetMs`, `strict` |
+| **`sajimora_change_evaluate`** | **~40 ms** | Evaluates declared Expected Change Model against structural Git change sets. | `repoRoot`, `baseRevision`, `candidateRevision`, `expectedChangeModel` |
+| **`sajimora_run`** | **~120 ms** | Executes the full unified 6-stage end-to-end verification pipeline in one call. | `repoRoot`, `failOnViolation`, `skipLive` |
 
 ---
 
