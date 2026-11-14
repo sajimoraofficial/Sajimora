@@ -8,7 +8,7 @@ Installers:
   - Architecture: x64
     InstallerType: zip
     InstallerUrl: https://github.com/sajimoraofficial/Sajimora/releases/download/v0.2.0-beta.1/sajimora-v0.2.0-beta.1-x86_64-pc-windows-msvc.zip
-    InstallerSha256: UPDATE_ON_RELEASE
+    InstallerSha256: 3c8fc4cc5ae602d7f220fe5e8081d14bba8582eed8d821b2f6cef4731bfcad76
     NestedInstallerType: portable
     NestedInstallerFiles:
       - RelativeFilePath: sajimora.exe
