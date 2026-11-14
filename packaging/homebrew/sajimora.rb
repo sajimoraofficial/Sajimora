@@ -1,18 +1,21 @@
 class Sajimora < Formula
   desc "High-performance native cross-language API contract gatekeeper"
   homepage "https://sajimora.com"
-  version "0.1.0"
+  version "0.2.0-beta.1"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/sajimoraofficial/sajimora/releases/download/v0.1.0/sajimora-v0.1.0-aarch64-apple-darwin.tar.gz"
+      url "https://github.com/sajimoraofficial/Sajimora/releases/download/v0.2.0-beta.1/sajimora-v0.2.0-beta.1-aarch64-apple-darwin.tar.gz"
+      sha256 "UPDATE_ON_RELEASE"
     else
-      url "https://github.com/sajimoraofficial/sajimora/releases/download/v0.1.0/sajimora-v0.1.0-x86_64-apple-darwin.tar.gz"
+      url "https://github.com/sajimoraofficial/Sajimora/releases/download/v0.2.0-beta.1/sajimora-v0.2.0-beta.1-x86_64-apple-darwin.tar.gz"
+      sha256 "UPDATE_ON_RELEASE"
     end
   end
 
   on_linux do
-    url "https://github.com/sajimoraofficial/sajimora/releases/download/v0.1.0/sajimora-v0.1.0-x86_64-unknown-linux-gnu.tar.gz"
+    url "https://github.com/sajimoraofficial/Sajimora/releases/download/v0.2.0-beta.1/sajimora-v0.2.0-beta.1-x86_64-unknown-linux-gnu.tar.gz"
+    sha256 "UPDATE_ON_RELEASE"
   end
 
   def install

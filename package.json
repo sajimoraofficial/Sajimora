@@ -1,6 +1,6 @@
 {
   "name": "sajimora",
-  "version": "0.1.1",
+  "version": "0.2.0-beta.1",
   "description": "Deterministic cross-language API contract verification and AST guard for Java Spring Boot and TypeScript/Angular/React",
   "private": false,
   "license": "SEE LICENSE IN LICENSE",
@@ -43,6 +43,6 @@
     "sajimora-mcp": "bin/sajimora-mcp.cjs"
   },
   "scripts": {
-    "test": "node bin/sajimora.cjs --version"
+    "test": "node bin/sajimora.cjs --version && node bin/sajimora-mcp.cjs --version && node packages/sajimora-mcp/bin/sajimora-mcp.cjs --version"
   }
 }

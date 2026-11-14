@@ -1,20 +1,40 @@
 # Sajimora Windows Native Installer (Zero npm, Zero Node.js)
-# Usage: irm https://raw.githubusercontent.com/sajimora/sajimora/main/scripts/install.ps1 | iex
+# Usage: irm https://raw.githubusercontent.com/sajimoraofficial/sajimora/main/scripts/install.ps1 | iex
 
 $ErrorActionPreference = 'Stop'
 
 Write-Host "=== Installing Sajimora Native API Gatekeeper ===" -ForegroundColor Cyan
 
-$repo = "sajimoraofficial/sajimora"
-$tag = "v0.10.0"
+$repo = "sajimoraofficial/Sajimora"
+$tag = if ($env:SAJIMORA_VERSION) { $env:SAJIMORA_VERSION } else { "" }
 
-try {
-    $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases/latest" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
-    if ($release.tag_name) {
-        $tag = $release.tag_name
+if (-not $tag) {
+    try {
+        # Check /releases first to capture pre-releases (beta/rc)
+        $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
+        if ($releases -and $releases.Count -gt 0 -and $releases[0].tag_name) {
+            $tag = $releases[0].tag_name
+        } elseif ($releases.tag_name) {
+            $tag = $releases.tag_name
+        }
+    } catch {
+        # Ignore and fallback
     }
-} catch {
-    # Fallback to default version tag if GitHub API rate-limited
+}
+
+if (-not $tag) {
+    try {
+        $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases/latest" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
+        if ($release.tag_name) {
+            $tag = $release.tag_name
+        }
+    } catch {
+        # Fallback to default version tag if GitHub API rate-limited
+    }
+}
+
+if (-not $tag) {
+    $tag = "v0.2.0-beta.1"
 }
 
 $installDir = Join-Path $env:LOCALAPPDATA "Programs\Sajimora\bin"
